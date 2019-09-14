@@ -1,0 +1,20 @@
+// Copyright (c) 2019 Gonzalo Müller Bravo.
+
+import type {
+  Context,
+  Element,
+} from 'react'
+
+export type Dispatcher<A> = (value: A) => void
+export type Reducer<S, A> = (prevState: S, action: A) => S
+export type ReducerContextValue<S, A> = [S, Dispatcher<A>]
+export type ReducerContextDefaultValue<S, A> = ReducerContextValue<S, A> | null
+
+export interface ReducerContextProps<S, A> {
+  context: Context<ReducerContextDefaultValue<S, A>>;
+  reducer: Reducer<S, A>;
+  initialState: S;
+  children: Element<any>;
+}
+
+declare export default function ReducerContext<S, A>(props: ReducerContextProps<S, A>): Element<typeof ReducerContext>

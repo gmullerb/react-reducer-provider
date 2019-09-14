@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "plugin:react/recommended"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+        "jsx": true
+    }
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "react/no-multi-comp": "error",
+    "react/no-this-in-sfc": "error",
+    "react/no-unsafe": "error",
+    "react/no-unused-prop-types": "error",
+    "react/no-unused-state": "error",
+    "react/prefer-es6-class": ["error", "never"],
+    "react/prop-types": "off",
+    "semi": ["error", "never"]
+  },
+  "settings":  {
+    "react":  {
+      "version": "detect"
+    }
+  }
+}

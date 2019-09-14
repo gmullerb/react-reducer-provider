@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "compileOnSave": false,
+  "compilerOptions": {
+      "outDir": "../../build/out-tsc/test",
+      "preserveConstEnums": true,
+      "removeComments": false,
+      "sourceMap": true,
+      "skipLibCheck": true,
+  },
+  "include": [
+    "../../src/main/**/*"
+  ]
+}

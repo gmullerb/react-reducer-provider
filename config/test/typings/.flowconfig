@@ -1,0 +1,11 @@
+[include]
+../../../src/main/js/*.js.flow
+../../../src/test/typings/flow/typingTest.jsx
+
+[untyped]
+../../../src/main/js/*.js
+
+[options]
+all=true
+emoji=true
+include_warnings=true

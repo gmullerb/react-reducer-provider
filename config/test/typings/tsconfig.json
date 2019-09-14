@@ -1,0 +1,22 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "../../../",
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "outDir": "../../../build/out-test-tsc",
+    "removeComments": false,
+    "sourceMap": false,
+    "target": "es5"
+  },
+  "include": [
+    "../../../src/main/js",
+    "../../../src/test/typings/ts/typingTest.tsx"
+  ]
+}

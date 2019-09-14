@@ -1,0 +1,6 @@
+[include]
+../../src/main/js/*.*
+
+[options]
+emoji=true
+include_warnings=true

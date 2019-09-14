@@ -1,0 +1,26 @@
+# Folders
+.gradle/
+build/
+config/
+dev_resources/
+gradle/
+src/test/
+readme/
+# Files
+.eslintrc.json
+.gitlab-ci.yml
+gradlew
+gradlew.bat
+gradle.properties
+*.gradle
+*.log
+# IDEs
+.vscode
+.vscode/
+theqtapp.pro.user
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+.idea/
