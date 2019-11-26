@@ -1,9 +1,9 @@
 // Copyright (c) 2019 Gonzalo Müller Bravo.
-import React, { useReducer } from 'react'
+const React = require('react')
 
-export default function ReducerContext(props) {
+module.exports = function ReducerContext(props) {
   return React.createElement(
     props.context.Provider,
-    { value: useReducer(props.reducer, props.initialState) },
+    { value: React.useReducer(props.reducer, props.initialState) },
     props.children)
 }

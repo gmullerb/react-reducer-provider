@@ -1,6 +1,6 @@
 # React Reducer Context
 
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt) ![GitHub package.json version](https://img.shields.io/github/package-json/v/gmullerb/react-reducer-context.svg?logo=npm) ![coverage](https://gitlab.com/gmullerb/react-reducer-context/badges/master/coverage.svg)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt) ![GitHub package.json version](https://img.shields.io/github/package-json/v/gmullerb/react-reducer-context.svg?logo=npm) ![coverage](https://gitlab.com/gmullerb/react-reducer-context/badges/master/coverage.svg) [![react-reducer-context](https://img.shields.io/badge/npm-react--reducer--context-blue?logo=npm)](https://www.npmjs.com/package/react-reducer-context)
 
 **React Component to manage State through reducers using contexts and hooks.**
 
@@ -9,7 +9,7 @@ __________________
 
 ## Quick Start
 
-1 . Apply the plugin:
+1 . Add dependency:
 
 `package.json`:
 
@@ -298,11 +298,13 @@ Typings definitions are located together with source files:
 
 Both provide the following types:
 
-* `ReducerContextValue<S, A>`: defines the type of the value contained in the `React.Context`.
+* `ReducerContext<S, A>`: specifies the Function React Component structure.
+* `ReducerContextProps<S, A>`: defines the properties receive the `ReducerContext`.
 * `ReducerContextDefaultValue<S, A>`: specifies the type of the `React.Context` when created.
   * Essentially is a `ReducerContextValue<S, A>` which also allows a `null` value, which is required when creating the context.
-* `ReducerContextProps<S, A>`: defines the properties receive the `ReducerContext`.
-* `ReducerContext<S, A>`: specifies the Function React Component structure.
+  * If required, this type should be use only when creating the `ReducerContext`.
+* `ReducerContextValue<S, A>`: defines the type of the value contained in the `React.Context`.
+  * This type should be for using the created `ReducerContext` (that never going to be null).
 
 `S`: State type.  
 `A`: Action type.  
