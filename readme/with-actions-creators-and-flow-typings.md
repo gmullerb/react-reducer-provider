@@ -6,7 +6,7 @@
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-context": "1.0.0",
+    "react-reducer-context": "1.0.2",
     ..
 ```
 
@@ -78,7 +78,7 @@ export {
 import someReducerContext from '../path/to/SomeReducerContext'
 import { useContext } from 'react'
 
-import type { ReducerContextValue } from 'react-reducer-context'
+import type { ReducerContextInterface } from 'react-reducer-context'
 
 interface SomeActions {
   goUp: () => void;
@@ -91,7 +91,7 @@ interface UseActions {
 }
 
 export default function useActions(): SomeActions {
-  const [state, dispatch]: ReducerContextValue<number, string> = useContext(someReducerContext)
+  const { state, dispatch }: ReducerContextInterface<number, string> = useReducerContext(someReducerContext)
   return {
     state,
     actions: {

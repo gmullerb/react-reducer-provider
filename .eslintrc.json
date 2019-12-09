@@ -1,4 +1,8 @@
 {
+  "extends": [
+    "plugin:base-style-config/js-rules",
+    "plugin:base-style-config/import-rules"
+  ],
   "env":{
     "node": true
   },
@@ -7,24 +11,19 @@
     "sourceType": "module"
   },
   "plugins": [
-    "import"
+    "base-style-config"
   ],
   "root": true,
   "rules": {
-    "import/default": "error",
-    "import/first": "error",
-    "import/newline-after-import": "error",
-    "import/no-mutable-exports": "error",
-    "import/no-namespace": "error",
-    "import/no-unused-modules": "error",
-    "import/no-anonymous-default-export": "error",
     "no-console": "error",
     "no-invalid-this": "error",
-    "object-curly-spacing": ["error", "always", {
-      "arraysInObjects": false,
-      "objectsInObjects": false
-    }],
-    "quotes":  ["error", "single"],
-    "semi": ["error", "never"]
+    "quotes":  [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "never"
+    ]
   }
 }

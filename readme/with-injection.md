@@ -12,19 +12,15 @@
 
 2 . Create the `ReducerContext`:
 
-**`SomeReducerContext.tsx`**:
+**`SomeReducerContext.jsx`**:
 
-```tsx
-import React, {
-  Context,
-  ReactElement,
-  ReactNode,
-  createContext } from 'react'
-import ReducerContext, { ReducerContextDefaultValue } from 'react-reducer-context'
+```jsx
+import React, { createContext } from 'react'
+import ReducerContext from 'react-reducer-context'
 
-const initialState: number = 0
+const initialState = 0
 
-function reduce(prevState: number, action: string): number {
+function reduce(prevState, action) {
   switch (action) {
     case 'ACTION1':
       return prevState + 1
@@ -35,9 +31,9 @@ function reduce(prevState: number, action: string): number {
   }
 }
 
-const someReducerContext: Context<ReducerContextDefaultValue<number, string>> = createContext(null)
+const someReducerContext = createContext(null)
 
-function SomeReducerContext({ children }: {children: ReactNode}): ReactElement {
+function SomeReducerContext({ children }) {
   return (
     <ReducerContext
       context={someReducerContext}
@@ -57,13 +53,12 @@ export {
 
 3 . Define some Components:
 
-`SomeComponent1.tsx`:
+`SomeComponent1.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
-import { Dispatcher } from 'react-reducer-context'
+```jsx
+import React from 'react'
 
-export default function SomeComponent1({dispatch}: {dispatch: Dispatcher<string>}): ReactElement {
+export default function SomeComponent1({dispatch}) {
   return (
     <button onClick={() => dispatch('ACTION1')}>
       Go up!
@@ -72,13 +67,12 @@ export default function SomeComponent1({dispatch}: {dispatch: Dispatcher<string>
 }
 ```
 
-`SomeComponent2.tsx`:
+`SomeComponent2.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
-import { Dispatcher } from 'react-reducer-context'
+```jsx
+import React from 'react'
 
-export default function SomeComponent2({dispatch}: {dispatch: Dispatcher<string>}): ReactElement {
+export default function SomeComponent2({dispatch}) {
   return (
     <button onClick={() => dispatch('ACTION2')}>
       Go down!
@@ -87,12 +81,12 @@ export default function SomeComponent2({dispatch}: {dispatch: Dispatcher<string>
 }
 ```
 
-`SomeComponentN.tsx`:
+`SomeComponentN.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
+```jsx
+import React from 'react'
 
-export default function SomeComponentN({currentState}: {currentState: number}): ReactElement {
+export default function SomeComponentN({currentState}) {
   return (
     <div>
       Current:{currentState}
@@ -103,20 +97,18 @@ export default function SomeComponentN({currentState}: {currentState: number}): 
 
 4 . Create the bridge between the `ReducerContext` and the Components:
 
-`SomeContainer.tsx`:
+`SomeContainer.jsx`:
 
-```tsx
+```jsx
 import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
 import someReducerContext from '../path/to/SomeReducerContext'
-import React, {
-  ReactElement,
-  useContext } from 'react'
-import { ReducerContextInterface } from 'react-reducer-context'
+import { useReducerContext } from 'react-reducer-context'
+import React from 'react'
 
-export default function SomeContainer(): ReactElement {
-  const { state, dispatch }: ReducerContextInterface<number, string> = useReducerContext(someReducerContext)
+export default function SomeContainer() {
+  const { state, dispatch } = useReducerContext(someReducerContext)
   return (
     <div>
       <SomeComponent1 dispatch={dispatch}/>
@@ -132,9 +124,9 @@ export default function SomeContainer(): ReactElement {
 ```jsx
 import SomeContainer from './path/to/SomeContainer'
 import { SomeReducerContext } from '../path/to/SomeReducerContext'
-import React, { ReactElement } from 'react'
+import React from 'react'
 
-export default function SomeContainer(): ReactElement {
+export default function SomeContainer() {
   return (
     <SomeReducerContext>
       <SomeContainer />
@@ -142,5 +134,10 @@ export default function SomeContainer(): ReactElement {
   )
 }
 ```
+
+> [with Flow typings](with-injection-and-flow-typings.md).  
+> [with Typescript typings](with-injection-and-ts-typings.md).  
+> This example can be checked on line: live at [gmullerb-react-reducer-context-with-injection demo](https://los45.csb.app/) and the code is at [gmullerb-react-reducer-context-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-context-with-injection-los45?module=%2Fsrc%2FSomeReducerContext.jsx):  
+[![Edit gmullerb-react-reducer-context](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-context-with-injection-los45?module=%2Fsrc%2FSomeReducerContext.jsx)
 
 [Back to Main documentation](../README.md)

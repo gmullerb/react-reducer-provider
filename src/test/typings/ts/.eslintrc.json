@@ -1,12 +1,9 @@
 {
   "extends": [
-    "plugin:@typescript-eslint/recommended"
+    "plugin:base-style-config/typescript-rules"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./config/main/tsconfig.json"
-  },
-  "plugins": [
-    "@typescript-eslint"
-  ]
+  }
 }

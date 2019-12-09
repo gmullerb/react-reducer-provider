@@ -1,4 +1,4 @@
-# React Reducer Context with Actions Creators and Typescript typings
+# React Reducer Context with Actions Creators
 
 1 . Add **react-reducer-context** (and prerequisite) to `package.json`:
 
@@ -12,12 +12,12 @@
 
 2 . Define the States, the Actions and the Reducer:
 
-`SomeReducer.ts`:
+`SomeReducer.js`:
 
-```ts
-const initialState: number = 0
+```js
+const initialState = 0
 
-function reduce(prevState: number, action: string): number {
+function reduce(prevState, action) {
   switch (action) {
     case 'ACTION1':
       return prevState + 1
@@ -36,21 +36,16 @@ export {
 
 3 . Create the `ReducerContext`:
 
-**`SomeReducerContext.tsx`**:
+**`SomeReducerContext.jsx`**:
 
-```tsx
+```jsx
 import { initialState, reduce } from '../path/to/SomeReducer'
-import React, {
-  Context,
-  ReactElement,
-  ReactNode,
-  createContext
-} from 'react'
-import ReducerContext, { ReducerContextDefaultValue } from 'react-reducer-context'
+import React, { createContext } from 'react'
+import ReducerContext from 'react-reducer-context'
 
-const someReducerContext: Context<ReducerContextDefaultValue<number, string>> = createContext(null)
+const someReducerContext = createContext(null)
 
-function SomeReducerContext({ children }: {children: ReactNode}): ReactElement {
+function SomeReducerContext({ children }) {
   return (
     <ReducerContext
       context={someReducerContext}
@@ -70,25 +65,14 @@ export {
 
 4 . Define the Actions Creators through a custom React Hook, which will represent the bridge between the `ReducerContext` and the Components:
 
-`SomeActions.ts`:
+`SomeActions.js`:
 
-```ts
+```js
 import someReducerContext from '../path/to/SomeReducerContext'
-import { useContext } from 'react'
-import { ReducerContextInterface } from 'react-reducer-context'
+import { useReducerContext } from 'react-reducer-context'
 
-interface SomeActions {
-  goUp: () => void;
-  goDown: () => void;
-}
-
-interface UseActions {
-  state: number;
-  actions: SomeActions;
-}
-
-function useActions(): SomeActions {
-  const { state, dispatch }: ReducerContextInterface<number, string> = useReducerContext(someReducerContext)
+export default function useActions() {
+  const { state, dispatch } = useReducerContext(someReducerContext)
   return {
     state,
     actions: {
@@ -101,22 +85,16 @@ function useActions(): SomeActions {
     }
   }
 }
-
-export {
-  SomeActions,
-  UseActions,
-  useActions as default
-}
 ```
 
 5 . Define some Components:
 
-`SomeComponent1.tsx`:
+`SomeComponent1.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
+```jsx
+import React from 'react'
 
-export default function SomeComponent1({onClick}: {onClick: () => void}): ReactElement {
+export default function SomeComponent1({onClick}) {
   return (
     <button onClick={onClick}>
       Go up!
@@ -125,12 +103,12 @@ export default function SomeComponent1({onClick}: {onClick: () => void}): ReactE
 }
 ```
 
-`SomeComponent2.tsx`:
+`SomeComponent2.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
+```jsx
+import React from 'react'
 
-export default function SomeComponent2({onClick}: {onClick: () => void}): ReactElement {
+export default function SomeComponent2({onClick}) {
   return (
     <button onClick={onClick}>
       Go down!
@@ -139,12 +117,12 @@ export default function SomeComponent2({onClick}: {onClick: () => void}): ReactE
 }
 ```
 
-`SomeComponentN.tsx`:
+`SomeComponentN.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
+```jsx
+import React from 'react'
 
-export default function SomeComponentN({currentState}: {currentState: number}): ReactElement {
+export default function SomeComponentN({currentState}) {
   return (
     <div>
       Current:{currentState}
@@ -155,17 +133,17 @@ export default function SomeComponentN({currentState}: {currentState: number}): 
 
 6 . Use Actions Creators:
 
-`SomeContainer.tsx`:
+`SomeContainer.jsx`:
 
-```tsx
+```jsx
 import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
-import useActions, { UseActions } from './path/to/SomeActions'
-import React, { ReactElement } from 'react'
+import useActions from "./path/to/SomeActions"
+import React from 'react'
 
-export default function SomeContainer(): ReactElement {
-  const {state, actions}: UseActions = useActions()
+export default function SomeContainer() {
+  const {state, actions} = useActions();
   return (
     <div>
       <SomeComponent1 onClick={actions.goUp} />
@@ -181,9 +159,9 @@ export default function SomeContainer(): ReactElement {
 ```jsx
 import SomeContainer from './path/to/SomeContainer'
 import { SomeReducerContext } from '../path/to/SomeReducerContext'
-import React, { ReactElement } from 'react'
+import React from 'react'
 
-export default function SomeContainer(): ReactElement {
+export default function SomeContainer() {
   return (
     <SomeReducerContext>
       <SomeContainer />
@@ -191,5 +169,11 @@ export default function SomeContainer(): ReactElement {
   )
 }
 ```
+
+> [with Flow typings](with-actions-creators-and-flow-typings.md).  
+> [with Typescript typings](with-actions-creators-and-ts-typings.md).  
+> This example can be checked on line: live at [gmullerb-react-reducer-context-with-injection demo](https://gu0yu.csb.app/) and the code is at [gmullerb-react-reducer-context-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-context-with-actions-creators-gu0yu?module=%2Fsrc%2FSomeReducerContext.jsx):  
+[![Edit gmullerb-react-reducer-context](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-context-with-actions-creators-gu0yu?module=%2Fsrc%2FSomeReducerContext.jsx)
+
 
 [Back to Main documentation](../README.md)

@@ -5,16 +5,33 @@ import type {
   Element,
 } from 'react'
 
-export type Dispatcher<A> = (value: A) => void
-export type Reducer<S, A> = (prevState: S, action: A) => S
-export type ReducerContextValue<S, A> = [S, Dispatcher<A>]
-export type ReducerContextDefaultValue<S, A> = ReducerContextValue<S, A> | null
+export type Dispatcher<ACTION> = (value: ACTION) => void
+export type Reducer<STATE, ACTION> = (prevState: STATE, action: ACTION) => STATE
+export type ReducerContextValue<STATE, ACTION> = [STATE, Dispatcher<ACTION>]
+export type ReducerContextDefaultValue<STATE, ACTION> = ReducerContextValue<STATE, ACTION> | null
 
-export interface ReducerContextProps<S, A> {
-  context: Context<ReducerContextDefaultValue<S, A>>;
-  reducer: Reducer<S, A>;
-  initialState: S;
+export interface ReducerContextProps<STATE, ACTION> {
+  context: Context<ReducerContextDefaultValue<STATE, ACTION>>;
+  reducer: Reducer<STATE, ACTION>;
+  initialState: STATE;
   children: Element<any>;
 }
 
-declare export default function ReducerContext<S, A>(props: ReducerContextProps<S, A>): Element<typeof ReducerContext>
+export interface ReducerContextInterface<STATE, ACTION> {
+  state: STATE;
+  dispatch: Dispatcher<ACTION>;
+}
+
+declare export default function ReducerContext<STATE, ACTION>(props: ReducerContextProps<STATE, ACTION>): Element<typeof ReducerContext>
+
+declare export function useReducerContext<STATE, ACTION>(
+  context: Context<ReducerContextDefaultValue<STATE, ACTION>>
+): ReducerContextInterface<STATE, ACTION>
+
+declare export function useReducerState<STATE, ACTION>(
+  context: Context<ReducerContextDefaultValue<STATE, ACTION>>
+): STATE
+
+declare export function useReducerDispatcher<STATE, ACTION>(
+  context: Context<ReducerContextDefaultValue<STATE, ACTION>>
+): Dispatcher<ACTION>

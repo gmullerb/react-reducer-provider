@@ -2,10 +2,8 @@
 
 ## Prerequisites
 
-* [Java](http://www.oracle.com/technetwork/java/javase/downloads) [1].
+* Node/Npm, Node/Yarn or [Java](http://www.oracle.com/technetwork/java/javase/downloads).
 * [Git](https://git-scm.com/downloads) (only if you are going to clone the project).
-
-> [1] Node/Npm or Node/Yarn can be used.
 
 ## Getting it
 
@@ -15,13 +13,31 @@ Clone or download the project[1], in the desired folder execute:
 git clone https://github.com/gmullerb/react-reducer-context
 ```
 
+or
+
+```sh
+git clone https://gitlab.com/gmullerb/react-reducer-context
+```
+
 > [1] [Cloning a repository](https://help.github.com/articles/cloning-a-repository/)
 
 ## Set up
 
-* **No need**, only download and run (It's Gradle! Yes!).
+### Npm
 
-> Gradle will allow to have different really isolate Node/Npm environments for different projects, but `npm` or `yarn` can be used.
+Run:
+
+```sh
+npm install
+```
+
+### Gradle
+
+Run:
+
+```sh
+./gradlew
+```
 
 ## Folders structure
 
@@ -46,6 +62,26 @@ git clone https://github.com/gmullerb/react-reducer-context
 > [1] Tests are done with [Karma](http://karma-runner.github.io) and [Jasmine](https://jasmine.github.io).
 
 ## Building it
+
+### Npm
+
+Npm scripts, [`package.json`](../package.json):
+
+* `assessFlowStyleMain`: checks eslint style of `js.flow` files.
+* `assessTsStyleMain`: checks eslint style of `d.ts` files.
+* `assessTypingsFlow`: checks Flow typings of source files.
+* `assessTypingsTs`: checks Typescript typings of source files.
+* `assessStyleConfig`: checks eslint style of config files [1].
+* `assessStyleMain`: checks eslint style of main source files [1].
+* `assessStyleTest`: checks eslint style of test source files [1].
+* `test`: runs Jasmine/Karma tests of `ReducerContext` component (`src/test/js`).
+* `testTypingFlow`: tests `ReducerContext` component Flow typings (`src/test/typings/flow`).
+* `testTypingTs`: tests `ReducerContext` component Typescript typings (`src/test/typings/ts`).
+
+Run `npm run check` to execute all tasks.
+
+> Recommendation: First time run `npm run check` to start from an "ok" code.  
+> [1] it will use eslint configuration defined in [base-style-config](https://github.com/gmullerb/base-style-config), most specifically [eslint-plugin-base-style-config](https://www.npmjs.com/package/eslint-plugin-base-style-config).
 
 ### Gradle
 
@@ -77,7 +113,7 @@ Gradle tasks, [`build.gradle`](../build.gradle):
   * `testTypingTs`: tests `ReducerContext` component Typescript typings (`src/test/typings/ts`).
     * will run `testTypingTs` npm script.
 
-Run `gradlew`: will executed default tasks:
+Run `./gradlew` to execute default tasks:
 
 * `assessCommon`, `assessGradle`, `npmInstall`, `assessStyleConfig`, `build`
   * `build`: will also execute assess tasks and test tasks.
@@ -86,23 +122,19 @@ Run `gradlew`: will executed default tasks:
 
 > Recommendation: First time run `gradlew` to start from an "ok" code.
 
-### Npm
+### Remember
 
-Npm scripts, [`package.json`](../package.json):
+When developing a Npm module with hooks and using that module locally then is important that `node_modules` folder is rename (or something) to avoid `Invalid Hook Call Warning`:
 
-* `assessFlowStyleMain`: checks eslint style of `js.flow` files.
-* `assessTsStyleMain`: checks eslint style of `d.ts` files.
-* `assessTypingsFlow`: checks Flow typings of source files.
-* `assessTypingsTs`: checks Typescript typings of source files.
-* `onlyGradle:assessStyleConfig`: checks eslint style of config files [1].
-* `onlyGradle:assessStyleMain`: checks eslint style of main source files [1].
-* `onlyGradle:assessStyleTest`: checks eslint style of test source files [1].
-* `test`: runs Jasmine/Karma tests of `ReducerContext` component (`src/test/js`).
-* `testTypingFlow`: tests `ReducerContext` component Flow typings (`src/test/typings/flow`).
-* `testTypingTs`: tests `ReducerContext` component Typescript typings (`src/test/typings/ts`).
+```bash
+ Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+ 1. You might have mismatching versions of React and the renderer (such as React DOM)
+ 2. You might be breaking the Rules of Hooks
+ 3. You might have more than one copy of React in the same app
+ See https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem.
+```
 
-> There are some scripts that "only" can be run from gradle (prefixed with `onlyGradle:`), because gradle will download some files that are required by those tasks and set the respective npm config variables. To use it from node this must be done manually.  
-> [1] it will use eslint configuration defined in [base-style-config](https://github.com/gmullerb/base-style-config).
+Basically due to more than one copy of React in the same app.
 
 ## Main documentation
 

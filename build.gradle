@@ -34,7 +34,7 @@ task assessStyleConfig(type: NpmTask) {
   // NpmTask task settings
   args = [
     'run',
-    'onlyGradle:assessStyleConfig',
+    'assessStyleConfig',
     baseStyleConfig.js.eslintNpmConfigArg,
     '--silent'
   ]
@@ -47,7 +47,7 @@ task assessStyleMain(type: NpmTask) {
   // NpmTask task settings
   args = [
     'run',
-    'onlyGradle:assessStyleMain',
+    'assessStyleMain',
     baseStyleConfig.js.eslintNpmConfigArg,
     '--silent'
   ]
@@ -125,7 +125,7 @@ task assessTest(type: NpmTask) {
   // NpmTask task settings
   args = [
     'run',
-    'onlyGradle:assessStyleTest',
+    'assessStyleTest',
     baseStyleConfig.js.eslintNpmConfigArg,
     '--silent'
   ]
