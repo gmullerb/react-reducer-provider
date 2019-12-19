@@ -3,7 +3,6 @@
     "plugin:base-style-config/react-rules"
   ],
   "rules": {
-    "import/no-default-export": "off",
     "react/prefer-es6-class": [
       "error",
       "never"

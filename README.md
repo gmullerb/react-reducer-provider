@@ -221,7 +221,7 @@ There are different ways of doing this:
 A . Using `useReducerContext`:
 
 * `useReducerContext` is a "typings-friendly" version of `useContext` that returns the status and dispatcher.
-  * which also increase Readability.
+  * which also increase Readability => increase Maintainability.
 
 ```jsx
   const { state, dispatch } = useReducerContext(someReducerContext)
@@ -251,7 +251,7 @@ export default function SomeComponent() {
 B . Using `useReducerState`:
 
 * `useReducerState` is a "typings-friendly" function that allows to access only state.
-  * which also increase Readability.
+  * which also increase Readability => increase Maintainability.
 
 ```jsx
   const state = useReducerState(someReducerContext)
@@ -277,7 +277,7 @@ export default function SomeComponent() {
 C . Using `useReducerDispatcher`:
 
 * `useReducerDispatcher` is a "typings-friendly" function that allows to access only the dispatcher.
-  * which also increase Readability.
+  * which also increase Readability => increase Maintainability.
 
 ```jsx
   const dispatch = useReducerDispatcher(someReducerContext)
