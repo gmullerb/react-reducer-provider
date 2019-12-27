@@ -1,11 +1,13 @@
 // Copyright (c) 2019 Gonzalo Müller Bravo.
-import React, { createContext } from 'react'
-import ReducerContext, {
-  ReducerContextInterface,
+import {
+  NamedReducer,
+  NamedReducerInterface,
   useReducerDispatcher,
   useReducerState,
-  useReducerContext
-} from '../../../main/js/ReducerContext'
+  useNamedReducer
+} from '../../../main/js/NamedReducer'
+
+import React from 'react'
 
 import type {
   Context,
@@ -13,9 +15,9 @@ import type {
   Node
 } from 'react'
 import type {
-  ReducerContextDefaultValue,
+  NamedReducerValue,
   Dispatcher
-} from '../../../main/js/ReducerContext'
+} from '../../../main/js/NamedReducer'
 
 interface TestState {
   lastAction: number;
@@ -36,22 +38,20 @@ function reduce(prevState: TestState, action: string): TestState {
   }
 }
 
-const testReducerContext: Context<ReducerContextDefaultValue<TestState, string>> = createContext(null)
-
-function TestReducerContext({ children }: {children: Element<any>}): Node {
+function TestNamedReducer({ children }: {children: Element<any>}): Node {
   return (
-    <ReducerContext
-      context={testReducerContext}
+    <NamedReducer
+      name='testNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
       {children}
-    </ReducerContext>
+    </NamedReducer>
   )
 }
 
 function TestReducerMainHook(): Node {
-  const { state, dispatch }: ReducerContextInterface<TestState, string> = useReducerContext<TestState, string>(testReducerContext)
+  const { state, dispatch }: NamedReducerInterface<TestState, string> = useNamedReducer<TestState, string>('testNamedReducer')
   return (
     <button onClick={() => dispatch('ACTION1')}>
       Child{state.lastAction}
@@ -60,7 +60,7 @@ function TestReducerMainHook(): Node {
 }
 
 function TestReducerStateHook(): Node {
-  const theState: TestState = useReducerState(testReducerContext)
+  const theState: TestState = useReducerState('testNamedReducer')
   return (
     <button>
       Child{theState.lastAction}
@@ -69,7 +69,7 @@ function TestReducerStateHook(): Node {
 }
 
 function TestReducerDispatcherHook(): Node {
-  const theDispatcher: Dispatcher<string> = useReducerDispatcher(testReducerContext)
+  const theDispatcher: Dispatcher<string> = useReducerDispatcher('testNamedReducer')
   return (
     <button onClick={() => theDispatcher('ACTION1')}>
       Child

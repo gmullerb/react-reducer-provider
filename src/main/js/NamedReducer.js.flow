@@ -1,0 +1,32 @@
+// Copyright (c) 2019 Gonzalo Müller Bravo.
+
+import type {
+  Context,
+  Element,
+} from 'react'
+
+export type Dispatcher<ACTION> = (value: ACTION) => void
+export type Reducer<STATE, ACTION> = (prevState: STATE, action: ACTION) => STATE
+export type NamedReducerValue<STATE, ACTION> = [STATE, Dispatcher<ACTION>]
+
+export interface NamedReducerProps<STATE, ACTION> {
+  name: string;
+  reducer: Reducer<STATE, ACTION>;
+  initialState: STATE;
+  children: Element<any>;
+}
+
+export interface NamedReducerInterface<STATE, ACTION> {
+  state: STATE;
+  dispatch: Dispatcher<ACTION>;
+}
+
+declare export function NamedReducer<STATE, ACTION>(props: NamedReducerProps<STATE, ACTION>): Element<typeof NamedReducer>
+
+declare export function useNamedReducer<STATE, ACTION>(name: string): NamedReducerInterface<STATE, ACTION>
+
+declare export function useReducerState<STATE, ACTION>(name: string): STATE
+
+declare export function useReducerDispatcher<STATE, ACTION>(name: string): Dispatcher<ACTION>
+
+declare export function useNamedReducerContext<STATE, ACTION>(name: string): Context<NamedReducerValue<STATE, ACTION>>

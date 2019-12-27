@@ -65,7 +65,7 @@ task assessFlowStyleMain(type: NpmTask) {
   ]
   // gradle task settings
   group = codeCommonTasks.groupForAssessTasks
-  inputs.file "$MAIN_FOLDER/ReducerContext.js.flow"
+  inputs.file "$MAIN_FOLDER/NamedReducer.js.flow"
   inputs.file 'src/test/typings/flow/.eslintrc.json'
   inputs.file 'package.json'
   outputs.upToDateWhen { true }
@@ -80,7 +80,7 @@ task assessTsStyleMain(type: NpmTask) {
   ]
   // gradle task settings
   group = codeCommonTasks.groupForAssessTasks
-  inputs.file "$MAIN_FOLDER/ReducerContext.d.ts"
+  inputs.file "$MAIN_FOLDER/NamedReducer.d.ts"
   inputs.file 'src/test/typings/ts/.eslintrc.json'
   inputs.file 'package.json'
   outputs.upToDateWhen { true }

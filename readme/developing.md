@@ -10,13 +10,13 @@
 Clone or download the project[1], in the desired folder execute:
 
 ```sh
-git clone https://github.com/gmullerb/react-reducer-context
+git clone https://github.com/gmullerb/react-named-reducer
 ```
 
 or
 
 ```sh
-git clone https://gitlab.com/gmullerb/react-reducer-context
+git clone https://gitlab.com/gmullerb/react-named-reducer
 ```
 
 > [1] [Cloning a repository](https://help.github.com/articles/cloning-a-repository/)
@@ -74,9 +74,9 @@ Npm scripts, [`package.json`](../package.json):
 * `assessStyleConfig`: checks eslint style of config files [1].
 * `assessStyleMain`: checks eslint style of main source files [1].
 * `assessStyleTest`: checks eslint style of test source files [1].
-* `test`: runs Jasmine/Karma tests of `ReducerContext` component (`src/test/js`).
-* `testTypingFlow`: tests `ReducerContext` component Flow typings (`src/test/typings/flow`).
-* `testTypingTs`: tests `ReducerContext` component Typescript typings (`src/test/typings/ts`).
+* `test`: runs Jasmine/Karma tests of `NamedReducer` component (`src/test/js`).
+* `testTypingFlow`: tests `NamedReducer` component Flow typings (`src/test/typings/flow`).
+* `testTypingTs`: tests `NamedReducer` component Typescript typings (`src/test/typings/ts`).
 
 Run `npm run check` to execute all tasks.
 
@@ -106,11 +106,11 @@ Gradle tasks, [`build.gradle`](../build.gradle):
     * will run `onlyGradle:assessStyleConfig` npm script.
 
 * To test code and check coverage: `gradlew test`, this will run:
-  * `unitTest`: runs Jasmine/Karma tests of `ReducerContext` component (`src/test/js`).
+  * `unitTest`: runs Jasmine/Karma tests of `NamedReducer` component (`src/test/js`).
     * will run `test` npm script.
-  * `testTypingFlow`: tests `ReducerContext` component Flow typings (`src/test/typings/flow`).
+  * `testTypingFlow`: tests `NamedReducer` component Flow typings (`src/test/typings/flow`).
     * will run `testTypingsFlow` npm script.
-  * `testTypingTs`: tests `ReducerContext` component Typescript typings (`src/test/typings/ts`).
+  * `testTypingTs`: tests `NamedReducer` component Typescript typings (`src/test/typings/ts`).
     * will run `testTypingTs` npm script.
 
 Run `./gradlew` to execute default tasks:

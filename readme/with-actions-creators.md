@@ -1,12 +1,12 @@
-# React Reducer Context with Actions Creators
+# React Named Reducer with Actions Creators
 
-1 . Add **react-reducer-context** (and prerequisite) to `package.json`:
+1 . Add **react-named-reducer** (and prerequisite) to `package.json`:
 
 ```json
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-context": "1.0.2",
+    "react-named-reducer": "1.0.0",
     ..
 ```
 
@@ -34,45 +34,42 @@ export {
 }
 ```
 
-3 . Create the `ReducerContext`:
+3 . Create the `NamedReducer`:
 
-**`SomeReducerContext.jsx`**:
+**`SomeNamedReducer.jsx`**:
 
 ```jsx
 import { initialState, reduce } from '../path/to/SomeReducer'
-import React, { createContext } from 'react'
-import ReducerContext from 'react-reducer-context'
+import React from 'react'
+import { NamedReducer } from 'react-named-reducer'
 
-const someReducerContext = createContext(null)
-
-function SomeReducerContext({ children }) {
+function SomeNamedReducer({ children }) {
   return (
-    <ReducerContext
-      context={someReducerContext}
+    <NamedReducer
+      name='someNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
       {children}
-    </ReducerContext>
+    </NamedReducer>
   )
 }
 
 export {
-  someReducerContext as default,
-  SomeReducerContext
+  someNamedReducer as default,
+  SomeNamedReducer
 }
 ```
 
-4 . Define the Actions Creators through a custom React Hook, which will represent the bridge between the `ReducerContext` and the Components:
+4 . Define the Actions Creators through a custom React Hook, which will represent the bridge between the `NamedReducer` and the Components:
 
 `SomeActions.js`:
 
 ```js
-import someReducerContext from '../path/to/SomeReducerContext'
-import { useReducerContext } from 'react-reducer-context'
+import { useNamedReducer } from 'react-named-reducer'
 
 export default function useActions() {
-  const { state, dispatch } = useReducerContext(someReducerContext)
+  const { state, dispatch } = useNamedReducer('someNamedReducer')
   return {
     state,
     actions: {
@@ -158,22 +155,22 @@ export default function SomeContainer() {
 
 ```jsx
 import SomeContainer from './path/to/SomeContainer'
-import { SomeReducerContext } from '../path/to/SomeReducerContext'
+import { SomeNamedReducer } from '../path/to/SomeNamedReducer'
 import React from 'react'
 
 export default function SomeContainer() {
   return (
-    <SomeReducerContext>
+    <SomeNamedReducer>
       <SomeContainer />
-    </SomeReducerContext>
+    </SomeNamedReducer>
   )
 }
 ```
 
 > [with Flow typings](with-actions-creators-and-flow-typings.md).  
 > [with Typescript typings](with-actions-creators-and-ts-typings.md).  
-> This example can be checked on line: live at [gmullerb-react-reducer-context-with-injection demo](https://gu0yu.csb.app/) and the code is at [gmullerb-react-reducer-context-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-context-with-actions-creators-gu0yu?module=%2Fsrc%2FSomeReducerContext.jsx):  
-[![Edit gmullerb-react-reducer-context](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-context-with-actions-creators-gu0yu?module=%2Fsrc%2FSomeReducerContext.jsx)
+> This example can be checked on line: live at [gmullerb-react-named-reducer-with-injection demo](https://72881.csb.app/) and the code is at [gmullerb-react-named-reducer-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-named-reducer-with-actions-creators-72881?module=%2Fsrc%2FSomeNamedReducer.jsx):  
+[![Edit gmullerb-react-named-reducer](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-named-reducer-with-actions-creators-72881?module=%2Fsrc%2FSomeNamedReducer.jsx)
 
 
 [Back to Main documentation](../README.md)

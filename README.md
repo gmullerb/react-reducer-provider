@@ -1,14 +1,16 @@
 <p align="center">
-  <img src="https://assets.gitlab-static.net/uploads/-/system/project/avatar/14399495/react.reducer.context.png"/>
+  <img src="https://assets.gitlab-static.net/uploads/-/system/project/avatar/16068388/named.png"/>
 </p>
 
-<h1 align="center">React Component to manage State through reducers using contexts and hooks</h1>
+<h1 align="center">React Component to easily manage State through reducers using hooks</h1>
 
-<p align="center">with typings for Typescript and Flow</p>
+<p align="center">with typings for Typescript and Flow.</p>
+
+<p align="center">A derivation of <a href="https://www.npmjs.com/package/react-reducer-context">react-reducer-context</a></p>
 
 __________________
 
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt) ![GitHub package.json version](https://img.shields.io/github/package-json/v/gmullerb/react-reducer-context.svg?logo=npm) ![coverage](https://gitlab.com/gmullerb/react-reducer-context/badges/master/coverage.svg) [![react-reducer-context](https://img.shields.io/badge/npm-react--reducer--context-blue?logo=npm)](https://www.npmjs.com/package/react-reducer-context)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt) ![GitHub package.json version](https://img.shields.io/github/package-json/v/gmullerb/react-named-reducer.svg?logo=npm) ![coverage](https://gitlab.com/gmullerb/react-named-reducer/badges/master/coverage.svg) [![react-named-reducer](https://img.shields.io/badge/npm-react--named--reducer-blue?logo=npm)](https://www.npmjs.com/package/react-named-reducer)
 
 This project is licensed under the terms of the [MIT license](LICENSE.txt).
 __________________
@@ -23,21 +25,21 @@ __________________
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-context": "1.0.2",
+    "react-named-reducer": "1.0.0",
     ..
 ```
 
-2 . Create the **`ReducerContext`** component to manage state:
+2 . Create the **`NamedReducer`** component to manage state:
 
 * Define the initial state.
 * Define the reducer function.
-* Define the `ReducerContext`.
+* Define the `NamedReducer`.
 
-**`SomeReducerContext.jsx`**:
+**`SomeNamedReducer.jsx`**:
 
 ```jsx
-import React, { createContext } from 'react'
-import ReducerContext from 'react-reducer-context'
+import React from 'react'
+import { NamedReducer } from 'react-named-reducer'
 
 const initialState = 0
 
@@ -52,27 +54,22 @@ function reduce(prevState, action) {
   }
 }
 
-const someReducerContext = createContext(null)
-
-function SomeReducerContext({ children }) {
+function SomeNamedReducer({ children }) {
   return (
-    <ReducerContext
-      context={someReducerContext}
+    <NamedReducer
+      name='someNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
       {children}
-    </ReducerContext>
+    </NamedReducer>
   )
 }
 
-export {
-  someReducerContext as default,
-  SomeReducerContext
-}
+export default SomeNamedReducer
 ```
 
-3 . Wrap components which needs the `ReducerContext` component:
+3 . Wrap components which needs the `NamedReducer` component:
 
 `SomeContainer.jsx`:
 
@@ -80,35 +77,34 @@ export {
 import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
-import { SomeReducerContext } from '../path/to/SomeReducerContext'
+import SomeNamedReducer from '../path/to/SomeNamedReducer'
 import React from 'react'
 
 export default function SomeContainer() {
   return (
-    <SomeReducerContext>
+    <SomeNamedReducer>
       <SomeComponent1/>
       <SomeComponent2/>
       <SomeComponentN/>
-    </SomeReducerContext>
+    </SomeNamedReducer>
   )
 }
 ```
 
-4 . Access the `ReducerContext` component using `'react-reducer-context'` hooks:
+4 . Access the `NamedReducer` component using `'react-named-reducer'` hooks:
 
-* **`useReducerContext`**.
+* **`useNamedReducer`**.
 * **`useReducerDispatcher`**.
 * **`useReducerState`**.
 
-`SomeComponent1.jsx` [1]:
+`SomeComponent1.jsx`[1] => using `useNamedReducer`:
 
 ```jsx
-import someReducerContext from '../path/to/SomeReducerContext'
-import { useReducerContext } from 'react-reducer-context'
+import { useNamedReducer } from 'react-named-reducer'
 import React from 'react'
 
 export default function SomeComponent1() {
-  const { state, dispatch } = useReducerContext(someReducerContext)
+  const { state, dispatch } = useNamedReducer('someNamedReducer')
   return (
     <button onClick={() => dispatch('ACTION1')}>
       Go up (from {state})!
@@ -117,15 +113,14 @@ export default function SomeComponent1() {
 }
 ```
 
-`SomeComponent2.jsx` [1]:
+`SomeComponent2.jsx`[1] => using `useReducerDispatcher`:
 
 ```jsx
-import someReducerContext from '../path/to/SomeReducerContext'
-import { useReducerDispatcher } from 'react-reducer-context'
+import { useReducerDispatcher } from 'react-named-reducer'
 import React from 'react'
 
 export default function SomeComponent2() {
-  const dispatch = useReducerDispatcher(someReducerContext)
+  const dispatch = useReducerDispatcher('someNamedReducer')
   return (
     <button onClick={() => dispatch('ACTION2')}>
       Go down!
@@ -134,15 +129,14 @@ export default function SomeComponent2() {
 }
 ```
 
-`SomeComponentN.jsx` [1]:
+`SomeComponentN.jsx`[1] => using `useReducerState`:
 
 ```jsx
-import someReducerContext from '../path/to/SomeReducerContext'
-import { useReducerState } from 'react-reducer-context'
+import { useReducerState } from 'react-named-reducer'
 import React from 'react'
 
 export default function SomeComponentN() {
-  const currentState = useReducerState(someReducerContext)
+  const currentState = useReducerState('someNamedReducer')
   return (
     <div>
       Current:{currentState}
@@ -151,13 +145,13 @@ export default function SomeComponentN() {
 }
 ```
 
-> This example can be checked on line: live at [gmullerb-react-reducer-context demo](https://57esd.csb.app/) and the code is at [gmullerb-react-reducer-context codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-context-57esd?module=%2Fsrc%2FSomeReducerContext.jsx):  
-[![Edit gmullerb-react-reducer-context](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-context-57esd?module=%2Fsrc%2FSomeReducerContext.jsx)  
+> This example can be checked on line: live at [gmullerb-react-named-reducer demo](https://8ksn5.csb.app/) and the code is at [gmullerb-react-named-reducer codesandbox](https://codesandbox.io/s/gmullerb-react-named-reducer-8ksn5?module=%2Fsrc%2FSomeNamedReducer.jsx):  
+[![Edit gmullerb-react-named-reducer](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-named-reducer-8ksn5?module=%2Fsrc%2FSomeNamedReducer.jsx)  
 > [1] Injection can be used in order to improve design, but in favor of quick example this was surrender, look at [Injection](readme/with-injection.md) for injection example.  
 
-3 . Jump based on requirements into:  
+5 . If required, jump based on requirements into:
 
-* [`ReducerContext` | `useReducerContext` | `useReducerState` | `useReducerDispatcher`](#reference).
+* [`NamedReducer` | `useNamedReducer` | `useReducerState` | `useReducerDispatcher`](#reference).
   * [Nesting](#nesting).
   * [Typings](#typings).
   * [Prerequisites](#prerequisites).
@@ -168,6 +162,8 @@ export default function SomeComponentN() {
     * [With Actions Creators](readme/with-actions-creators.md)
       * [with Flow typings](readme/with-actions-creators-and-flow-typings.md)
       * [with Typescript typings](readme/with-actions-creators-and-ts-typings.md)
+    * [Accessing the Context](readme/accessing-context.md).
+    * [Migration from `react-reducer-context` to `react-named-reducer`](readme/migration.md).
 * [Extending/Developing](readme/developing.md)
 * [MIT License](LICENSE.txt)
 
@@ -175,14 +171,14 @@ __________________
 
 ## Goal
 
-With the introduction of React Hooks, in some way using Flux library[1] was deprecated, react-reducer-context looks to **give a quick and easy alternative using hooks to implement Flux with reducers**, with typings for Typescript and Flow.
+With the introduction of React Hooks, in some way using Flux library[1] was deprecated, react-named-reducer looks to **give a quick and easy alternative using hooks to implement Flux with reducers**, with typings for Typescript and Flow.
 
 > [1] Not the Flux architecture.
 __________________
 
-## `ReducerContext` | `useReducerContext` | `useReducerState` | `useReducerDispatcher`
+## `NamedReducer` | `useNamedReducer` | `useReducerState` | `useReducerDispatcher`
 
-[`ReducerContext`](src/main/js/ReducerContext.js) is a React Component which defines a [React Context](https://reactjs.org/docs/context.html) that allows to Manage State using [Flux](http://facebook.github.io/flux), an application architecture that handles application states in a unidirectional way.
+[`NamedReducer`](src/main/js/NamedReducer.js) is a React Component which defines a [React Context](https://reactjs.org/docs/context.html) that allows to Manage State using [Flux](http://facebook.github.io/flux), an application architecture that handles application states in a unidirectional way.
 
 * Flux is composed basically with:
   * Stores: keeps states of the app (or components).
@@ -193,226 +189,77 @@ __________________
 
 ![Flux architecture](readme/flux.svg "Flux architecture")
 
-[`ReducerContext`](src/main/js/ReducerContext.js) is a React "Special" Element that requires 3 properties:
+[`NamedReducer`](src/main/js/NamedReducer.js) is a React "Special" Element that requires 3 properties:
 
-* `context`: constitutes the [React Context](https://reactjs.org/docs/context.html) which will be handle by this component.
-  * use `React.createContext(null)` to create the context.
+* `name`: constitutes the name that identifies the `NamedReducer`.
+  * **must keep track of name to avoid overriding**.
 * `reducer`: a function that will receive the current state and an action to produce a new state.
   * internally use [`useReducer` hook](https://reactjs.org/docs/hooks-reference.html#usereducer), which return the current state and a [dispatcher](http://facebook.github.io/flux/docs/dispatcher).
 * `initialState`: inception state for the component.
 
 ```jsx
-  <ReducerContext
-    context={someReducerContext}
+  <NamedReducer
+    name='someNamedReducer'
     reducer={reduce}
     initialState={initialState}
   >
     {children}
-  </ReducerContext>
+  </NamedReducer>
 ```
 
-Each `ReducerContext` is equivalent to an Flux stream:
+Each `NamedReducer` is equivalent to an Flux stream:
 
-![ReducerContext](readme/react-reducer-context.svg "ReducerContext")
+![NamedReducer](readme/react-named-reducer.svg "NamedReducer")
 
 `children` elements will be **able to access the State and Dispatcher**.  
 There are different ways of doing this:
 
-A . Using `useReducerContext`:
+* **`useNamedReducer`**.
+* **`useReducerDispatcher`**.
+* **`useReducerState`**.
+* Other ways: [Accessing the Context](readme/accessing-context.md).
 
-* `useReducerContext` is a "typings-friendly" version of `useContext` that returns the status and dispatcher.
-  * which also increase Readability => increase Maintainability.
-
-```jsx
-  const { state, dispatch } = useReducerContext(someReducerContext)
-```
-
-e.g.:
-
-```jsx
-import someReducerContext from '../path/to/SomeReducerContext'
-import { useReducerContext } from 'react-reducer-context'
-import React from 'react'
-
-export default function SomeComponent() {
-  const { state, dispatch } = useReducerContext(someReducerContext)
-  return (
-    <button onClick={() => dispatch({
-        type: 'SOME_ACTION',
-        data: someValue
-      })}
-    >
-      Do something! ({state.someValue})
-    </button>
-  )
-}
-```
-
-B . Using `useReducerState`:
-
-* `useReducerState` is a "typings-friendly" function that allows to access only state.
-  * which also increase Readability => increase Maintainability.
-
-```jsx
-  const state = useReducerState(someReducerContext)
-```
-
-e.g.:
-
-```jsx
-import someReducerContext from '../path/to/SomeReducerContext'
-import { useReducerState } from 'react-reducer-context'
-import React from 'react'
-
-export default function SomeComponent() {
-  const state = useReducerState(someReducerContext)
-  return (
-    <div>
-      Some Value: ({state.someValue})
-    </div>
-  )
-}
-```
-
-C . Using `useReducerDispatcher`:
-
-* `useReducerDispatcher` is a "typings-friendly" function that allows to access only the dispatcher.
-  * which also increase Readability => increase Maintainability.
-
-```jsx
-  const dispatch = useReducerDispatcher(someReducerContext)
-```
-
-e.g.:
-
-```jsx
-import someReducerContext from '../path/to/SomeReducerContext'
-import { useReducerDispatcher } from 'react-reducer-context'
-import React from 'react'
-
-export default function SomeComponent() {
-  const dispatch = useReducerDispatcher(someReducerContext)
-  return (
-    <button onClick={() => dispatch({
-        type: 'SOME_ACTION',
-        data: someValue
-      })}
-    >
-      Do something!
-    </button>
-  )
-}
-```
-
-D . Using "old" traditional [`useContext`](https://reactjs.org/docs/hooks-reference.html#usecontext):
-
-```jsx
-  const [state, dispatch] = useContext(someReducerContext)
-```
-
-e.g.:
-
-```jsx
-import someReducerContext from '../path/to/SomeReducerContext'
-import React, { useContext } from 'react'
-
-export default function SomeComponent() {
-  const [state, dispatch] = useContext(someReducerContext)
-  return (
-    <button onClick={() => dispatch({
-        type: 'SOME_ACTION',
-        data: someValue
-      })}
-    >
-      Do something! ({state.someValue})
-    </button>
-  )
-}
-```
-
-E . Using [`Context.Consumer`](https://reactjs.org/docs/context.html#contextconsumer):
-
-```jsx
-  <someReducerContext.Consumer>
-    {
-      ([state, dispatch]) => (
-        ..
-      )
-    }
-  </someReducerContext.Consumer>
-```
-
-e.g.:
-
-```jsx
-import someReducerContext from '../path/to/SomeReducerContext'
-import React, { useContext } from 'react'
-
-export default function SomeComponent() {
-  return (
-    <someReducerContext.Consumer>
-    {
-      ([state, dispatch]) => (
-        <button onClick={() => dispatch({
-            type: 'SOME_ACTION',
-            data: someValue
-          })}
-        >
-          Do something! ({state.someValue})
-        </button>
-      )
-    }
-    </someReducerContext.Consumer>
-  )
-}
-```
-
-> There is another way using [`contextType`](https://reactjs.org/docs/context.html#classcontexttype), but is not functional approach, so it is not exposed.  
+> Examples can be also seen at: [`NamedReducer.test.jsx`](src/test/js/NamedReducer.test.jsx).
 
 ### Nesting
 
-Based on [React Context](https://reactjs.org/docs/context.html), `ReducerContext` can be nested in layers, in order to have several nested Reducer/State.
+`NamedReducer` can be nested in layers, in order to have several nested Reducer/State.
 
 ```jsx
-  <ReducerContext
-    context={someReducerContext1}
+  <NamedReducer
+    name='someNamedReducer1'
     reducer={reduce1}
     initialState={initialState1}
   >
     {someChildren}
-    <ReducerContext
-      context={someReducerContextN}
+    <NamedReducer
+      name='someNamedReducerN'
       reducer={reduceN}
       initialState={initialStateN}
     >
       {moreChildren}
-    </ReducerContext>
-  </ReducerContext>
+    </NamedReducer>
+  </NamedReducer>
 ```
 
-`moreChildren` can access the State and the Dispatcher of the ReducerContext1 plus the State and the Dispatcher of the ReducerContextN.
+`moreChildren` can access the State and the Dispatcher of the NamedReducer1 plus the State and the Dispatcher of the NamedReducerN.
 
-![Nested ReducerContext](readme/nested-reducer-context.svg "Nested ReducerContext")
+![Nested NamedReducer](readme/nested-named-reducer.svg "Nested NamedReducer")
 
 ### Typings
 
-**`react-reducer-context` defines typings for Flow and Typescript**:
+**`react-named-reducer` defines typings for Flow and Typescript**:
 
 * Any can be used without an "special" [1] configuration.
   * Typings definitions are located together with source files:
-    * Flow: [`ReducerContext.js.flow`](src/main/js/ReducerContext.js.flow).
-    * Typescript: [`ReducerContext.d.ts`](src/main/js/ReducerContext.d.ts).
+    * Flow: [`NamedReducer.js.flow`](src/main/js/NamedReducer.js.flow).
+    * Typescript: [`NamedReducer.d.ts`](src/main/js/NamedReducer.d.ts).
 
 Both provide the following types:
 
-* `ReducerContext<STATE, ACTION>`: specifies the Function React Component structure.
-* `ReducerContextProps<STATE, ACTION>`: defines the properties receive the `ReducerContext`.
-* `ReducerContextDefaultValue<STATE, ACTION>`: specifies the type of the `React.Context` when created.
-  * Essentially is a `ReducerContextValue<STATE, ACTION>` which also allows a `null` value, which is required when creating the context.
-  * If required, this type should be use only when creating the `ReducerContext`.
-* `ReducerContextValue<STATE, ACTION>`: defines the type of the value contained in the `React.Context`.
-  * This type should be for using the created `ReducerContext` (that never going to be null).
-* `ReducerContextInterface<STATE, ACTION>`: defines the type of the value return by `useReducerContext`.
+* `NamedReducer<STATE, ACTION>`: specifies the Function React Component structure.
+* `NamedReducerProps<STATE, ACTION>`: defines the properties receive the `NamedReducer`.
+* `NamedReducerInterface<STATE, ACTION>`: defines the type of the value return by `useNamedReducer`.
 * `Dispatcher<ACTION>`: defines the function that receives the action that triggers the change of the state.
 
 `STATE`: State type.  
@@ -420,61 +267,31 @@ Both provide the following types:
 
 E.G.:
 
-`SomeReducerContext.jsx` or `SomeReducerContext.tsx`:
-
-```jsx
-..
-
-const initialState: number = 0
-
-function reduce(prevState: number, action: string): number {
-  switch (action) {
-    case 'ACTION1':
-      return prevState + 1
-    case 'ACTION2':
-      return prevState - 1
-    default:
-      return prevState
-  }
-}
-
-const someReducerContext: Context<ReducerContextDefaultValue<number, string>> = createContext(null)
-
-..
-
-```
-
 `SomeComponent.jsx` or `SomeComponent.tsx`:
 
-```jsx
-  ..
-  const { state, dispatch }: ReducerContextInterface<number, string> = useReducerContext(someReducerContext)
-  ..
+```tsx
+  const { state, dispatch }: NamedReducerInterface<number, string> = useNamedReducer('someNamedReducer')
 ```
 
 or
 
-```jsx
-  ..
-  const dispatch: Dispatcher<string> = useReducerDispatcher(someReducerContext)
-  ..
+```tsx
+  const dispatch: Dispatcher<string> = useReducerDispatcher('someNamedReducer')
 ```
 
 or
 
-```jsx
-  ..
-  const state: number = useReducerState(someReducerContext)
-  ..
+```tsx
+  const state: number = useReducerState('someNamedReducer')
 ```
 
 * A more "complete" example with Flow can be seen at: [`typingTest.jsx`](src/test/typings/flow/typingTest.jsx).
 * A more "complete" example with Typescript can be seen at: [`typingTest.tsx`](src/test/typings/ts/typingTest.tsx).
 
-> Initial example with Flow typings can be checked on line: live at [gmullerb-react-reducer-context-flow demo](https://7ubs7.csb.app/) and the code is at [gmullerb-react-reducer-context-flow codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-context-flow-7ubs7?module=%2Fsrc%2FSomeReducerContext.jsx):  
-[![Edit gmullerb-react-reducer-context](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-context-flow-7ubs7?module=%2Fsrc%2FSomeReducerContext.jsx)  
-> Initial example with Typescript typings can be checked on line: live at [gmullerb-react-reducer-context-ts demo](https://kwqir.csb.app/) and the code is at [gmullerb-react-reducer-context-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-context-ts-kwqir?module=%2Fsrc%2FSomeReducerContext.tsx):  
-[![Edit gmullerb-react-reducer-context-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-context-ts-kwqir?module=%2Fsrc%2FSomeReducerContext.tsx)  
+> Initial example with Flow typings can be checked on line: live at [gmullerb-react-named-reducer-flow demo](https://lmnr2.csb.app/) and the code is at [gmullerb-react-named-reducer-flow codesandbox](https://codesandbox.io/s/gmullerb-react-named-reducer-flow-lmnr2?module=%2Fsrc%2FSomeNamedReducer.jsx):  
+[![Edit gmullerb-react-named-reducer](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-named-reducer-flow-lmnr2?module=%2Fsrc%2FSomeNamedReducer.jsx)  
+> Initial example with Typescript typings can be checked on line: live at [gmullerb-react-named-reducer-ts demo](https://kn0kn.csb.app/) and the code is at [gmullerb-react-named-reducer-ts codesandbox](https://codesandbox.io/s/gmullerb-react-named-reducer-ts-kn0kn?module=%2Fsrc%2FSomeNamedReducer.tsx):  
+[![Edit gmullerb-react-named-reducer-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-named-reducer-ts-kn0kn?module=%2Fsrc%2FSomeNamedReducer.tsx)  
 > [1] Only the usual Flow or Typescript configuration (e.g. no need for @types).
 
 __________________

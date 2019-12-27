@@ -1,24 +1,24 @@
 {
-  "name": "react-reducer-context",
-  "description": "React Component to manage State through reducers using contexts and hooks",
-  "version": "1.0.2",
+  "name": "react-named-reducer",
+  "description": "React Component to easily manage State through reducers using hooks. with typings for Typescript and Flow",
+  "version": "1.0.0",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
-  "main": "src/main/js/ReducerContext.js",
-  "types": "src/main/js/ReducerContext.d.ts",
+  "main": "src/main/js/NamedReducer.js",
+  "types": "src/main/js/NamedReducer.d.ts",
   "files": [
     "src/main/js"
   ],
-  "homepage": "https://gitlab.com/gmullerb/react-reducer-context",
+  "homepage": "https://gitlab.com/gmullerb/react-named-reducer",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gmullerb/react-reducer-context"
+    "url": "https://github.com/gmullerb/react-named-reducer"
   },
   "bugs": {
-    "url": "https://gitlab.com/gmullerb/react-reducer-context/issues"
+    "url": "https://gitlab.com/gmullerb/react-named-reducer/issues"
   },
   "keywords": [
-    "ReducerContext",
+    "NamedReducer",
     "react",
     "reactjs",
     "react js",

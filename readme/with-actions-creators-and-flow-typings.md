@@ -1,12 +1,12 @@
-# React Reducer Context with Actions Creators and Flow typings
+# React Named Reducer with Actions Creators and Flow typings
 
-1 . Add **react-reducer-context** (and prerequisite) to `package.json`:
+1 . Add **react-named-reducer** (and prerequisite) to `package.json`:
 
 ```json
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-context": "1.0.2",
+    "react-named-reducer": "1.0.0",
     ..
 ```
 
@@ -34,51 +34,46 @@ export {
 }
 ```
 
-3 . Create the `ReducerContext`:
+3 . Create the `NamedReducer`:
 
-**`SomeReducerContext.jsx`**:
+**`SomeNamedReducer.jsx`**:
 
 ```jsx
 import { initialState, reduce } from '../path/to/SomeReducer'
-import React, { createContext } from 'react'
-import ReducerContext from 'react-reducer-context'
+import React from 'react'
+import { NamedReducer } from 'react-named-reducer'
 
 import type {
-  Context,
   Element,
   Node
 } from 'react'
-import type { ReducerContextDefaultValue } from 'react-reducer-context'
 
-const someReducerContext: Context<ReducerContextDefaultValue<number, string>> = createContext(null)
-
-function SomeReducerContext({ children }: {children: Element<any>}): Node {
+function SomeNamedReducer({ children }: {children: Element<any>}): Node {
   return (
-    <ReducerContext
-      context={someReducerContext}
+    <NamedReducer
+      name='someNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
       {children}
-    </ReducerContext>
+    </NamedReducer>
   )
 }
 
 export {
-  someReducerContext as default,
-  SomeReducerContext
+  someNamedReducer as default,
+  SomeNamedReducer
 }
 ```
 
-4 . Define the Actions Creators through a custom React Hook, which will represent the bridge between the `ReducerContext` and the Components:
+4 . Define the Actions Creators through a custom React Hook, which will represent the bridge between the `NamedReducer` and the Components:
 
 `SomeActions.js`:
 
 ```js
-import someReducerContext from '../path/to/SomeReducerContext'
-import { useContext } from 'react'
+import { useNamedReducer } from 'react-named-reducer'
 
-import type { ReducerContextInterface } from 'react-reducer-context'
+import type { NamedReducerInterface } from 'react-named-reducer'
 
 interface SomeActions {
   goUp: () => void;
@@ -91,7 +86,7 @@ interface UseActions {
 }
 
 export default function useActions(): SomeActions {
-  const { state, dispatch }: ReducerContextInterface<number, string> = useReducerContext(someReducerContext)
+  const { state, dispatch }: NamedReducerInterface<number, string> = useNamedReducer('someNamedReducer')
   return {
     state,
     actions: {
@@ -170,7 +165,7 @@ export default function SomeComponentN({currentState}: {currentState: number}): 
 import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
-import someReducerContext from '../path/to/SomeReducerContext'
+import someNamedReducer from '../path/to/SomeNamedReducer'
 import useActions from './path/to/SomeActions'
 import React from 'react'
 
@@ -193,16 +188,16 @@ export default function SomeContainer(): Node {
 
 ```jsx
 import SomeContainer from './path/to/SomeContainer'
-import { SomeReducerContext } from '../path/to/SomeReducerContext'
+import { SomeNamedReducer } from '../path/to/SomeNamedReducer'
 import React from 'react'
 
 import type { Node } from 'react'
 
 export default function SomeContainer(): Node {
   return (
-    <SomeReducerContext>
+    <SomeNamedReducer>
       <SomeContainer />
-    </SomeReducerContext>
+    </SomeNamedReducer>
   )
 }
 ```

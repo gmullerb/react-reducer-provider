@@ -1,26 +1,24 @@
-# React Reducer Context with Injection and Typescript typings
+# React Named Reducer with Injection and Typescript typings
 
-1 . Add **react-reducer-context** (and prerequisite) to `package.json`:
+1 . Add **react-named-reducer** (and prerequisite) to `package.json`:
 
 ```json
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-context": "1.0.2",
+    "react-named-reducer": "1.0.0",
     ..
 ```
 
-2 . Create the `ReducerContext`:
+2 . Create the `NamedReducer`:
 
-**`SomeReducerContext.tsx`**:
+**`SomeNamedReducer.tsx`**:
 
 ```tsx
 import React, {
-  Context,
   ReactElement,
-  ReactNode,
-  createContext } from 'react'
-import ReducerContext, { ReducerContextDefaultValue } from 'react-reducer-context'
+  ReactNode } from 'react'
+import { NamedReducer } from 'react-named-reducer'
 
 const initialState: number = 0
 
@@ -35,23 +33,20 @@ function reduce(prevState: number, action: string): number {
   }
 }
 
-const someReducerContext: Context<ReducerContextDefaultValue<number, string>> = createContext(null)
-
-function SomeReducerContext({ children }: {children: ReactNode}): ReactElement {
+function SomeNamedReducer({ children }: {children: ReactNode}): ReactElement {
   return (
-    <ReducerContext
-      context={someReducerContext}
+    <NamedReducer
+      name='someNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
       {children}
-    </ReducerContext>
+    </NamedReducer>
   )
 }
 
 export {
-  someReducerContext as default,
-  SomeReducerContext
+  SomeNamedReducer
 }
 ```
 
@@ -61,7 +56,7 @@ export {
 
 ```tsx
 import React, { ReactElement } from 'react'
-import { Dispatcher } from 'react-reducer-context'
+import { Dispatcher } from 'react-named-reducer'
 
 export default function SomeComponent1({dispatch}: {dispatch: Dispatcher<string>}): ReactElement {
   return (
@@ -76,7 +71,7 @@ export default function SomeComponent1({dispatch}: {dispatch: Dispatcher<string>
 
 ```tsx
 import React, { ReactElement } from 'react'
-import { Dispatcher } from 'react-reducer-context'
+import { Dispatcher } from 'react-named-reducer'
 
 export default function SomeComponent2({dispatch}: {dispatch: Dispatcher<string>}): ReactElement {
   return (
@@ -101,7 +96,7 @@ export default function SomeComponentN({currentState}: {currentState: number}): 
 }
 ```
 
-4 . Create the bridge between the `ReducerContext` and the Components:
+4 . Create the bridge between the `NamedReducer` and the Components:
 
 `SomeContainer.tsx`:
 
@@ -109,14 +104,11 @@ export default function SomeComponentN({currentState}: {currentState: number}): 
 import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
-import someReducerContext from '../path/to/SomeReducerContext'
-import React, {
-  ReactElement,
-  useContext } from 'react'
-import { ReducerContextInterface } from 'react-reducer-context'
+import React, { ReactElement } from 'react'
+import { NamedReducerInterface, useNamedReducer } from 'react-named-reducer'
 
 export default function SomeContainer(): ReactElement {
-  const { state, dispatch }: ReducerContextInterface<number, string> = useReducerContext(someReducerContext)
+  const { state, dispatch }: NamedReducerInterface<number, string> = useNamedReducer('someNamedReducer')
   return (
     <div>
       <SomeComponent1 dispatch={dispatch}/>
@@ -131,14 +123,14 @@ export default function SomeContainer(): ReactElement {
 
 ```jsx
 import SomeContainer from './path/to/SomeContainer'
-import { SomeReducerContext } from '../path/to/SomeReducerContext'
+import { SomeNamedReducer } from '../path/to/SomeNamedReducer'
 import React, { ReactElement } from 'react'
 
 export default function SomeContainer(): ReactElement {
   return (
-    <SomeReducerContext>
+    <SomeNamedReducer>
       <SomeContainer />
-    </SomeReducerContext>
+    </SomeNamedReducer>
   )
 }
 ```
