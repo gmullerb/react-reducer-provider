@@ -1,5 +1,9 @@
 # React Named Reducer Change Log
 
+## 2.0.1 - February 2020
+
+* Updates Documentation files in order to reduce package size
+
 ## 2.0.0 - February 2020
 
 * Breaking changes (only if using some typings):

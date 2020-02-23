@@ -6,7 +6,7 @@
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-named-reducer": "1.0.0",
+    "react-named-reducer": "2.0.1",
     ..
 ```
 

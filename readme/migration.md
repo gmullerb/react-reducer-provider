@@ -8,7 +8,7 @@
 `"react-reducer-context": "1.0.2"`  
 
 * to:  
-`"react-named-reducer": "1.0.0"`  
+`"react-named-reducer": "2.0.1"`  
 
 2 . Change imports:
 

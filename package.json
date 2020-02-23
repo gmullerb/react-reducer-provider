@@ -1,7 +1,7 @@
 {
   "name": "react-named-reducer",
   "description": "React Component to easily manage State through reducers using hooks. with typings for Typescript and Flow",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
   "main": "src/main/js/NamedReducer.js",
