@@ -1,5 +1,11 @@
 # React Named Reducer Change Log
 
+## 2.0.0 - February 2020
+
+* Breaking changes (only if using some typings):
+  * Removes unnecessary parameter types in `useReducerState` and `useReducerDispatcher`.
+* Updates Documentation files.
+
 ## Inception of react-named-reducer :D
 
 * Inception :D => Modifies [react-reducer-context](https://www.npmjs.com/package/react-reducer-context)

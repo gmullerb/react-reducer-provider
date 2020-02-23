@@ -117,10 +117,9 @@ import React from 'react'
 import { useNamedReducer } from 'react-named-reducer'
 
 import type { Node } from 'react'
-import type { NamedReducerInterface } from 'react-named-reducer'
 
 export default function SomeContainer(): Node {
-  const { state, dispatch }: NamedReducerInterface<number, string> = useNamedReducer(someNamedReducer)
+  const { state, dispatch } = useNamedReducer<number, string>(someNamedReducer)
   return (
     <div>
       <SomeComponent1 dispatch={dispatch}/>

@@ -30,9 +30,9 @@ declare function NamedReducer<STATE, ACTION>(props: NamedReducerProps<STATE, ACT
 
 declare function useNamedReducer<STATE, ACTION>(name: string): NamedReducerInterface<STATE, ACTION>
 
-declare function useReducerState<STATE, ACTION>(name: string): ReducerState<Reducer<STATE, ACTION>>
+declare function useReducerState<STATE>(name: string): ReducerState<Reducer<STATE, any>>
 
-declare function useReducerDispatcher<STATE, ACTION>(name: string): NamedReducerDispatcher<STATE, ACTION>
+declare function useReducerDispatcher<ACTION>(name: string): NamedReducerDispatcher<any, ACTION>
 
 declare function useNamedReducerContext<STATE, ACTION>(name: string): Context<NamedReducerValue<STATE, ACTION>>
 

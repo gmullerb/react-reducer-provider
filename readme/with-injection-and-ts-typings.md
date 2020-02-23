@@ -105,10 +105,10 @@ import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
 import React, { ReactElement } from 'react'
-import { NamedReducerInterface, useNamedReducer } from 'react-named-reducer'
+import { useNamedReducer } from 'react-named-reducer'
 
 export default function SomeContainer(): ReactElement {
-  const { state, dispatch }: NamedReducerInterface<number, string> = useNamedReducer('someNamedReducer')
+  const { state, dispatch } = useNamedReducer<number, string>('someNamedReducer')
   return (
     <div>
       <SomeComponent1 dispatch={dispatch}/>

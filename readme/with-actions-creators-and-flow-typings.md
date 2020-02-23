@@ -73,8 +73,6 @@ export {
 ```js
 import { useNamedReducer } from 'react-named-reducer'
 
-import type { NamedReducerInterface } from 'react-named-reducer'
-
 interface SomeActions {
   goUp: () => void;
   goDown: () => void;
@@ -86,7 +84,7 @@ interface UseActions {
 }
 
 export default function useActions(): SomeActions {
-  const { state, dispatch }: NamedReducerInterface<number, string> = useNamedReducer('someNamedReducer')
+  const { state, dispatch } = useNamedReducer<number, string>('someNamedReducer')
   return {
     state,
     actions: {

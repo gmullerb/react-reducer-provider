@@ -25,8 +25,8 @@ declare export function NamedReducer<STATE, ACTION>(props: NamedReducerProps<STA
 
 declare export function useNamedReducer<STATE, ACTION>(name: string): NamedReducerInterface<STATE, ACTION>
 
-declare export function useReducerState<STATE, ACTION>(name: string): STATE
+declare export function useReducerState<STATE>(name: string): STATE
 
-declare export function useReducerDispatcher<STATE, ACTION>(name: string): Dispatcher<ACTION>
+declare export function useReducerDispatcher<ACTION>(name: string): Dispatcher<ACTION>
 
 declare export function useNamedReducerContext<STATE, ACTION>(name: string): Context<NamedReducerValue<STATE, ACTION>>

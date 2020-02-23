@@ -25,7 +25,7 @@ __________________
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-named-reducer": "1.0.0",
+    "react-named-reducer": "2.0.0",
     ..
 ```
 
@@ -159,13 +159,14 @@ export default function SomeComponentN() {
     * [With Injection](readme/with-injection.md).
       * [with Flow typings](readme/with-injection-and-flow-typings.md).
       * [with Typescript typings](readme/with-injection-and-ts-typings.md).
-    * [With Actions Creators](readme/with-actions-creators.md)
-      * [with Flow typings](readme/with-actions-creators-and-flow-typings.md)
-      * [with Typescript typings](readme/with-actions-creators-and-ts-typings.md)
+    * [With Actions Creators](readme/with-actions-creators.md).
+      * [with Flow typings](readme/with-actions-creators-and-flow-typings.md).
+      * [with Typescript typings](readme/with-actions-creators-and-ts-typings.md).
+    * [Testing](readme/testing.md).
     * [Accessing the Context](readme/accessing-context.md).
     * [Migration from `react-reducer-context` to `react-named-reducer`](readme/migration.md).
-* [Extending/Developing](readme/developing.md)
-* [MIT License](LICENSE.txt)
+* [Extending/Developing](readme/developing.md).
+* [MIT License](LICENSE.txt).
 
 __________________
 
@@ -270,28 +271,28 @@ E.G.:
 `SomeComponent.jsx` or `SomeComponent.tsx`:
 
 ```tsx
-  const { state, dispatch }: NamedReducerInterface<number, string> = useNamedReducer('someNamedReducer')
+  const { state, dispatch } = useNamedReducer<number, string>('someNamedReducer')
 ```
 
 or
 
 ```tsx
-  const dispatch: Dispatcher<string> = useReducerDispatcher('someNamedReducer')
+  const dispatch = useReducerDispatcher<string>('someNamedReducer')
 ```
 
 or
 
 ```tsx
-  const state: number = useReducerState('someNamedReducer')
+  const state = useReducerState<number>('someNamedReducer')
 ```
 
-* A more "complete" example with Flow can be seen at: [`typingTest.jsx`](src/test/typings/flow/typingTest.jsx).
 * A more "complete" example with Typescript can be seen at: [`typingTest.tsx`](src/test/typings/ts/typingTest.tsx).
+* A more "complete" example with Flow can be seen at: [`typingTest.jsx`](src/test/typings/flow/typingTest.jsx).
 
-> Initial example with Flow typings can be checked on line: live at [gmullerb-react-named-reducer-flow demo](https://lmnr2.csb.app/) and the code is at [gmullerb-react-named-reducer-flow codesandbox](https://codesandbox.io/s/gmullerb-react-named-reducer-flow-lmnr2?module=%2Fsrc%2FSomeNamedReducer.jsx):  
-[![Edit gmullerb-react-named-reducer](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-named-reducer-flow-lmnr2?module=%2Fsrc%2FSomeNamedReducer.jsx)  
-> Initial example with Typescript typings can be checked on line: live at [gmullerb-react-named-reducer-ts demo](https://kn0kn.csb.app/) and the code is at [gmullerb-react-named-reducer-ts codesandbox](https://codesandbox.io/s/gmullerb-react-named-reducer-ts-kn0kn?module=%2Fsrc%2FSomeNamedReducer.tsx):  
-[![Edit gmullerb-react-named-reducer-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-named-reducer-ts-kn0kn?module=%2Fsrc%2FSomeNamedReducer.tsx)  
+> Initial example with Typescript typings can be checked on line: live at [gmullerb-react-named-reducer-ts demo](https://84vy7.csb.app/) and the code is at [gmullerb-react-named-reducer-ts codesandbox](https://codesandbox.io/s/gmullerb-react-named-reducer-ts-84vy7?module=%2Fsrc%2FSomeNamedReducer.tsx):  
+[![Edit gmullerb-react-named-reducer-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-named-reducer-ts-84vy7?module=%2Fsrc%2FSomeNamedReducer.tsx)  
+> Initial example with Flow typings can be checked on line: live at [gmullerb-react-named-reducer-flow demo](https://9tznr.csb.app/) and the code is at [gmullerb-react-named-reducer-flow codesandbox](https://codesandbox.io/s/gmullerb-react-named-reducer-flow-9tznr?module=%2Fsrc%2FSomeNamedReducer.jsx):  
+[![Edit gmullerb-react-named-reducer](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-named-reducer-flow-9tznr?module=%2Fsrc%2FSomeNamedReducer.jsx)  
 > [1] Only the usual Flow or Typescript configuration (e.g. no need for @types).
 
 __________________

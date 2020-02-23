@@ -60,7 +60,7 @@ function TestReducerMainHook(): Node {
 }
 
 function TestReducerStateHook(): Node {
-  const theState: TestState = useReducerState('testNamedReducer')
+  const theState: TestState = useReducerState<TestState>('testNamedReducer')
   return (
     <button>
       Child{theState.lastAction}
@@ -69,7 +69,7 @@ function TestReducerStateHook(): Node {
 }
 
 function TestReducerDispatcherHook(): Node {
-  const theDispatcher: Dispatcher<string> = useReducerDispatcher('testNamedReducer')
+  const theDispatcher: Dispatcher<string> = useReducerDispatcher<string>('testNamedReducer')
   return (
     <button onClick={() => theDispatcher('ACTION1')}>
       Child
