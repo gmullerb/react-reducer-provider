@@ -22,6 +22,8 @@
     )
 ```
 
+e.g. [NamedReducer.test.jsx](../src/test/js/NamedReducer.test.jsx)
+
 ## When testing a custom hook tha use NamedReducer hooks
 
 * Mock/Stub the required hooks.

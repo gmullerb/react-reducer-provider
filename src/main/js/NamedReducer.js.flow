@@ -5,8 +5,12 @@ import type {
   Element,
 } from 'react'
 
-export type Dispatcher<ACTION> = (value: ACTION) => void
-export type Reducer<STATE, ACTION> = (prevState: STATE, action: ACTION) => STATE
+export interface Dispatcher<ACTION> {
+  (value: ACTION): void;
+}
+export interface Reducer<STATE, ACTION> {
+  (prevState: STATE, action: ACTION): STATE;
+}
 export type NamedReducerValue<STATE, ACTION> = [STATE, Dispatcher<ACTION>]
 
 export interface NamedReducerProps<STATE, ACTION> {

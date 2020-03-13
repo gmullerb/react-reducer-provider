@@ -1,5 +1,11 @@
 # React Named Reducer Change Log
 
+## 2.0.2 - March 2020
+
+* Improves typings using interfaces instead of alias wherever possible.
+* Removes unused set.
+* Updates Documentation files.
+
 ## 2.0.1 - February 2020
 
 * Updates Documentation files in order to reduce package size

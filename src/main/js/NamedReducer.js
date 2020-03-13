@@ -12,7 +12,6 @@ function NamedReducer(props) {
     props.children)
 }
 
-NamedReducer.names = new Set()
 NamedReducer.contexts = new Map()
 NamedReducer.getNamedReducer = function (name) {
   if (!NamedReducer.contexts.has(name)) {

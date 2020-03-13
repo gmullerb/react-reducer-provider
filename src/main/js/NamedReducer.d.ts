@@ -1,7 +1,6 @@
 // Copyright (c) 2019 Gonzalo Müller Bravo.
 import {
   Context,
-  Dispatch,
   ReactElement,
   ReactNode,
   Reducer,
@@ -9,10 +8,17 @@ import {
   ReducerState
 } from 'react'
 
-declare type Dispatcher<ACTION> = Dispatch<ACTION>
-declare type NamedReducerState<STATE, ACTION> = ReducerState<Reducer<STATE, ACTION>>
-declare type NamedReducerDispatcher<STATE, ACTION> = Dispatcher<ReducerAction<Reducer<STATE, ACTION>>>
-declare type NamedReducerValue<STATE, ACTION> = [NamedReducerState<STATE, ACTION>, NamedReducerDispatcher<STATE, ACTION>]
+declare interface Dispatcher<ACTION> {
+  (value: ACTION): void;
+}
+declare interface NamedReducerState<STATE, ACTION> {
+  (prevState: STATE, action: ACTION): STATE;
+}
+declare interface NamedReducerDispatcher<STATE, ACTION> extends Dispatcher<ReducerAction<Reducer<STATE, ACTION>>> {}
+declare interface NamedReducerValue<STATE, ACTION> {
+  0: NamedReducerState<STATE, ACTION>;
+  1: NamedReducerDispatcher<STATE, ACTION>;
+}
 
 declare interface NamedReducerProps<STATE, ACTION> {
   name: string;
