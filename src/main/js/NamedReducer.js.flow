@@ -5,14 +5,76 @@ import type {
   Element,
 } from 'react'
 
-export interface Dispatcher<ACTION> {
-  (value: ACTION): void;
+// Reducer Component Definition
+///////////////////////////////
+
+export interface ReducerProps<STATE, REDUCER> {
+  name?: string;
+  reducer: REDUCER;
+  initialState: STATE;
+  children: Element<any>;
 }
+
+export interface SyncReducer<STATE, ACTION> {
+  (prevState: STATE, action: ACTION): STATE;
+}
+
+export interface SyncReducerProps<STATE, ACTION> extends ReducerProps<STATE, SyncReducer<STATE, ACTION>> {}
+
+declare export function SyncReducerProvider<STATE, ACTION>(props: SyncReducerProps<STATE, ACTION>): Element<typeof SyncReducerProvider>
+
+export interface AsyncReducer<STATE, ACTION> {
+  (prevState: STATE, action: ACTION): Promise<STATE>;
+}
+
+export interface AsyncReducerProps<STATE, ACTION> extends ReducerProps<STATE, AsyncReducer<STATE, ACTION>> {}
+
+declare export function AsyncReducerProvider<STATE, ACTION>(props: AsyncReducerProps<STATE, ACTION>): Element<typeof AsyncReducerProvider>
+
+// Reducer Consumption
+//////////////////////
+
+export type Sync = void
+export type Async = Promise<void>
+
+export interface Dispatcher<ACTION, DISPATCH: Async | Sync = Sync> {
+  (value: ACTION): DISPATCH
+}
+
+export type ReducerProviderValue<STATE, ACTION, DISPATCH: Async | Sync = Sync> = [STATE, Dispatcher<ACTION, DISPATCH>]
+
+declare export function useReducer<STATE, ACTION, DISPATCH: Async | Sync = Sync>(name?: string): ReducerProviderValue<STATE, ACTION, DISPATCH>
+
+declare export function useReducerState<STATE>(name?: string): STATE
+
+declare export function useReducerDispatcher<ACTION, DISPATCH: Async | Sync = Sync>(name?: string): Dispatcher<ACTION, DISPATCH>
+
+// Helper
+/////////
+
+export interface Action<TYPE, DATA> {
+  type: TYPE;
+  data?: DATA;
+}
+
+// Deprecations
+///////////////
+
+/**
+ * @deprecated since version 2.1.0, use 'SyncReducer' instead.
+ */
 export interface Reducer<STATE, ACTION> {
   (prevState: STATE, action: ACTION): STATE;
 }
+
+/**
+ * @deprecated since version 2.1.0, use 'ReducerProviderValue' instead.
+ */
 export type NamedReducerValue<STATE, ACTION> = [STATE, Dispatcher<ACTION>]
 
+/**
+ * @deprecated since version 2.1.0, use 'SyncReducerProps' or 'AsyncReducerProps' instead.
+ */
 export interface NamedReducerProps<STATE, ACTION> {
   name: string;
   reducer: Reducer<STATE, ACTION>;
@@ -20,17 +82,25 @@ export interface NamedReducerProps<STATE, ACTION> {
   children: Element<any>;
 }
 
+/**
+ * @deprecated since version 2.1.0, use 'SyncReducerProvider' or 'AsyncReducerProvider' instead.
+ */
+declare export function NamedReducer<STATE, ACTION>(props: NamedReducerProps<STATE, ACTION>): Element<typeof NamedReducer>
+
+/**
+ * @deprecated since version 2.1.0, use 'ReducerProviderValue' instead.
+ */
 export interface NamedReducerInterface<STATE, ACTION> {
   state: STATE;
   dispatch: Dispatcher<ACTION>;
 }
 
-declare export function NamedReducer<STATE, ACTION>(props: NamedReducerProps<STATE, ACTION>): Element<typeof NamedReducer>
-
+/**
+ * @deprecated since version 2.1.0, use 'useReducer' instead.
+ */
 declare export function useNamedReducer<STATE, ACTION>(name: string): NamedReducerInterface<STATE, ACTION>
 
-declare export function useReducerState<STATE>(name: string): STATE
-
-declare export function useReducerDispatcher<ACTION>(name: string): Dispatcher<ACTION>
-
+/**
+ * @deprecated since version 2.1.0, use 'useReducer' instead.
+ */
 declare export function useNamedReducerContext<STATE, ACTION>(name: string): Context<NamedReducerValue<STATE, ACTION>>

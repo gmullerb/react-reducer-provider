@@ -1,22 +1,25 @@
-# React Named Reducer with Injection and Typescript typings
+# React Reducer Provider with Injection and Typescript typings
 
-1 . Add **react-named-reducer** (and prerequisite) to `package.json`:
+1 . Add **react-reducer-provider** (and prerequisite) to `package.json`:
 
 ```json
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-named-reducer": "2.0.1",
+    "react-reducer-provider": "2.1.0",
     ..
 ```
 
-2 . Create the `NamedReducer`:
+2 . Create the Reducer Provider:
 
-**`SomeNamedReducer.jsx`**:
+* Define the State.
+* Define the Reducer.
+
+**`SomeReducerProvider.jsx`**:
 
 ```jsx
 import React from 'react'
-import { NamedReducer } from 'react-named-reducer'
+import { SyncReducerProvider } from 'react-reducer-provider'
 
 const initialState = 0
 
@@ -31,20 +34,20 @@ function reduce(prevState, action) {
   }
 }
 
-function SomeNamedReducer({ children }) {
+function SomeReducerProvider({ children }) {
   return (
-    <NamedReducer
+    <SyncReducerProvider
       name='someNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
       {children}
-    </NamedReducer>
+    </SyncReducerProvider>
   )
 }
 
 export {
-  SomeNamedReducer
+  SomeReducerProvider
 }
 ```
 
@@ -92,7 +95,7 @@ export default function SomeComponentN({currentState}) {
 }
 ```
 
-4 . Create the bridge between the `NamedReducer` and the Components:
+4 . Create the bridge between the Reducer Provider and the Components:
 
 `SomeContainer.jsx`:
 
@@ -100,11 +103,11 @@ export default function SomeComponentN({currentState}) {
 import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
-import { useNamedReducer } from 'react-named-reducer'
+import { useReducer } from 'react-reducer-provider'
 import React from 'react'
 
 export default function SomeContainer() {
-  const { state, dispatch } = useNamedReducer('someNamedReducer')
+  const [ state, dispatch ] = useReducer('someNamedReducer')
   return (
     <div>
       <SomeComponent1 dispatch={dispatch}/>
@@ -119,21 +122,23 @@ export default function SomeContainer() {
 
 ```jsx
 import SomeContainer from './path/to/SomeContainer'
-import { SomeNamedReducer } from '../path/to/SomeNamedReducer'
+import { SomeReducerProvider } from '../path/to/SomeReducerProvider'
 import React from 'react'
 
 export default function SomeContainer() {
   return (
-    <SomeNamedReducer>
+    <SomeReducerProvider>
       <SomeContainer />
-    </SomeNamedReducer>
+    </SomeReducerProvider>
   )
 }
 ```
 
+> This example can be checked on line at [gmullerb-react-reducer-provider-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-zm44k?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-with-injection](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-zm44k?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > [with Flow typings](with-injection-and-flow-typings.md).  
 > [with Typescript typings](with-injection-and-ts-typings.md).  
-> This example can be checked on line: live at [gmullerb-react-named-reducer-with-injection demo](https://bb4t5.csb.app/) and the code is at [gmullerb-react-named-reducer-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-named-reducer-with-injection-bb4t5?module=%2Fsrc%2FSomeNamedReducer.jsx):  
-[![Edit gmullerb-react-named-reducer](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-named-reducer-with-injection-bb4t5?module=%2Fsrc%2FSomeNamedReducer.jsx)
 
-[Back to Main documentation](../README.md)
+## Main documentation
+
+[Back](../README.md)

@@ -11,12 +11,15 @@
     "sourceType": "module"
   },
   "plugins": [
-    "base-style-config"
+    "base-style-config",
+    "regex"
   ],
   "root": true,
   "rules": {
     "no-console": "error",
     "no-invalid-this": "error",
+    "import/group-exports": "error",
+    "import/exports-last": "error",
     "quotes":  [
       "error",
       "single"
@@ -24,6 +27,11 @@
     "semi": [
       "error",
       "never"
+    ],
+    "regex/invalid": [
+      "error", [
+        "\"(?!.*')"
+      ]
     ]
   }
 }

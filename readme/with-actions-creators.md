@@ -1,12 +1,12 @@
-# React Named Reducer with Actions Creators
+# React Reducer Provider with Actions Creators
 
-1 . Add **react-named-reducer** (and prerequisite) to `package.json`:
+1 . Add **react-reducer-provider** (and prerequisite) to `package.json`:
 
 ```json
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-named-reducer": "2.0.1",
+    "react-reducer-provider": "2.1.0",
     ..
 ```
 
@@ -34,42 +34,43 @@ export {
 }
 ```
 
-3 . Create the `NamedReducer`:
+3 . Create the Reducer Provider:
 
-**`SomeNamedReducer.jsx`**:
+**`SomeReducerProvider.jsx`**:
 
 ```jsx
 import { initialState, reduce } from '../path/to/SomeReducer'
 import React from 'react'
-import { NamedReducer } from 'react-named-reducer'
+import { SyncReducerProvider } from 'react-reducer-provider'
 
-function SomeNamedReducer({ children }) {
+function SomeReducerProvider({ children }) {
   return (
-    <NamedReducer
+    <SyncReducerProvider
       name='someNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
       {children}
-    </NamedReducer>
+    </SyncReducerProvider>
   )
 }
 
 export {
   someNamedReducer as default,
-  SomeNamedReducer
+  SomeReducerProvider
 }
 ```
 
-4 . Define the Actions Creators through a custom React Hook, which will represent the bridge between the `NamedReducer` and the Components:
+4 . Define the Actions Creators through a custom React Hook, which will represent the bridge between the Reducer Provider and the Components:
 
 `SomeActions.js`:
 
 ```js
-import { useNamedReducer } from 'react-named-reducer'
+import { useReducer } from 'react-reducer-provider'
+import React from 'react'
 
 export default function useActions() {
-  const { state, dispatch } = useNamedReducer('someNamedReducer')
+  const [ state, dispatch ] = useReducer('someNamedReducer')
   return {
     state,
     actions: {
@@ -83,6 +84,8 @@ export default function useActions() {
   }
 }
 ```
+
+> It may require the use of `useMemo` and `useCallback` to "improve" performance, check [`MockingReducerProvider.test.jsx`](../src/test/js/MockingReducerProvider.test.jsx).
 
 5 . Define some Components:
 
@@ -155,22 +158,23 @@ export default function SomeContainer() {
 
 ```jsx
 import SomeContainer from './path/to/SomeContainer'
-import { SomeNamedReducer } from '../path/to/SomeNamedReducer'
+import { SomeReducerProvider } from '../path/to/SomeReducerProvider'
 import React from 'react'
 
 export default function SomeContainer() {
   return (
-    <SomeNamedReducer>
+    <SomeReducerProvider>
       <SomeContainer />
-    </SomeNamedReducer>
+    </SomeReducerProvider>
   )
 }
 ```
 
+> This example can be checked on line at [gmullerb-react-reducer-provider-with-actions-creators codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-actions-creators-0s7lp?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-with-actions-creators](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-actions-creators-0s7lp?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > [with Flow typings](with-actions-creators-and-flow-typings.md).  
 > [with Typescript typings](with-actions-creators-and-ts-typings.md).  
-> This example can be checked on line: live at [gmullerb-react-named-reducer-with-injection demo](https://72881.csb.app/) and the code is at [gmullerb-react-named-reducer-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-named-reducer-with-actions-creators-72881?module=%2Fsrc%2FSomeNamedReducer.jsx):  
-[![Edit gmullerb-react-named-reducer](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-named-reducer-with-actions-creators-72881?module=%2Fsrc%2FSomeNamedReducer.jsx)
 
+## Main documentation
 
-[Back to Main documentation](../README.md)
+[Back](../README.md)

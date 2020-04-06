@@ -1,24 +1,24 @@
-# React Named Reducer with Injection and Typescript typings
+# React Reducer Provider with Injection and Typescript typings
 
-1 . Add **react-named-reducer** (and prerequisite) to `package.json`:
+1 . Add **react-reducer-provider** (and prerequisite) to `package.json`:
 
 ```json
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-named-reducer": "2.0.1",
+    "react-reducer-provider": "2.1.0",
     ..
 ```
 
-2 . Create the `NamedReducer`:
+2 . Create the Reducer Provider:
 
-**`SomeNamedReducer.tsx`**:
+**`SomeReducerProvider.tsx`**:
 
 ```tsx
 import React, {
   ReactElement,
   ReactNode } from 'react'
-import { NamedReducer } from 'react-named-reducer'
+import { SyncReducerProvider } from 'react-reducer-provider'
 
 const initialState: number = 0
 
@@ -33,20 +33,20 @@ function reduce(prevState: number, action: string): number {
   }
 }
 
-function SomeNamedReducer({ children }: {children: ReactNode}): ReactElement {
+function SomeReducerProvider({ children }: {children: ReactNode}): ReactElement {
   return (
-    <NamedReducer
+    <SyncReducerProvider
       name='someNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
       {children}
-    </NamedReducer>
+    </SyncReducerProvider>
   )
 }
 
 export {
-  SomeNamedReducer
+  SomeReducerProvider
 }
 ```
 
@@ -56,7 +56,7 @@ export {
 
 ```tsx
 import React, { ReactElement } from 'react'
-import { Dispatcher } from 'react-named-reducer'
+import { Dispatcher } from 'react-reducer-provider'
 
 export default function SomeComponent1({dispatch}: {dispatch: Dispatcher<string>}): ReactElement {
   return (
@@ -71,7 +71,7 @@ export default function SomeComponent1({dispatch}: {dispatch: Dispatcher<string>
 
 ```tsx
 import React, { ReactElement } from 'react'
-import { Dispatcher } from 'react-named-reducer'
+import { Dispatcher } from 'react-reducer-provider'
 
 export default function SomeComponent2({dispatch}: {dispatch: Dispatcher<string>}): ReactElement {
   return (
@@ -96,7 +96,7 @@ export default function SomeComponentN({currentState}: {currentState: number}): 
 }
 ```
 
-4 . Create the bridge between the `NamedReducer` and the Components:
+4 . Create the bridge between the Reducer Provider and the Components:
 
 `SomeContainer.tsx`:
 
@@ -105,10 +105,10 @@ import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
 import React, { ReactElement } from 'react'
-import { useNamedReducer } from 'react-named-reducer'
+import { useReducer } from 'react-reducer-provider'
 
 export default function SomeContainer(): ReactElement {
-  const { state, dispatch } = useNamedReducer<number, string>('someNamedReducer')
+  const [ state, dispatch ] = useReducer<number, string>('someNamedReducer')
   return (
     <div>
       <SomeComponent1 dispatch={dispatch}/>
@@ -123,16 +123,18 @@ export default function SomeContainer(): ReactElement {
 
 ```jsx
 import SomeContainer from './path/to/SomeContainer'
-import { SomeNamedReducer } from '../path/to/SomeNamedReducer'
+import { SomeReducerProvider } from '../path/to/SomeReducerProvider'
 import React, { ReactElement } from 'react'
 
 export default function SomeContainer(): ReactElement {
   return (
-    <SomeNamedReducer>
+    <SomeReducerProvider>
       <SomeContainer />
-    </SomeNamedReducer>
+    </SomeReducerProvider>
   )
 }
 ```
 
-[Back to Main documentation](../README.md)
+## Main documentation
+
+[Back](../README.md)

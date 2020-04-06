@@ -1,96 +1,46 @@
-# Migration from `react-reducer-context` to `react-named-reducer`
+# Migration from [`react-named-reducer`](https://www.npmjs.com/package/react-named-reducer) to [`react-reducer-provider`](https://www.npmjs.com/package/react-reducer-provider)
 
 1 . Change package dependency:
 
 `package.json`:
 
 * from:  
-`"react-reducer-context": "1.0.2"`  
+`"react-named-reducer": "2.0.1"`  
 
 * to:  
-`"react-named-reducer": "2.0.1"`  
+`"react-reducer-provider": "2.1.0"`  
 
 2 . Change imports:
 
 * from:  
-`import .. from 'react-reducer-context'`
-
-* to:  
 `import .. from 'react-named-reducer'`
 
+* to:  
+`import .. from 'react-reducer-provider'`
 
-3 . Change the "old" `ReducerContext` to `NamedReducer`:
+## Main source - Reducer Component Definition
 
-3 . a. import:
+3 . Change the "old" `NamedReducer` to `SyncReducerProvider`:
+
+3 . a. Change import:
 
 * from:  
-`import ReducerContext from 'react-reducer-context'`
-
-* to:  
 `import { NamedReducer } from 'react-named-reducer'`
 
-3 . b. Component:
+* to:  
+`import { SyncReducerProvider } from 'react-reducer-provider'`
+
+3 . b. Change Component:
 
 * from:  
-`ReducerContext`
-
-* to:  
 `NamedReducer`
 
-3 . c. Properties:
-
-* from:  
-`context={someReducerContext}`
-
 * to:  
-`name='someReducerContext'`
-
-3 . d. No need for context creation:
-
-* Remove `createContext` import.
-* Remove statement with `createContext(null)`
-* Remove the export of the context.
+`SyncReducerProvider`
 
 e.g.:
 
-from:
-
-```jsx
-import React, { createContext } from "react";
-import ReducerContext from "react-reducer-context";
-
-const initialState = 0;
-
-function reduce(prevState, action) {
-  switch (action) {
-    case "ACTION1":
-      return prevState + 1;
-    case "ACTION2":
-      return prevState - 1;
-    default:
-      return prevState;
-  }
-}
-
-const someReducerContext = createContext(null);
-
-function SomeReducerContext({ children }) {
-  return (
-    <ReducerContext
-      context={someReducerContext}
-      reducer={reduce}
-      initialState={initialState}
-    >
-      {children}
-    </ReducerContext>
-  );
-}
-
-export { someReducerContext as default, SomeReducerContext };
-
-```
-
-to:
+*from*:
 
 ```jsx
 import React from "react";
@@ -112,7 +62,7 @@ function reduce(prevState, action) {
 function SomeNamedReducer({ children }) {
   return (
     <NamedReducer
-      name="someReducerContext"
+      name="someNamedReducer"
       reducer={reduce}
       initialState={initialState}
     >
@@ -124,67 +74,182 @@ function SomeNamedReducer({ children }) {
 export { SomeNamedReducer };
 ```
 
-4 . Change uses of "old" `ReducerContext` to `NamedReducer` hooks:
+*to*:
 
-4 . a. No need for context:
+```jsx
+import React from "react";
+import { SyncReducerProvider } from "react-reducer-provider";
 
-* Remove the import of the context.
+const initialState = 0;
 
-4 . b. When using `useReducerContext`:
+function reduce(prevState, action) {
+  switch (action) {
+    case "ACTION1":
+      return prevState + 1;
+    case "ACTION2":
+      return prevState - 1;
+    default:
+      return prevState;
+  }
+}
+
+function SomeNamedReducer({ children }) {
+  return (
+    <SyncReducerProvider
+      name="someNamedReducer"
+      reducer={reduce}
+      initialState={initialState}
+    >
+      {children}
+    </SomeNamedReducer>
+  );
+}
+
+export { SomeNamedReducer };
+```
+
+### Typings
 
 * from:  
-`import { useReducerContext } from "react-reducer-context"`  
-and  
-`useReducerContext(someReducerContext)`
+`NamedReducerProps`
 
 * to:  
-`import { useNamedReducer } from "react-named-reducer"`  
-and  
-`useNamedReducer('someReducerContext')`
+`SyncReducerProps`
 
-4 . c. When using `useNamedReducer` hook:
+## Main source - Reducer Consumption
+
+4 . Change uses of "old" `useNamedReducer` to `useReducer` hook:
+
+4 . a. Change import:
 
 * from:  
-`useReducerState(someReducerContext)`
+`import { useNamedReducer } from 'react-named-reducer'`
 
 * to:  
-`useReducerState('someReducerContext')`
+`import { useReducer } from 'react-reducer-provider'`
 
-4 . d. When using `useNamedReducer` hook:
+4 . b. Change hook:
 
 * from:  
-`useReducerDispatcher(someReducerContext)`
+`const { state, dispatch } = useNamedReducer("someNamedReducer")`
 
 * to:  
-`useReducerDispatcher('someReducerContext')`
+`const [ state, dispatch ] = useReducer("someNamedReducer")`
 
 e.g.:
 
-from:
+*from*:
 
 ```jsx
-import someReducerContext from "./SomeReducerContext";
-import { useReducerContext } from 'react-reducer-context';
+import { useNamedReducer } from 'react-named-reducer';
 import React from "react";
 
 export default function SomeComponent1() {
-  const { state, dispatch } = useReducerContext(someReducerContext)
+  const { state, dispatch } = useNamedReducer("someNamedReducer")
   return <button onClick={() => dispatch("ACTION1")}>Go up (from {state})!</button>;
 }
 ```
 
-to:
+*to*:
 
 ```jsx
-import { useNamedReducer } from "react-named-reducer";
+import { useReducer } from "react-reducer-provider";
 import React from "react";
 
 export default function SomeComponent1() {
-  const { state, dispatch } = useNamedReducer("someReducerContext");
+  const [ state, dispatch ] = useReducer("someNamedReducer");
   return (
     <button onClick={() => dispatch("ACTION1")}>Go up (from {state})!</button>
   );
 }
+```
+
+> if context was used, i.e. `const [state, dispatch] = useContext(useNamedReducerContext('someNamedReducer'))`, just change it to `const [ state, dispatch ] = useReducer("someNamedReducer")`.
+
+### Typings
+
+* from:  
+`NamedReducerInterface`
+
+* to:  
+`ReducerProviderValue`
+
+e.g.:
+
+*from*:
+
+```tsx
+  const { state, dispatch }: NamedReducerInterface<State, Action> = useNamedReducer("someNamedReducer")
+```
+
+*to*:
+
+```tsx
+  const [ state, dispatch ]: ReducerProviderValue<State, Action> = useReducer("someNamedReducer");
+```
+
+> Prefer *Types in function approach*, [typings](typings.md).
+
+## Test Source
+
+With traditional & sensational Jasmine:
+
+*from*:
+
+```jsx
+  import * as ReactNamedReducer from 'react-named-reducer'
+  ..
+  mockState = {}
+  mockDispatcher = jasmine.createSpy('dispatcher')
+  spyOn(ReactNamedReducer, 'useNamedReducer')
+    .and
+    .returnValue({
+      state: mockState,
+      dispatch: mockDispatcher
+    })
+```
+
+*to*:
+
+```jsx
+  import * as ReducerProviderModule from 'react-reducer-provider'
+  ..
+  mockState = {}
+  mockDispatcher = jasmine.createSpy('dispatcher')
+  spyOn(ReducerProviderModule, 'useReducer')
+    .and
+    .returnValue([
+      mockState,
+      mockDispatcher
+    ])
+```
+
+With Jest:
+
+*from*:
+
+```jsx
+  mockState = {}
+  mockDispatcher = jest.fn()
+  jest.mock('react-named-reducer', () => ({
+    useNamedReducer: () => ({
+      state: mockState,
+      dispatch: mockDispatcher
+    })
+  }))
+```
+
+*to*:
+
+```jsx
+  mockState = {}
+  mockDispatcher = jest.fn()
+  jest.mock('react-reducer-provider', () => ({
+    useReducer: () => [
+      mockState,
+      mockDispatcher
+    ]
+  }))
 ```
 
 ## Main documentation

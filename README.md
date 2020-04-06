@@ -1,18 +1,15 @@
 <p align="center">
-  <img src="https://assets.gitlab-static.net/uploads/-/system/project/avatar/16068388/named.png"/>
+  <img src="https://assets.gitlab-static.net/uploads/-/system/project/avatar/18113862/react-reducer-provider.png" alt=" "/>
 </p>
 
-<h1 align="center">React Component to easily manage State through reducers using hooks</h1>
+<h1 align="center">Asynchronous/Synchronous React Reducer Provider with Hooks</h1>
 
-<p align="center">with typings for Typescript and Flow.</p>
-
-<p align="center">A derivation of <a href="https://www.npmjs.com/package/react-reducer-context">react-reducer-context</a></p>
-
-__________________
-
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt) ![GitHub package.json version](https://img.shields.io/github/package-json/v/gmullerb/react-named-reducer.svg?logo=npm) ![coverage](https://gitlab.com/gmullerb/react-named-reducer/badges/master/coverage.svg) [![react-named-reducer](https://img.shields.io/badge/npm-react--named--reducer-blue?logo=npm)](https://www.npmjs.com/package/react-named-reducer)
-
-This project is licensed under the terms of the [MIT license](LICENSE.txt).
+[![react-reducer-provider](https://badgen.net/badge/npm%20pack/react-reducer-provider/blue)](https://www.npmjs.com/package/react-reducer-provider)
+[![ ](https://badgen.net/npm/v/react-reducer-provider)](https://www.npmjs.com/package/react-reducer-provider)
+[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)
+[![ ](https://gitlab.com/gmullerb/react-reducer-provider/badges/master/coverage.svg)](https://gitlab.com/gmullerb/react-reducer-provider/pipelines)
+[![Github repo](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/gmullerb/react-reducer-provider)
+[![Gitlab repo](https://badgen.net/badge/icon/gitlab?icon=gitlab&label)](https://gitlab.com/gmullerb/react-reducer-provider)
 __________________
 
 ## Quick Start
@@ -25,21 +22,21 @@ __________________
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-named-reducer": "2.0.1",
+    "react-reducer-provider": "2.1.0",
     ..
 ```
 
-2 . Create the **`NamedReducer`** component to manage state:
+2 . Create the **`SyncReducerProvider`** or **`AsyncReducerProvider`** component to manage state:
 
-* Define the initial state.
-* Define the reducer function.
-* Define the `NamedReducer`.
+A . Define the initial state.  
+B . Define the reducer function.  
+C . Define the Reducer Provider.
 
-**`SomeNamedReducer.jsx`**:
+**`SomeReducerProvider.jsx`**:
 
 ```jsx
 import React from 'react'
-import { NamedReducer } from 'react-named-reducer'
+import { SyncReducerProvider } from 'react-reducer-provider'
 
 const initialState = 0
 
@@ -54,57 +51,34 @@ function reduce(prevState, action) {
   }
 }
 
-function SomeNamedReducer({ children }) {
+function SomeReducerProvider({ children }) {
   return (
-    <NamedReducer
-      name='someNamedReducer'
+    <SyncReducerProvider
       reducer={reduce}
       initialState={initialState}
     >
       {children}
-    </NamedReducer>
+    </SyncReducerProvider>
   )
 }
 
-export default SomeNamedReducer
+export default SomeReducerProvider
 ```
 
-3 . Wrap components which needs the `NamedReducer` component:
+3 . Access the `SomeReducerProvider` component using `'react-reducer-provider'` hooks:
 
-`SomeContainer.jsx`:
-
-```jsx
-import SomeComponent1 from './path/to/SomeComponent1'
-import SomeComponent2 from './path/to/SomeComponent2'
-import SomeComponentN from './path/to/SomeComponentN'
-import SomeNamedReducer from '../path/to/SomeNamedReducer'
-import React from 'react'
-
-export default function SomeContainer() {
-  return (
-    <SomeNamedReducer>
-      <SomeComponent1/>
-      <SomeComponent2/>
-      <SomeComponentN/>
-    </SomeNamedReducer>
-  )
-}
-```
-
-4 . Access the `NamedReducer` component using `'react-named-reducer'` hooks:
-
-* **`useNamedReducer`**.
+* **`useReducer`**.
 * **`useReducerDispatcher`**.
 * **`useReducerState`**.
 
-`SomeComponent1.jsx`[1] => using `useNamedReducer`:
+`SomeComponent1.jsx`[1] => using `useReducer`:
 
 ```jsx
-import { useNamedReducer } from 'react-named-reducer'
+import { useReducer } from 'react-reducer-provider'
 import React from 'react'
 
 export default function SomeComponent1() {
-  const { state, dispatch } = useNamedReducer('someNamedReducer')
+  const [ state, dispatch ] = useReducer()
   return (
     <button onClick={() => dispatch('ACTION1')}>
       Go up (from {state})!
@@ -116,11 +90,11 @@ export default function SomeComponent1() {
 `SomeComponent2.jsx`[1] => using `useReducerDispatcher`:
 
 ```jsx
-import { useReducerDispatcher } from 'react-named-reducer'
+import { useReducerDispatcher } from 'react-reducer-provider'
 import React from 'react'
 
 export default function SomeComponent2() {
-  const dispatch = useReducerDispatcher('someNamedReducer')
+  const dispatch = useReducerDispatcher()
   return (
     <button onClick={() => dispatch('ACTION2')}>
       Go down!
@@ -132,11 +106,11 @@ export default function SomeComponent2() {
 `SomeComponentN.jsx`[1] => using `useReducerState`:
 
 ```jsx
-import { useReducerState } from 'react-named-reducer'
+import { useReducerState } from 'react-reducer-provider'
 import React from 'react'
 
 export default function SomeComponentN() {
-  const currentState = useReducerState('someNamedReducer')
+  const currentState = useReducerState()
   return (
     <div>
       Current:{currentState}
@@ -145,24 +119,55 @@ export default function SomeComponentN() {
 }
 ```
 
-> This example can be checked on line: live at [gmullerb-react-named-reducer demo](https://8ksn5.csb.app/) and the code is at [gmullerb-react-named-reducer codesandbox](https://codesandbox.io/s/gmullerb-react-named-reducer-8ksn5?module=%2Fsrc%2FSomeNamedReducer.jsx):  
-[![Edit gmullerb-react-named-reducer](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-named-reducer-8ksn5?module=%2Fsrc%2FSomeNamedReducer.jsx)  
-> [1] Injection can be used in order to improve design, but in favor of quick example this was surrender, look at [Injection](readme/with-injection.md) for injection example.  
+4 . Wrap components which will consume the `SomeReducerProvider` component:
 
+`SomeContainer.jsx`:
+
+```jsx
+import SomeComponent1 from './path/to/SomeComponent1'
+import SomeComponent2 from './path/to/SomeComponent2'
+import SomeComponentN from './path/to/SomeComponentN'
+import SomeReducerProvider from '../path/to/SomeReducerProvider'
+import React from 'react'
+
+export default function SomeContainer() {
+  return (
+    <SomeReducerProvider>
+      <SomeComponent1/>
+      <SomeComponent2/>
+      <SomeComponentN/>
+    </SomeReducerProvider>
+  )
+}
+```
+
+> This example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-m0924?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-m0924?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> An asynchronous example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-oosyt?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-oosyt?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> An example of use can be looked at [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
+> [1] Injection can be used in order to improve design, but in favor of quick example this was surrender, look at [Injection](readme/with-injection.md) for injection example.
 __________________
 
 ## Goal
 
-With the introduction of React Hooks, in some way using Flux library[1] was deprecated, react-named-reducer looks to **give a quick and easy alternative using hooks to implement Flux with reducers**, with typings for Typescript and Flow.
+With the introduction of React Hooks, in some way using Flux **library**[1] was deprecated, `react-reducer-provider` looks to **give a quick and easy alternative using hooks to implement Flux with reducers**.
+
+* It allows to use [**Asynchronous** Reducer/Dispatcher](readme/reference.md).
+* [**Each Reducer Provider can have a different names which allows for easy identification and nesting**](readme/reference.md#nesting).
+* It provides [its own **type definitions for Typescript and Flow**](readme/typings.md).
+* It is the evolution of [react-named-reducer](https://www.npmjs.com/package/react-named-reducer) (which is a derivation of [react-reducer-context](https://www.npmjs.com/package/react-reducer-context)).
+
+![React Reducer Provider](readme/react-reducer-provider.svg "React Reducer Provider")
 
 > [1] Not the Flux architecture.
 __________________
 
 ## Documentation
 
-* [`NamedReducer` | `useNamedReducer` | `useReducerState` | `useReducerDispatcher`](readme/reference.md).
+* [`SyncReducerProvider` | `AsyncReducerProvider` | `useReducer` | `useReducerState` | `useReducerDispatcher`](readme/reference.md).
   * [Nesting](readme/reference.md#nesting).
-  * [Typings](readme/reference.md#typings).
+  * [Typings](readme/typings.md).
   * [Prerequisites](readme/reference.md#prerequisites).
   * Extras:
     * [With Injection](readme/with-injection.md).
@@ -172,14 +177,18 @@ __________________
       * [with Flow typings](readme/with-actions-creators-and-flow-typings.md).
       * [with Typescript typings](readme/with-actions-creators-and-ts-typings.md).
     * [Testing](readme/testing.md).
-    * [Accessing the Context](readme/accessing-context.md).
-    * [Migration from `react-reducer-context` to `react-named-reducer`](readme/migration.md).
-* [Extending/Developing](readme/developing.md).
-* [MIT License](LICENSE.txt).
+    * [Migration from `react-named-reducer` to `react-reducer-provider`](readme/migration.md).
+    * [Extending/Developing](readme/developing.md).
 
-* [`CHANGELOG.md`](CHANGELOG.md): add information of notable changes for each version here, chronologically ordered [1].
+* [`CHANGELOG.md`](CHANGELOG.md): add information of notable changes for each version here, chronologically ordered ([Keep a Changelog](http://keepachangelog.com)).
 
-> [1] [Keep a Changelog](http://keepachangelog.com)
+## Contributing
+
+* **Use it**.
+* **Share it**.
+* [Give it a Star](https://github.com/gmullerb/react-reducer-provider).
+* [Propose changes or improvements](https://github.com/gmullerb/react-reducer-provider/issues).
+* [Report bugs](https://github.com/gmullerb/react-reducer-provider/issues).
 
 ## License
 

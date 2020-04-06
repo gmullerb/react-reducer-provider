@@ -6,6 +6,8 @@
     "react/prefer-es6-class": [
       "error",
       "never"
-    ]
+    ],
+    "react/no-multi-comp": "off",
+    "valid-jsdoc": "off"
   }
 }

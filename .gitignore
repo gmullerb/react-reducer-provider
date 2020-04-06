@@ -7,7 +7,6 @@ node_modules/
 # IDEs
 .vscode
 .vscode/
-theqtapp.pro.user
 .project
 .classpath
 .settings/

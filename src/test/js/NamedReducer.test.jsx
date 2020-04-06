@@ -117,7 +117,7 @@ describe('NamedReducer tests', () => {
     expect(mockReducer).toHaveBeenCalled()
   })
 
-  it('should reduce with Consumer', () => {
+  it('should reduce with Consumer - Deprecated', () => {
     const testInitialState = '0'
     function testReduce(prevState, action) {
       switch (action) {
@@ -159,7 +159,7 @@ describe('NamedReducer tests', () => {
     expect(context).toHaveText('Child1')
   })
 
-  it('should reduce with traditional useContext', () => {
+  it('should reduce with traditional useContext - Deprecated', () => {
     const testInitialState = '0'
     function testReduce(prevState, action) {
       switch (action) {
@@ -195,13 +195,56 @@ describe('NamedReducer tests', () => {
     expect(context).toHaveText('Child1')
   })
 
-  it('should throw error when not found', () => {
-    try {
-      NamedReducer.getNamedReducer('testNamedReducer5')
-      fail()
+  it('should get nested contexts', () => {
+    const testInitialState = '0'
+    function testReduce(prevState, action) {
+      switch (action) {
+        case 'ACTION1':
+          return '1'
+        default:
+          return prevState
+      }
     }
-    catch (error) {
-      expect(error.message).toEqual('NamedReducer testNamedReducer5 does not exist')
+    const FunComponent = (props) => {
+      const { state, dispatch } = useNamedReducer(props.reducer)
+      return (
+        <button
+          id={props.id}
+          onClick={() => dispatch('ACTION1')}
+        >
+          Child{props.id}{state}
+        </button>
+      )
     }
+
+    const context = mount(
+      <NamedReducer
+        name='testNamedReducer7'
+        reducer={testReduce}
+        initialState={testInitialState}
+      >
+        <FunComponent
+          id='A'
+          reducer='testNamedReducer7'
+        />
+        <NamedReducer
+          name='testNamedReducer8'
+          reducer={testReduce}
+          initialState={testInitialState}
+        >
+          <FunComponent
+            id='B'
+            reducer='testNamedReducer8'
+          />
+        </NamedReducer>
+      </NamedReducer>
+    )
+
+    expect(context).toHaveText('ChildA0ChildB0')
+
+    context.find('button[id="B"]').simulate('click')
+    context.update()
+
+    expect(context).toHaveText('ChildA0ChildB1')
   })
 })

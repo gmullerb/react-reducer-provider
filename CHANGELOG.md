@@ -1,4 +1,14 @@
-# React Named Reducer Change Log
+# React Reducer Provider Change Log
+
+## Inception of react-reducer-provider :D - 2.1.0 - April 2020
+
+* Inception :D => Evolution of [react-named-reducer](https://www.npmjs.com/package/react-named-reducer)
+  * Allows for `async` reducers.
+  * Allows Providers with no name, useful for defining a Singleton Reducer Provider.
+  * Adds helper type `Action` which have been useful in several projects.
+  * Removes validation of existence of reducer context in favor of performance, is up to the developer to do a good coding and to **guaranteed that names are "paired" between provider, `SyncReducerProvider` or `AsyncReducerProvider`, and consumers, `useReducer`, `useReducerState` or `useReducerDispatcher`**.
+  * Deprecates `NamedReducer`, `NamedReducerProps`, `NamedReducerInterface`, `NamedReducerValue`, `useNamedReducer` &`useNamedReducerContext`.
+  * Updates Documentation files.
 
 ## 2.0.2 - March 2020
 

@@ -1,5 +1,4 @@
-// Copyright (c) 2019 Gonzalo Müller Bravo.
-const webpack = require('webpack')
+// Copyright (c) 2020 Gonzalo Müller Bravo.
 
 const reactRule = {
   test: /\.jsx$/,
@@ -35,10 +34,5 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx']
   },
-  plugins: [
-    new webpack.SourceMapDevToolPlugin({
-      test: /\.js(x)?$/
-    }),
-  ],
   watch: false
 }

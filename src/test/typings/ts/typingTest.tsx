@@ -5,13 +5,19 @@ import React, {
   ReactNode
 } from 'react'
 import {
+  Async,
+  AsyncReducerProvider,
   NamedReducer,
   NamedReducerValue,
+  useReducer,
   useReducerDispatcher,
   useReducerState,
   useNamedReducer,
   NamedReducerInterface,
-  Dispatcher
+  Dispatcher,
+  ReducerProviderValue,
+  Sync,
+  SyncReducerProvider
 } from '../../../main/js/NamedReducer'
 
 interface TestState {
@@ -22,18 +28,103 @@ const initialState: TestState = {
   lastAction: 0
 }
 
-function reduce(prevState: TestState, action: string): TestState {
-  switch (action) {
-    case 'ACTION1':
-      return {
-        lastAction: 1
-      }
-    default:
-      return prevState
+function TestSyncReducerProvider({ children }: {children: ReactNode}): ReactElement {
+  function reduce(prevState: TestState, action: string): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
   }
+  return (
+    <SyncReducerProvider
+      name='testNamedReducer'
+      reducer={reduce}
+      initialState={initialState}
+    >
+      {children}
+    </SyncReducerProvider>
+  )
 }
 
-function TestNamedReducer({ children }: {children: ReactNode}): ReactElement {
+function TestAsyncReducerProvider({ children }: {children: ReactNode}): ReactElement {
+  async function reduce(prevState: TestState, action: string): Promise<TestState> {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: await Promise.resolve(1)
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <AsyncReducerProvider
+      name='testNamedReducer'
+      reducer={reduce}
+      initialState={initialState}
+    >
+      {children}
+    </AsyncReducerProvider>
+  )
+}
+
+function TestSingletonSyncReducerProvider({ children }: {children: ReactNode}): ReactElement {
+  function reduce(prevState: TestState, action: string): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <SyncReducerProvider
+      reducer={reduce}
+      initialState={initialState}
+    >
+      {children}
+    </SyncReducerProvider>
+  )
+}
+
+function TestSingletonAsyncReducerProvider({ children }: {children: ReactNode}): ReactElement {
+  async function reduce(prevState: TestState, action: string): Promise<TestState> {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: await Promise.resolve(1)
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <AsyncReducerProvider
+      reducer={reduce}
+      initialState={initialState}
+    >
+      {children}
+    </AsyncReducerProvider>
+  )
+}
+
+function DeprecatedTestNamedReducer({ children }: {children: ReactNode}): ReactElement {
+  function reduce(prevState: TestState, action: string): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
+  }
   return (
     <NamedReducer
       name='testNamedReducer'
@@ -45,7 +136,28 @@ function TestNamedReducer({ children }: {children: ReactNode}): ReactElement {
   )
 }
 
-function TestReducerMainHook(): ReactElement {
+function TestSyncReducerMainHook(): ReactElement {
+  const [ state, dispatch ]: ReducerProviderValue<TestState, string> = useReducer<TestState, string>('testNamedReducer')
+  return (
+    <button onClick={(): void => dispatch('ACTION1')}>
+      Child{state.lastAction}
+    </button>
+  )
+}
+
+function TestAsyncReducerMainHook(): ReactElement {
+  const [ state, dispatch ]: ReducerProviderValue<TestState, string, Async> = useReducer<TestState, string, Async>('testNamedReducer')
+  const someFunc = () => {}
+  return (
+    <button onClick={async (): Promise<void> => await dispatch('ACTION1')
+      .then(someFunc)
+    }>
+      Child{state.lastAction}
+    </button>
+  )
+}
+
+function DeprecatedTestReducerMainHook(): ReactElement {
   const { state, dispatch }: NamedReducerInterface<TestState, string> = useNamedReducer<TestState, string>('testNamedReducer')
   return (
     <button onClick={() => dispatch('ACTION1')}>
@@ -63,10 +175,22 @@ function TestReducerStateHook(): ReactElement {
   )
 }
 
-function TestReducerDispatcherHook(): ReactElement {
+function TestSyncReducerDispatcherHook(): ReactElement {
   const theDispatcher: Dispatcher<string> = useReducerDispatcher<string>('testNamedReducer')
   return (
-    <button onClick={() => theDispatcher('ACTION1')}>
+    <button onClick={(): void => theDispatcher('ACTION1')}>
+      Children
+    </button>
+  )
+}
+
+function TestAsyncReducerDispatcherHook(): ReactElement {
+  const theDispatcher: Dispatcher<string, Async> = useReducerDispatcher<string, Async>('testNamedReducer')
+  const someFunc = () => {}
+  return (
+    <button onClick={(): Promise<void> => theDispatcher('ACTION1')
+      .then(someFunc)
+    }>
       Children
     </button>
   )

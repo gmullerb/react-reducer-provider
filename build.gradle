@@ -118,7 +118,7 @@ task assessTypingsTs(type: NpmTask) {
 assessTypingsTs ASSESS_TYPINGS_COMMON_CONFIG
 
 task assessMain {
-  dependsOn 'assessStyleMain', 'assessFlowStyleMain', 'assessTsStyleMain', 'assessTypingsFlow', 'assessTypingsTs'
+  dependsOn 'assessStyleMain', 'assessTypingsFlow', 'assessTypingsTs'
 }
 
 task assessTest(type: NpmTask) {

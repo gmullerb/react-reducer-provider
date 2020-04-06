@@ -1,10 +1,11 @@
-// Copyright (c) 2019 Gonzalo Müller Bravo.
+// Copyright (c) 2020 Gonzalo Müller Bravo.
 
 const webpackConfig = require('./webpack.test.js')
 
 module.exports = function (config) {
   config.set({
     files: ['testEntryPoint.js'],
+    exclude: [ '**/*.test.jsx'],
     frameworks: ['jasmine'],
     browsers: ['jsdom'],
     preprocessors: {
@@ -34,16 +35,10 @@ module.exports = function (config) {
       skipFilesWithNoCoverage: true,
       thresholds: {
         global: {
-          statements: 97,
-          branches: 97,
-          functions: 97,
-          lines: 97,
-        },
-        each: {
-          statements: 95,
-          branches: 95,
-          functions: 95,
-          lines: 95,
+          branches: 85,
+          functions: 65,
+          statements: 25,
+          lines: 5
         }
       }
     },

@@ -3,7 +3,6 @@
     "jasmine": true
   },
   "rules": {
-    "import/no-namespace": "off",
-    "react/no-multi-comp": "off"
+    "import/no-namespace": "off"
   }
 }

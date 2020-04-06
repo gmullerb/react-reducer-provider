@@ -1,12 +1,12 @@
-# React Named Reducer with Actions Creators and Flow typings
+# React Reducer Provider with Actions Creators and Flow typings
 
-1 . Add **react-named-reducer** (and prerequisite) to `package.json`:
+1 . Add **react-reducer-provider** (and prerequisite) to `package.json`:
 
 ```json
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-named-reducer": "2.0.1",
+    "react-reducer-provider": "2.1.0",
     ..
 ```
 
@@ -34,44 +34,44 @@ export {
 }
 ```
 
-3 . Create the `NamedReducer`:
+3 . Create the Reducer Provider:
 
-**`SomeNamedReducer.jsx`**:
+**`SomeReducerProvider.jsx`**:
 
 ```jsx
 import { initialState, reduce } from '../path/to/SomeReducer'
 import React from 'react'
-import { NamedReducer } from 'react-named-reducer'
+import { SyncReducerProvider } from 'react-reducer-provider'
 
 import type {
   Element,
   Node
 } from 'react'
 
-function SomeNamedReducer({ children }: {children: Element<any>}): Node {
+function SomeReducerProvider({ children }: {children: Element<any>}): Node {
   return (
-    <NamedReducer
+    <SyncReducerProvider
       name='someNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
       {children}
-    </NamedReducer>
+    </SyncReducerProvider>
   )
 }
 
 export {
   someNamedReducer as default,
-  SomeNamedReducer
+  SomeReducerProvider
 }
 ```
 
-4 . Define the Actions Creators through a custom React Hook, which will represent the bridge between the `NamedReducer` and the Components:
+4 . Define the Actions Creators through a custom React Hook, which will represent the bridge between the Reducer Provider and the Components:
 
 `SomeActions.js`:
 
 ```js
-import { useNamedReducer } from 'react-named-reducer'
+import { useReducer } from 'react-reducer-provider'
 
 interface SomeActions {
   goUp: () => void;
@@ -84,7 +84,7 @@ interface UseActions {
 }
 
 export default function useActions(): SomeActions {
-  const { state, dispatch } = useNamedReducer<number, string>('someNamedReducer')
+  const [ state, dispatch ] = useReducer<number, string>('someNamedReducer')
   return {
     state,
     actions: {
@@ -104,6 +104,8 @@ export {
   useActions as default
 }
 ```
+
+> It may require the use of `useMemo` and `useCallback` to "improve" performance, check [`MockingReducerProvider.test.jsx`](../src/test/js/MockingReducerProvider.test.jsx).
 
 5 . Define some Components:
 
@@ -163,7 +165,7 @@ export default function SomeComponentN({currentState}: {currentState: number}): 
 import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
-import someNamedReducer from '../path/to/SomeNamedReducer'
+import someNamedReducer from '../path/to/SomeReducerProvider'
 import useActions from './path/to/SomeActions'
 import React from 'react'
 
@@ -186,18 +188,20 @@ export default function SomeContainer(): Node {
 
 ```jsx
 import SomeContainer from './path/to/SomeContainer'
-import { SomeNamedReducer } from '../path/to/SomeNamedReducer'
+import { SomeReducerProvider } from '../path/to/SomeReducerProvider'
 import React from 'react'
 
 import type { Node } from 'react'
 
 export default function SomeContainer(): Node {
   return (
-    <SomeNamedReducer>
+    <SomeReducerProvider>
       <SomeContainer />
-    </SomeNamedReducer>
+    </SomeReducerProvider>
   )
 }
 ```
 
-[Back to Main documentation](../README.md)
+## Main documentation
+
+[Back](../README.md)
