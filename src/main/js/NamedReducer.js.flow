@@ -49,10 +49,10 @@ declare export function useReducerState<STATE>(name?: string): STATE
 
 declare export function useReducerDispatcher<ACTION, DISPATCH: Async | Sync = Sync>(name?: string): Dispatcher<ACTION, DISPATCH>
 
-// Helper
-/////////
+// Helpers
+//////////
 
-export interface Action<TYPE, DATA> {
+export interface Action<TYPE, DATA = typeof undefined> {
   type: TYPE;
   data?: DATA;
 }

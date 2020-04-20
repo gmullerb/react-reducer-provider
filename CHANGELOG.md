@@ -1,5 +1,9 @@
 # React Reducer Provider Change Log
 
+## 2.1.1 - April 2020
+
+* Exports `Action` helper type for Typescript.
+
 ## Inception of react-reducer-provider :D - 2.1.0 - April 2020
 
 * Inception :D => Evolution of [react-named-reducer](https://www.npmjs.com/package/react-named-reducer)

@@ -18,6 +18,7 @@ import type {
   Node
 } from 'react'
 import type {
+  Action,
   Async,
   NamedReducerValue,
   Dispatcher,
@@ -201,4 +202,17 @@ function TestAsyncReducerDispatcherHook(): Node {
       Children
     </button>
   )
+}
+
+function TestAction(): Action<string, string> {
+  return {
+    type: 'theType',
+    data: 'theData'
+  }
+}
+
+function TestEmptyAction(): Action<string> {
+  return {
+    type: 'theType'
+  }
 }

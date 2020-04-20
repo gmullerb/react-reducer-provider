@@ -55,10 +55,10 @@ declare function useReducerState<STATE>(name?: string): STATE
 
 declare function useReducerDispatcher<ACTION, DISPATCH extends Async | Sync = Sync>(name?: string): Dispatcher<ACTION, DISPATCH>
 
-// Helper
-/////////
+// Helpers
+//////////
 
-declare interface Action<TYPE, DATA> {
+declare interface Action<TYPE, DATA = undefined> {
   type: TYPE;
   data?: DATA;
 }
@@ -119,6 +119,9 @@ export {
   useReducer,
   useReducerState,
   useReducerDispatcher,
+  // Helpers
+  //////////
+  Action,
   // Deprecations
   ///////////////
   NamedReducer,

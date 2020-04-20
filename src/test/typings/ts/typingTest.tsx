@@ -5,6 +5,7 @@ import React, {
   ReactNode
 } from 'react'
 import {
+  Action,
   Async,
   AsyncReducerProvider,
   NamedReducer,
@@ -194,4 +195,17 @@ function TestAsyncReducerDispatcherHook(): ReactElement {
       Children
     </button>
   )
+}
+
+function TestAction(): Action<string, string> {
+  return {
+    type: 'theType',
+    data: 'theData'
+  }
+}
+
+function TestEmptyAction(): Action<string> {
+  return {
+    type: 'theType'
+  }
 }
