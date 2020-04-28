@@ -1,26 +1,21 @@
 // Copyright (c) 2019 Gonzalo Müller Bravo.
 import {
   AsyncReducerProvider,
-  NamedReducer,
-  NamedReducerInterface,
   useReducer,
   useReducerDispatcher,
   useReducerState,
-  useNamedReducer,
   SyncReducerProvider
 } from '../../../src/NamedReducer'
 
 import React from 'react'
 
 import type {
-  Context,
   Element,
   Node
 } from 'react'
 import type {
   Action,
   Async,
-  NamedReducerValue,
   Dispatcher,
   ReducerProviderValue
 } from '../../../src/NamedReducer'
@@ -121,29 +116,6 @@ function TestSingletonAsyncReducerProvider({ children }: {children: Element<any>
   )
 }
 
-function DeprecatedTestNamedReducer({ children }: {children: Element<any>}): Node {
-  function reduce(prevState: TestState, action: string): TestState {
-    switch (action) {
-      case 'ACTION1':
-        return {
-          lastAction: 1
-        }
-      default:
-        return prevState
-    }
-  }
-
-  return (
-    <NamedReducer
-      name='testNamedReducer'
-      reducer={reduce}
-      initialState={initialState}
-    >
-      {children}
-    </NamedReducer>
-  )
-}
-
 function TestSyncReducerMainHook(): Node {
   const [state, dispatch]: ReducerProviderValue<TestState, string> = useReducer<TestState, string>('testNamedReducer')
   return (
@@ -160,15 +132,6 @@ function TestAsyncReducerMainHook(): Node {
     <button onClick={async () => await dispatch('ACTION1')
       .then(someFunc)
     }>
-      Child{state.lastAction}
-    </button>
-  )
-}
-
-function DeprecatedTestReducerMainHook(): Node {
-  const { state, dispatch }: NamedReducerInterface<TestState, string> = useNamedReducer<TestState, string>('testNamedReducer')
-  return (
-    <button onClick={() => dispatch('ACTION1')}>
       Child{state.lastAction}
     </button>
   )

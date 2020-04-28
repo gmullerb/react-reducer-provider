@@ -37,30 +37,5 @@ module.exports = {
   },
   useReducerDispatcher(name) {
     return React.useContext(ReducerProvider.contexts.get(name))[1]
-  },
-
-  // Deprecations
-  ///////////////
-  /**
-   * @deprecated since version 2.1.0, use 'Reducer' or 'AsyncReducer' instead.
-   */
-  NamedReducer: SyncReducerProvider,
-  /**
-   * @deprecated since version 2.1.0, use 'useReducer' instead.
-   */
-  useNamedReducerContext(name) {
-    return ReducerProvider.contexts.get(name)
-  },
-  /**
-   * @deprecated since version 2.1.0, use 'useReducer' instead.
-   */
-  useNamedReducer(name) {
-    const reducerContext = React.useContext(ReducerProvider.contexts.get(name))
-    return React.useMemo(() => ({
-      state: reducerContext[0],
-      dispatch: reducerContext[1]
-    }), [
-      reducerContext
-    ])
   }
 }

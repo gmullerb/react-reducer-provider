@@ -63,47 +63,6 @@ declare interface Action<TYPE, DATA = undefined> {
   data?: DATA;
 }
 
-// Deprecations
-///////////////
-
-/**
- * @deprecated since version 2.1.0, use 'SyncReducerProps' or 'AsyncReducerProps' instead.
- */
-declare interface NamedReducerProps<STATE, ACTION> extends SyncReducerProps<STATE, ACTION> {}
-
-/**
- * @deprecated since version 2.1.0, use 'SyncReducerProvider' or 'AsyncReducerProvider' instead.
- */
-declare function NamedReducer<STATE, ACTION>(props: NamedReducerProps<STATE, ACTION>): ReactElement<NamedReducerProps<STATE, ACTION>>
-
-/**
- * @deprecated since version 2.1.0, use 'Dispatcher' instead.
- */
-declare interface NamedReducerDispatcher<STATE, ACTION> extends Dispatcher<ReducerAction<Reducer<STATE, ACTION>>> {}
-
-/**
- * @deprecated since version 2.1.0, use 'ReducerProviderValue' instead.
- */
-declare interface NamedReducerInterface<STATE, ACTION> {
-  state: ReducerState<Reducer<STATE, ACTION>>;
-  dispatch: NamedReducerDispatcher<STATE, ACTION>;
-}
-
-/**
- * @deprecated since version 2.1.0, use 'useReducer' instead.
- */
-declare function useNamedReducer<STATE, ACTION>(name: string): NamedReducerInterface<STATE, ACTION>
-
-/**
- * @deprecated since version 2.1.0, use 'ReducerProviderValue' instead.
- */
-declare interface NamedReducerValue<STATE, ACTION> extends ReducerProviderValue<STATE, ACTION> {}
-
-/**
- * @deprecated since version 2.1.0, use 'useReducer' instead.
- */
-declare function useNamedReducerContext<STATE, ACTION>(name: string): Context<NamedReducerValue<STATE, ACTION>>
-
 export {
   ReducerProps,
   SyncReducer,
@@ -121,13 +80,5 @@ export {
   useReducerDispatcher,
   // Helpers
   //////////
-  Action,
-  // Deprecations
-  ///////////////
-  NamedReducer,
-  NamedReducerProps,
-  NamedReducerInterface,
-  useNamedReducer,
-  useNamedReducerContext,
-  NamedReducerValue
+  Action
 }

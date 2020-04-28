@@ -89,7 +89,7 @@
     "assessTsStyleMain": "eslint --config tests/typings/ts/.eslintrc.json --color \"src/**/*.ts\"",
     "assessStyleConfig": "eslint --color \"config/**/*.js\"",
     "assessStyleMain": "eslint --color \"src/**/*.js\"",
-    "assessStyleTest": "eslint --color \"tests/js/**/*.+(js|jsx)\"",
+    "assessStyleTest": "eslint --color \"tests/js/**/*.js*\"",
     "testTypingsFlow": "flow check --color=always ./config/test/typings",
     "testTypingsTs": "tsc --project config/test/typings/tsconfig.json",
     "test": "karma start config/test/karma.conf.js --colors",
