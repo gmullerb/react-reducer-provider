@@ -10,7 +10,7 @@ import {
   ReducerProviderValue,
   Sync,
   SyncReducerProvider
-} from '../../../src/NamedReducer'
+} from '../../../src/ReducerProvider'
 import React, {
   ReactElement,
   ReactNode

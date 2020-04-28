@@ -4,8 +4,8 @@
   "version": "3.0.0-beta",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
-  "main": "src/NamedReducer.js",
-  "types": "src/NamedReducer.d.ts",
+  "main": "src/ReducerProvider.js",
+  "types": "src/ReducerProvider.d.ts",
   "files": [
     "src"
   ],

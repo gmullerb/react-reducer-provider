@@ -5,7 +5,7 @@ import {
   useReducerDispatcher,
   useReducerState,
   SyncReducerProvider
-} from '../../../src/NamedReducer'
+} from '../../../src/ReducerProvider'
 
 import React from 'react'
 
@@ -18,7 +18,7 @@ import type {
   Async,
   Dispatcher,
   ReducerProviderValue
-} from '../../../src/NamedReducer'
+} from '../../../src/ReducerProvider'
 
 interface TestState {
   lastAction: number;
