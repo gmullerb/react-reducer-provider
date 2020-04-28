@@ -1,5 +1,18 @@
 # React Reducer Provider Change Log
 
+## 3.0.0 - April 2020
+
+* Breaking changes:
+  * Removes Deprecated: `NamedReducer`, `useNamedReducerContext`, `useNamedReducer`, `NamedReducerProps`, `NamedReducerInterface` and `NamedReducerValue`.
+  * Moves from a Maven style folder structure to a "standard" Npm package style:
+    * `src/test/` => `tests/`
+    * `src/main/js` => `src/`
+  * Renames `NamedReducer` files to `ReducerProvider` files.
+* Improves project configuration.
+  * Simplifies gradle tasks.
+  * Enhances npm scripts.
+* Updates Documentation files.
+
 ## 2.1.1 - April 2020
 
 * Exports `Action` helper type for Typescript.
