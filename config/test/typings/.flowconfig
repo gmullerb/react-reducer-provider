@@ -1,9 +1,9 @@
 [include]
-../../../src/main/js/*.js.flow
-../../../src/test/typings/flow/typingTest.jsx
+../../../src/*.js.flow
+../../../tests/typings/flow/typingTest.jsx
 
 [untyped]
-../../../src/main/js/*.js
+../../../src/*.js
 
 [options]
 all=true

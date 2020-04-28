@@ -4,7 +4,7 @@ import {
   useReducer,
   useReducerDispatcher,
   useReducerState
-} from '../../main/js/NamedReducer'
+} from '../../src/NamedReducer'
 
 import delay from 'delay'
 import { mount } from 'enzyme'

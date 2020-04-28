@@ -23,16 +23,33 @@
     ])
 ```
 
+or
+
+if values is going to change from test case to test case:
+
+```js
+  import * as ReducerProviderModule from 'react-reducer-provider'
+  ..
+  let mockState
+  let mockDispatcher
+  spyOn(ReducerProviderModule, 'useReducer')
+    .and
+    .callFake(() => [
+      mockState,
+      mockDispatcher
+    ])
+```
+
 * With Jest:
 
 ```js
   const mockState = {}
   const mockDispatcher = jest.fn()
   jest.mock('react-reducer-provider', () => ({
-    useReducer: () => ({
-      state: mockState,
-      dispatch: mockDispatcher
-    })
+    useReducer: () => ([
+      mockState,
+      mockDispatcher
+    ])
   }))
 ```
 
@@ -47,6 +64,19 @@
   spyOn(NamedReducerModule, 'useReducerState')
     .and
     .returnValue(mockState)
+```
+
+or
+
+if state is going to change from test case to test case:
+
+```js
+  import * as ReducerProviderModule from 'react-reducer-provider'
+  ..
+  let mockState
+  spyOn(ReducerProviderModule, 'useReducerState')
+    .and
+    .callFake(() => mockState)
 ```
 
 * With Jest:
@@ -71,6 +101,19 @@
     .returnValue(mockDispatcher)
 ```
 
+or
+
+if dispatcher is going to change from test case to test case:
+
+```js
+  import * as ReducerProviderModule from 'react-reducer-provider'
+  ..
+  let mockDispatcher
+  spyOn(ReducerProviderModule, 'useReducerDispatcher')
+    .and
+    .callFake(() => mockDispatcher)
+```
+
 * With Jest:
 
 ```js
@@ -80,7 +123,7 @@
   }))
 ```
 
-Examples can be seen at: [`MockingReducerProvider.test.jsx`](../src/test/js/MockingReducerProvider.test.jsx).
+Examples can be seen at: [`MockingReducerProvider.test.jsx`](../tests/js/MockingReducerProvider.test.jsx).
 
 ## Integration Test - Testing how a component that requires to be enclosed in a Reducer Provider behave
 
@@ -117,7 +160,7 @@ Examples can be seen at: [`MockingReducerProvider.test.jsx`](../src/test/js/Mock
     )
 ```
 
-Examples can be seen at: [`SingletonReducerProvider.test.jsx`](../src/test/js/SingletonReducerProvider.test.jsx), [`SyncReducerProvider.test.jsx`](../src/test/js/SyncReducerProvider.test.jsx) and [`AsyncReducerProviderWithAsync.test.jsx`](../src/test/js/AsyncReducerProviderWithAsync.test.jsx).
+Examples can be seen at: [`SingletonReducerProvider.test.jsx`](../tests/js/SingletonReducerProvider.test.jsx), [`SyncReducerProvider.test.jsx`](../tests/js/SyncReducerProvider.test.jsx) and [`AsyncReducerProviderWithAsync.test.jsx`](../tests/js/AsyncReducerProviderWithAsync.test.jsx).
 
 ## Main documentation
 

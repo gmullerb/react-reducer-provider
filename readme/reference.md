@@ -1,6 +1,6 @@
 # `SyncReducerProvider` | `AsyncReducerProvider` | `useReducer` | `useReducerState` | `useReducerDispatcher`
 
-[`SyncReducerProvider` & `AsyncReducerProvider`](../src/main/js/NamedReducer.js) are React Components which defines a [React Context](https://reactjs.org/docs/context.html) that allows to Manage State using [Flux](http://facebook.github.io/flux), an application architecture that handles application states in a unidirectional way.
+[`SyncReducerProvider` & `AsyncReducerProvider`](../src/NamedReducer.js) are React Components which defines a [React Context](https://reactjs.org/docs/context.html) that allows to Manage State using [Flux](http://facebook.github.io/flux), an application architecture that handles application states in a unidirectional way.
 
 * Flux is composed basically with:
   * Stores: keeps states of the app (or components).
@@ -15,7 +15,7 @@ Each `SyncReducerProvider` or `AsyncReducerProvider` is equivalent to a Flux str
 
 ![`SyncReducerProvider` & `AsyncReducerProvider`](react-reducer-provider.svg "SyncReducerProvider & AsyncReducerProvider")
 
-[`SyncReducerProvider` & `AsyncReducerProvider`](../src/main/js/NamedReducer.js) are React "Special" Elements defined by 3 properties:
+[`SyncReducerProvider` & `AsyncReducerProvider`](../src/NamedReducer.js) are React "Special" Elements defined by 3 properties:
 
 *properties*:
 
@@ -56,7 +56,7 @@ There are different ways of doing this:
 * **`useReducerDispatcher`**, which give access only the Dispatcher.
 * **`useReducerState`**, which give access only the State.
 
-> Examples can be seen at: [`SyncReducerProvider.test.jsx`](../src/test/js/SyncReducerProvider.test.jsx) and [`AsyncReducerProviderWithAsync.test.jsx`](..src/test/js/AsyncReducerProviderWithAsync.test.jsx).
+> Examples can be seen at: [`SyncReducerProvider.test.jsx`](../tests/js/SyncReducerProvider.test.jsx) and [`AsyncReducerProviderWithAsync.test.jsx`](../tests/js/AsyncReducerProviderWithAsync.test.jsx).
 
 ## `useReducer`
 

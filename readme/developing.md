@@ -46,18 +46,16 @@ Run:
     /main
     /test
   /src
-    /main
-      /js
-    /test
-      /js
-      /typings
+  /tests
+    /js
+    /typings
 ```
 
 - `config/main`: Configuration files for Main tools.
 - `config/test`: Configuration files for Tests.
-- `src/main/js`: Main source files.
-- `src/test/js`: Test source files[1].
-- `src/test/typings`: Test of typings for Flow and Typescript.
+- `src`: Main source files.
+- `tests/js`: Test source files[1].
+- `tests/typings`: Test of typings for Flow and Typescript.
 
 > [1] Tests are done with [Karma](http://karma-runner.github.io) and [Jasmine](https://jasmine.github.io).
 
@@ -74,9 +72,9 @@ Npm scripts, [`package.json`](../package.json):
 * `assessStyleConfig`: checks eslint style of config files [1].
 * `assessStyleMain`: checks eslint style of main source files [1].
 * `assessStyleTest`: checks eslint style of test source files [1].
-* `test`: runs Jasmine/Karma tests for Reducer Provider components (`src/test/js`).
-* `testTypingFlow`: tests Reducer Provider components Flow typings (`src/test/typings/flow`).
-* `testTypingTs`: tests Reducer Provider components Typescript typings (`src/test/typings/ts`).
+* `test`: runs Jasmine/Karma tests for Reducer Provider components (`tests/js`).
+* `testTypingFlow`: tests Reducer Provider components Flow typings (`tests/typings/flow`).
+* `testTypingTs`: tests Reducer Provider components Typescript typings (`tests/typings/ts`).
 
 Run `npm run check` to execute all tasks.
 
@@ -108,11 +106,11 @@ Gradle tasks, [`build.gradle`](../build.gradle):
     * will run `onlyGradle:assessStyleConfig` npm script.
 
 * To test code and check coverage: `gradlew test`, this will run:
-  * `unitTest`: runs Jasmine/Karma tests for Reducer Provider components (`src/test/js`).
+  * `unitTest`: runs Jasmine/Karma tests for Reducer Provider components (`tests/js`).
     * will run `test` npm script.
-  * `testTypingFlow`: tests Reducer Provider components Flow typings (`src/test/typings/flow`).
+  * `testTypingFlow`: tests Reducer Provider components Flow typings (`tests/typings/flow`).
     * will run `testTypingsFlow` npm script.
-  * `testTypingTs`: tests Reducer Provider components Typescript typings (`src/test/typings/ts`).
+  * `testTypingTs`: tests Reducer Provider components Typescript typings (`tests/typings/ts`).
     * will run `testTypingTs` npm script.
 
 Run `./gradlew` to execute default tasks:

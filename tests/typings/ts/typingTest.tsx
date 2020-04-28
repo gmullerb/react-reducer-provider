@@ -19,7 +19,7 @@ import {
   ReducerProviderValue,
   Sync,
   SyncReducerProvider
-} from '../../../main/js/NamedReducer'
+} from '../../../src/NamedReducer'
 
 interface TestState {
   lastAction: number;

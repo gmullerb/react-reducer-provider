@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 import * as React from 'react'
-import * as ReducerProviderModule from '../../main/js/NamedReducer'
+import * as ReducerProviderModule from '../../src/NamedReducer'
 
 import { mount, shallow } from 'enzyme'
 

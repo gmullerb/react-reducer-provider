@@ -16,6 +16,6 @@
     "target": "es3"
   },
   "include": [
-    "../../src/main/js"
+    "../../src"
   ]
 }

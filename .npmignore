@@ -4,7 +4,6 @@ build/
 config/
 dev_resources/
 gradle/
-src/test/
 readme/
 # Files
 .eslintrc.json

@@ -19,7 +19,7 @@ node {
 // TASKS
 ////////
 
-final MAIN_FOLDER = "$projectDir/src/main/js"
+final MAIN_FOLDER = "$projectDir/src"
 final TEST_FOLDER = "$projectDir/src/test"
 
 final ASSESS_COMMON_CONFIG = {

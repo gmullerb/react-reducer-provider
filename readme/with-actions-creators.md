@@ -85,7 +85,7 @@ export default function useActions() {
 }
 ```
 
-> It may require the use of `useMemo` and `useCallback` to "improve" performance, check [`MockingReducerProvider.test.jsx`](../src/test/js/MockingReducerProvider.test.jsx).
+> It may require the use of `useMemo` and `useCallback` to "improve" performance, check [`MockingReducerProvider.test.jsx`](../tests/js/MockingReducerProvider.test.jsx).
 
 5 . Define some Components:
 

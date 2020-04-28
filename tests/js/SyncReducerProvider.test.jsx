@@ -1,12 +1,11 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 import {
-  AsyncReducerProvider,
+  SyncReducerProvider,
   useReducer,
   useReducerDispatcher,
   useReducerState
-} from '../../main/js/NamedReducer'
+} from '../../src/NamedReducer'
 
-import { act } from 'react-dom/test-utils'
 import { mount } from 'enzyme'
 import React from 'react'
 
@@ -19,22 +18,22 @@ function testReduce(prevState, action) {
   }
 }
 
-describe('AsyncReducerProvider wit Sync reducer tests', () => {
+describe('SyncReducerProvider tests', () => {
   it('should render', () => {
     const testInitialState = {}
 
     const provider = mount(
-      <AsyncReducerProvider
-        name='testNamedReducerAS0'
+      <SyncReducerProvider
+        name='testNamedReducer0'
         reducer={testReduce}
         initialState={testInitialState}
       >
         <div>Child</div>
-      </AsyncReducerProvider>
+      </SyncReducerProvider>
     )
 
     expect(provider).toHaveText('Child')
-    expect(provider).toHaveProp('name', 'testNamedReducerAS0')
+    expect(provider).toHaveProp('name', 'testNamedReducer0')
     expect(provider).toHaveProp('reducer', testReduce)
     expect(provider).toHaveProp('initialState', testInitialState)
   })
@@ -42,7 +41,7 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
   it('should reduce with useReducerDispatcher and get state', async () => {
     const testInitialState = '0'
     const FunComponent1 = () => {
-      const dispatch = useReducerDispatcher('testNamedReducerAS2')
+      const dispatch = useReducerDispatcher('testNamedReducer2')
       return (
         <button onClick={() => dispatch('ACTION1')}>
           Click
@@ -50,7 +49,7 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
       )
     }
     const FunComponent2 = () => {
-      const state = useReducerState('testNamedReducerAS2')
+      const state = useReducerState('testNamedReducer2')
       return (
         <div>
           Child{state}
@@ -58,29 +57,28 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
       )
     }
     const provider = mount(
-      <AsyncReducerProvider
-        name='testNamedReducerAS2'
+      <SyncReducerProvider
+        name='testNamedReducer2'
         reducer={testReduce}
         initialState={testInitialState}
       >
         <FunComponent1 />
         <FunComponent2 />
-      </AsyncReducerProvider>
+      </SyncReducerProvider>
     )
     expect(provider).toHaveText('ClickChild0')
 
-    await act(() => {
-      provider.find('button').simulate('click')
-      provider.update()
-    })
+    provider.find('button').simulate('click')
+    provider.update()
 
     expect(provider).toHaveText('ClickChild1')
   })
 
-  it('should reduce with useReducer', async () => {
+
+  it('should reduce with useReducer', () => {
     const testInitialState = '0'
     const FunComponent = () => {
-      const [state, dispatch] = useReducer('testNamedReducerAS1')
+      const [state, dispatch] = useReducer('testNamedReducer1')
       return (
         <button onClick={() => dispatch('ACTION1')}>
           Child{state}
@@ -88,25 +86,24 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
       )
     }
     const provider = mount(
-      <AsyncReducerProvider
-        name='testNamedReducerAS1'
+      <SyncReducerProvider
+        name='testNamedReducer1'
         reducer={testReduce}
         initialState={testInitialState}
       >
         <FunComponent />
-      </AsyncReducerProvider>
+      </SyncReducerProvider>
     )
+
     expect(provider).toHaveText('Child0')
 
-    await act(() => {
-      provider.find('button').simulate('click')
-      provider.update()
-    })
+    provider.find('button').simulate('click')
+    provider.update()
 
     expect(provider).toHaveText('Child1')
   })
 
-  it('should get nested providers', async () => {
+  it('should get nested providers', () => {
     const testInitialState = '0'
     const FunComponent = (props) => {
       const [ state, dispatch ] = useReducer(props.reducer)
@@ -121,33 +118,32 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
     }
 
     const provider = mount(
-      <AsyncReducerProvider
-        name='testNamedReducerAS7'
+      <SyncReducerProvider
+        name='testNamedReducer7'
         reducer={testReduce}
         initialState={testInitialState}
       >
         <FunComponent
           id='A'
-          reducer='testNamedReducerAS7'
+          reducer='testNamedReducer7'
         />
-        <AsyncReducerProvider
-          name='testNamedReducerAS8'
+        <SyncReducerProvider
+          name='testNamedReducer8'
           reducer={testReduce}
           initialState={testInitialState}
         >
           <FunComponent
             id='B'
-            reducer='testNamedReducerAS8'
+            reducer='testNamedReducer8'
           />
-        </AsyncReducerProvider>
-      </AsyncReducerProvider>
+        </SyncReducerProvider>
+      </SyncReducerProvider>
     )
+
     expect(provider).toHaveText('ChildA0ChildB0')
 
-    await act(() => {
-      provider.find('button[id="B"]').simulate('click')
-      provider.update()
-    })
+    provider.find('button[id="B"]').simulate('click')
+    provider.update()
 
     expect(provider).toHaveText('ChildA0ChildB1')
   })

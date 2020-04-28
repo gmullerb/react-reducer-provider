@@ -1,7 +1,8 @@
 {
   "extends": [
     "plugin:base-style-config/js-rules",
-    "plugin:base-style-config/import-rules"
+    "plugin:base-style-config/import-rules",
+    "plugin:base-style-config/react-rules"
   ],
   "env":{
     "node": true
@@ -24,14 +25,20 @@
       "error",
       "single"
     ],
-    "semi": [
+    "react/prefer-es6-class": [
       "error",
       "never"
     ],
+    "react/no-multi-comp": "off",
     "regex/invalid": [
       "error", [
         "\"(?!.*')"
       ]
-    ]
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "valid-jsdoc": "off"
   }
 }

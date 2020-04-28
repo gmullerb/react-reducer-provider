@@ -3,7 +3,7 @@ import {
   SyncReducerProvider,
   useReducerDispatcher,
   useReducerState
-} from '../../main/js/NamedReducer'
+} from '../../src/NamedReducer'
 
 import { mount } from 'enzyme'
 import React from 'react'

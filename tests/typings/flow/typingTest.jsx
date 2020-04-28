@@ -8,7 +8,7 @@ import {
   useReducerState,
   useNamedReducer,
   SyncReducerProvider
-} from '../../../main/js/NamedReducer'
+} from '../../../src/NamedReducer'
 
 import React from 'react'
 
@@ -23,7 +23,7 @@ import type {
   NamedReducerValue,
   Dispatcher,
   ReducerProviderValue
-} from '../../../main/js/NamedReducer'
+} from '../../../src/NamedReducer'
 
 interface TestState {
   lastAction: number;

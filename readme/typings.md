@@ -4,8 +4,8 @@
 
 * Any can be used without an "special" [1] configuration.
   * Typings definitions are located together with source files:
-    * Flow: [`NamedReducer.js.flow`](../src/main/js/NamedReducer.js.flow).
-    * Typescript: [`NamedReducer.d.ts`](../src/main/js/NamedReducer.d.ts).
+    * Flow: [`NamedReducer.js.flow`](../src/NamedReducer.js.flow).
+    * Typescript: [`NamedReducer.d.ts`](../src/NamedReducer.d.ts).
 
 Both provide the following types:
 
@@ -326,8 +326,8 @@ function reduce(prevState: AppState, action: AppAction): AppState {
 
 ## Additional Examples
 
-* A more "complete" example with Typescript can be seen at: [`typingTest.tsx`](../src/test/typings/ts/typingTest.tsx).
-* A more "complete" example with Flow can be seen at: [`typingTest.jsx`](../src/test/typings/flow/typingTest.jsx).
+* A more "complete" example with Typescript can be seen at: [`typingTest.tsx`](../tests/typings/ts/typingTest.tsx).
+* A more "complete" example with Flow can be seen at: [`typingTest.jsx`](../tests/typings/flow/typingTest.jsx).
 
 > An example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-v3t7h?module=%2Fsrc%2FSomeReducerProvider.tsx):  
 [![Edit gmullerb-react-reducer-provider-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-v3t7h?module=%2Fsrc%2FSomeReducerProvider.tsx)  

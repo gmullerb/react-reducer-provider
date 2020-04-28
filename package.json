@@ -1,13 +1,13 @@
 {
   "name": "react-reducer-provider",
   "description": "Asynchronous/Synchronous React Reducer Provider with Hooks",
-  "version": "2.1.1",
+  "version": "3.0.0-beta",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
-  "main": "src/main/js/NamedReducer.js",
-  "types": "src/main/js/NamedReducer.d.ts",
+  "main": "src/NamedReducer.js",
+  "types": "src/NamedReducer.d.ts",
   "files": [
-    "src/main/js"
+    "src"
   ],
   "homepage": "https://gitlab.com/gmullerb/react-reducer-provider",
   "repository": {
@@ -85,11 +85,11 @@
   "scripts": {
     "assessTypingsFlow": "flow check --color=always ./config/main",
     "assessTypingsTs": "tsc --project config/main/tsconfig.json",
-    "assessFlowStyleMain": "eslint --config src/test/typings/flow/.eslintrc.json --color \"src/main/**/*.flow\"",
-    "assessTsStyleMain": "eslint --config src/test/typings/ts/.eslintrc.json --color \"src/main/**/*.ts\"",
+    "assessFlowStyleMain": "eslint --config tests/typings/flow/.eslintrc.json --color \"src/**/*.flow\"",
+    "assessTsStyleMain": "eslint --config tests/typings/ts/.eslintrc.json --color \"src/**/*.ts\"",
     "assessStyleConfig": "eslint --color \"config/**/*.js\"",
-    "assessStyleMain": "eslint --color \"src/main/**/*.js\"",
-    "assessStyleTest": "eslint --color \"src/test/js/**/*.+(js|jsx)\"",
+    "assessStyleMain": "eslint --color \"src/**/*.js\"",
+    "assessStyleTest": "eslint --color \"tests/js/**/*.+(js|jsx)\"",
     "testTypingsFlow": "flow check --color=always ./config/test/typings",
     "testTypingsTs": "tsc --project config/test/typings/tsconfig.json",
     "test": "karma start config/test/karma.conf.js --colors",

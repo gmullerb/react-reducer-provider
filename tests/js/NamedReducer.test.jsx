@@ -1,5 +1,5 @@
 // Copyright (c) 2019 Gonzalo Müller Bravo.
-import { NamedReducer, useNamedReducer, useNamedReducerContext, useReducerDispatcher, useReducerState } from '../../main/js/NamedReducer'
+import { NamedReducer, useNamedReducer, useNamedReducerContext, useReducerDispatcher, useReducerState } from '../../src/NamedReducer'
 import React, { useContext } from 'react'
 
 import { mount } from 'enzyme'
