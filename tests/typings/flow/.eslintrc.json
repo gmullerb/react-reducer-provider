@@ -12,6 +12,8 @@
     }
   },
   "rules" : {
-    "flowtype/no-types-missing-file-annotation": "off"
+    "flowtype/no-types-missing-file-annotation": "off",
+    "import/group-exports": "off",
+    "import/exports-last": "off"
   }
 }

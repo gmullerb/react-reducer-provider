@@ -1,91 +1,101 @@
-image: openjdk:11-jdk
+image: node:latest
 
 cache:
   key: "${CI_COMMIT_SHA}"
   untracked: true
   paths:
-    - .gradle/
     - node_modules/
-
-before_script:
-  - chmod +x ./gradlew
-  - export GRADLE_USER_HOME=`pwd`/.gradle
 
 stages:
   - inception
   - assess
+  - transpile
   - test
   - assemble
 
 create-cache:
   stage: inception
   script:
-    - ./gradlew -v
-    - ./gradlew npmInstall
+    - npm install
   cache:
     key: "${CI_COMMIT_SHA}"
     policy: push
     untracked: true
     paths:
-    - .gradle/
-    - node_modules/
-
-common-assess:
-  stage: assess
-  script:
-    - ./gradlew assessCommon
-  cache:
-    key: "${CI_COMMIT_SHA}"
-    policy: pull
-    untracked: true
-    paths:
-      - .gradle/
-
-project-assess:
-  stage: assess
-  script:
-    - ./gradlew assessGradle
-  cache:
-    key: "${CI_COMMIT_SHA}"
-    policy: pull
-    untracked: true
-    paths:
-      - .gradle/
-
-code-assess:
-  stage: assess
-  script:
-    - ./gradlew assess
-  cache:
-    key: "${CI_COMMIT_SHA}"
-    policy: pull
-    untracked: true
-    paths:
-      - .gradle/
       - node_modules/
 
-code-tests:
-  stage: test
+assess-common:
+  stage: assess
   script:
-    - ./gradlew test
+    - npm run lint.common
+    - npm run lint.config
   cache:
     key: "${CI_COMMIT_SHA}"
     policy: pull
     untracked: true
     paths:
-      - .gradle/
+      - node_modules/
+
+assess-code:
+  stage: assess
+  script:
+    - npm run lint.main
+    - npm run lint.flow
+    - npm run lint.ts
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: pull
+    untracked: true
+    paths:
+      - node_modules/
+
+transpile:
+  stage: transpile
+  script:
+    - npm transpile.flow
+    - npm transpile.ts
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: pull
+    untracked: true
+    paths:
+      - node_modules/
+
+tests-typings:
+  stage: test
+  script:
+    - npm test.flow
+    - npm test.ts
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: pull
+    untracked: true
+    paths:
+      - node_modules/
+
+tests:
+  stage: test
+  script:
+    - npm lint.test
+    - npm test
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: pull
+    untracked: true
+    paths:
       - node_modules/
 
 pack:
   stage: assemble
   script:
-    - ./gradlew build
+    - mkdir -p build
+    - cd build
+    - npm pack ../
   cache:
     key: "${CI_COMMIT_SHA}"
     policy: pull
     untracked: true
     paths:
-      - .gradle/
       - node_modules/
   artifacts:
     name: $CI_PROJECT_NAME-$(date +%Y%m%d-%H%M)-$CI_COMMIT_SHORT_SHA
