@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Gonzalo Müller Bravo.
+// Copyright (c) 2020 Gonzalo Müller Bravo.
 import './enzyme.conf'
 
 const coreContext = require.context('../../src', true, /\.js$/)

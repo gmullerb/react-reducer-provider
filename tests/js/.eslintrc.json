@@ -1,5 +1,8 @@
 {
-  "env":{
+  "extends": [
+    "plugin:base-style-config/regex[test]"
+  ],
+  "env": {
     "jasmine": true
   },
   "rules": {

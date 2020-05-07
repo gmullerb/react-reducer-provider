@@ -4,8 +4,8 @@
 
 * Any can be used without an "special" [1] configuration.
   * Typings definitions are located together with source files:
-    * Flow: [`ReducerProvider.js.flow`](../src/ReducerProvider.js.flow).
-    * Typescript: [`ReducerProvider.d.ts`](../src/ReducerProvider.d.ts).
+    * Flow: [`react-reducer-provider.js.flow`](../src/react-reducer-provider.js.flow).
+    * Typescript: [`react-reducer-provider.d.ts`](../src/react-reducer-provider.d.ts).
 
 Both provide the following types:
 

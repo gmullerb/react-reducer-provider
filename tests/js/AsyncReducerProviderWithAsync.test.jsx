@@ -4,7 +4,7 @@ import {
   useReducer,
   useReducerDispatcher,
   useReducerState
-} from '../../src/ReducerProvider'
+} from '../../cjs/react-reducer-provider'
 
 import delay from 'delay'
 import { mount } from 'enzyme'
@@ -19,7 +19,7 @@ async function testReduce(prevState, action) {
   }
 }
 
-describe('AsyncReducerProvider wit Async reducer tests', () => {
+describe('AsyncReducerProvider with Async reducer tests', () => {
   it('should render', () => {
     const testInitialState = {}
 
@@ -79,7 +79,7 @@ describe('AsyncReducerProvider wit Async reducer tests', () => {
   it('should reduce with useReducer', async () => {
     const testInitialState = '0'
     const FunComponent = () => {
-      const [state, dispatch] = useReducer('testNamedReducerAA2')
+      const [ state, dispatch ] = useReducer('testNamedReducerAA2')
       return (
         <button onClick={() => dispatch('ACTION1')}>
           Child{state}

@@ -1,6 +1,7 @@
 # Folders
 .gradle/
 build/
+cjs/
 node_modules/
 # Files
 *.log

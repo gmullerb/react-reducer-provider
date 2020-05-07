@@ -1,12 +1,13 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../main/tsconfig.json",
   "compileOnSave": false,
   "compilerOptions": {
-      "outDir": "../../build/out-tsc/test",
-      "preserveConstEnums": true,
-      "removeComments": false,
-      "sourceMap": true,
-      "skipLibCheck": true,
+    "outDir": "../../build/out-tsc/test",
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
   "include": [
     "../../src/**/*"

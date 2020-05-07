@@ -4,7 +4,7 @@ import {
   useReducer,
   useReducerDispatcher,
   useReducerState
-} from '../../src/ReducerProvider'
+} from '../../cjs/react-reducer-provider'
 
 import { act } from 'react-dom/test-utils'
 import { mount } from 'enzyme'
@@ -80,7 +80,7 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
   it('should reduce with useReducer', async () => {
     const testInitialState = '0'
     const FunComponent = () => {
-      const [state, dispatch] = useReducer('testNamedReducerAS1')
+      const [ state, dispatch ] = useReducer('testNamedReducerAS1')
       return (
         <button onClick={() => dispatch('ACTION1')}>
           Child{state}

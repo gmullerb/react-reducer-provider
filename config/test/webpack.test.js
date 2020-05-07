@@ -6,14 +6,14 @@ const reactRule = {
   use: {
     loader: 'babel-loader',
     options: {
-      presets: ['@babel/preset-react']
+      presets: [ '@babel/preset-react' ]
     }
   }
 }
 
 const istanbulRule = {
   test: /\.js(x?)$/,
-  include: /src/,
+  include: /cjs/,
   enforce: 'post',
   use: {
     loader: 'istanbul-instrumenter-loader',
@@ -32,7 +32,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: [ '.js', '.jsx' ]
   },
   watch: false
 }

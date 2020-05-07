@@ -1,5 +1,11 @@
 # React Reducer Provider Change Log
 
+## 3.1.0 - May 2020
+
+* Improves project configuration to allow Tree Shaking optimization.
+* Updates Linting tools and does required changes.
+* Updates Documentation files.
+
 ## 3.0.0 - April 2020
 
 * Breaking changes:

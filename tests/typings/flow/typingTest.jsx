@@ -1,11 +1,11 @@
-// Copyright (c) 2019 Gonzalo Müller Bravo.
+// Copyright (c) 2020 Gonzalo Müller Bravo.
 import {
   AsyncReducerProvider,
   useReducer,
   useReducerDispatcher,
   useReducerState,
   SyncReducerProvider
-} from '../../../src/ReducerProvider'
+} from '../../../src/react-reducer-provider'
 
 import React from 'react'
 
@@ -18,7 +18,7 @@ import type {
   Async,
   Dispatcher,
   ReducerProviderValue
-} from '../../../src/ReducerProvider'
+} from '../../../src/react-reducer-provider'
 
 interface TestState {
   lastAction: number;

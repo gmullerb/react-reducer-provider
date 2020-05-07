@@ -4,12 +4,12 @@ const webpackConfig = require('./webpack.test.js')
 
 module.exports = function (config) {
   config.set({
-    files: ['testEntryPoint.js'],
-    exclude: [ '**/*.test.jsx'],
-    frameworks: ['jasmine'],
-    browsers: ['jsdom'],
+    files: [ 'testEntryPoint.js' ],
+    exclude: [ '**/*.test.jsx' ],
+    frameworks: [ 'jasmine' ],
+    browsers: [ 'jsdom' ],
     preprocessors: {
-      'testEntryPoint.js': [ 'webpack']
+      'testEntryPoint.js': [ 'webpack' ]
     },
     webpack: webpackConfig,
     webpackMiddleware: {

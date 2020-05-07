@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Gonzalo Müller Bravo.
+// Copyright (c) 2020 Gonzalo Müller Bravo.
 import {
   Action,
   Async,
@@ -10,7 +10,7 @@ import {
   ReducerProviderValue,
   Sync,
   SyncReducerProvider
-} from '../../../src/ReducerProvider'
+} from '../../../src/react-reducer-provider'
 import React, {
   ReactElement,
   ReactNode

@@ -22,7 +22,7 @@ __________________
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "3.0.0",
+    "react-reducer-provider": "3.1.0",
     ..
 ```
 
@@ -155,6 +155,7 @@ With the introduction of React Hooks, in some way using Flux **library**[1] was 
 
 * It allows to use [**Asynchronous** Reducer/Dispatcher](readme/reference.md).
 * [**Each Reducer Provider can have a different names which allows for easy identification and nesting**](readme/reference.md#nesting).
+* It is ready for Tree Shaking optimization, so you get only what you need from the `react-reducer-provider` in the final app bundle.
 * It provides [its own **type definitions for Typescript and Flow**](readme/typings.md).
 * It is the evolution of [react-named-reducer](https://www.npmjs.com/package/react-named-reducer) (which is a derivation of [react-reducer-context](https://www.npmjs.com/package/react-reducer-context)).
 
@@ -210,6 +211,7 @@ Don't forget:
 * **Learn yourself**.
 * **Share your knowledge**.
 * **Learn from the past, dream on the future, live and enjoy the present to the max!**.
+* **Enjoy and Value the Quest** (It's where you learn and grow).
 
 At life:
 

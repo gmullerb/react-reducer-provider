@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Gonzalo Müller Bravo.
+// Copyright (c) 2020 Gonzalo Müller Bravo.
 import Adapter from 'enzyme-adapter-react-16'
 import Enzyme from 'enzyme'
 import jasmineEnzyme from 'jasmine-enzyme'

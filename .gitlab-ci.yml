@@ -52,8 +52,8 @@ assess-code:
 transpile:
   stage: transpile
   script:
-    - npm transpile.flow
-    - npm transpile.ts
+    - npm run transpile.flow
+    - npm run transpile.ts
   cache:
     key: "${CI_COMMIT_SHA}"
     policy: pull
@@ -64,8 +64,8 @@ transpile:
 tests-typings:
   stage: test
   script:
-    - npm test.flow
-    - npm test.ts
+    - npm run test.flow
+    - npm run test.ts
   cache:
     key: "${CI_COMMIT_SHA}"
     policy: pull
@@ -76,7 +76,7 @@ tests-typings:
 tests:
   stage: test
   script:
-    - npm lint.test
+    - npm run lint.test
     - npm test
   cache:
     key: "${CI_COMMIT_SHA}"

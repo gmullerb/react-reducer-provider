@@ -49,11 +49,11 @@ This command will install `node` (`npm install`) and run `npm run check`.
 Npm scripts, [`package.json`](../package.json):
 
 * `lint.common`: checks common style of "all" files.
-* `lint.config`: checks eslint style of config files [1].
-* `lint.main`: checks eslint style of main source files [1].
+* `lint.config`: checks eslint style of config files.
+* `lint.main`: checks eslint style of main source files.
 * `lint.flow`: checks eslint style of `js.flow` files.
 * `lint.ts`: checks eslint style of `d.ts` files.
-* `lint.test`: checks eslint style of test source files [1].
+* `lint.test`: checks eslint style of test source files.
 * `transpile.flow`: checks Flow typings of source files.
 * `transpile.ts`: checks Typescript typings of source files.
 * `test.flow`: tests Reducer Provider components Flow typings (`tests/typings/flow`).

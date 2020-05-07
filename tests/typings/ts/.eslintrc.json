@@ -5,5 +5,8 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./config/main/tsconfig.json"
+  },
+  "rules": {
+    "unused-imports/no-unused-imports": "off"
   }
 }

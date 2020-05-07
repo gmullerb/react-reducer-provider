@@ -1,8 +1,7 @@
 {
   "extends": [
-    "plugin:base-style-config/js-rules",
-    "plugin:base-style-config/import-rules",
-    "plugin:base-style-config/react-rules"
+    "plugin:base-style-config/js-rules, import-rules, react-rules, unused-imports-rules",
+    "plugin:base-style-config/regex[copyright], regex[jsx], regex[quotes.jsx]"
   ],
   "env":{
     "node": true
@@ -30,11 +29,6 @@
       "never"
     ],
     "react/no-multi-comp": "off",
-    "regex/invalid": [
-      "error", [
-        "\"(?!.*')"
-      ]
-    ],
     "semi": [
       "error",
       "never"

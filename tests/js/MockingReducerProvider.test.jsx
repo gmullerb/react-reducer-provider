@@ -1,22 +1,22 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 import * as React from 'react'
-import * as ReducerProviderModule from '../../src/ReducerProvider'
+import * as ReducerProviderModule from '../../cjs/react-reducer-provider'
 
 import { mount, shallow } from 'enzyme'
 
 describe('Mocking tests', () => {
   it('should work when mocking and testing a custom hook', () => {
     const useCustom = (defaultAction) => {
-      const [state, dispatch] = ReducerProviderModule.useReducer('someProvider')
+      const [ state, dispatch ] = ReducerProviderModule.useReducer('someProvider')
       const someProcess = React.useCallback(() => {
         dispatch(state.field1 === ''
           ? defaultAction
           : 'ACTION1')
-      }, [dispatch])
+      }, [ dispatch ])
       return React.useMemo({
         field1: state.field1,
         someProcess
-      }, [state])
+      }, [ state ])
     }
     const mockDispatcher = jasmine.createSpy()
     spyOn(ReducerProviderModule, 'useReducer')
