@@ -37,23 +37,31 @@ declare function AsyncReducerProvider<STATE, ACTION>(
 // Reducer Consumption
 //////////////////////
 
-type Sync = void
-type Async = Promise<void>
+type Sync<T = any> = T
+type Async<T = any> = Promise<T>
 
-declare interface Dispatcher<ACTION, DISPATCH extends Async | Sync = Sync> {
+declare interface Dispatcher<ACTION, DISPATCH extends Async | Sync = Sync<void>> {
   (value: ACTION): DISPATCH
 }
 
-declare interface ReducerProviderValue<STATE, ACTION, DISPATCH extends Async | Sync = Sync> extends Array<any> {
+declare interface ReducerProviderValue<
+    STATE,
+    ACTION,
+    DISPATCH extends Async<void | STATE> | Sync<void | STATE
+  > = Sync<void>> extends Array<any> {
   readonly 0: STATE;
   readonly 1: Dispatcher<ACTION, DISPATCH>;
 }
 
-declare function useReducer<STATE, ACTION, DISPATCH extends Async | Sync = Sync>(name?: string): ReducerProviderValue<STATE, ACTION, DISPATCH>
+declare function useReducer<STATE, ACTION, DISPATCH extends Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
+  name?: string
+): ReducerProviderValue<STATE, ACTION, DISPATCH>
 
 declare function useReducerState<STATE>(name?: string): STATE
 
-declare function useReducerDispatcher<ACTION, DISPATCH extends Async | Sync = Sync>(name?: string): Dispatcher<ACTION, DISPATCH>
+declare function useReducerDispatcher<ACTION, DISPATCH extends Async | Sync = Sync<void>>(
+  name?: string
+): Dispatcher<ACTION, DISPATCH>
 
 // Helpers
 //////////

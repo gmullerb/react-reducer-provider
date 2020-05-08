@@ -131,6 +131,27 @@ function TestAsyncReducerMainHook(): ReactElement {
   )
 }
 
+function TestSyncReducerMainHookWithReturn(): ReactElement {
+  const [ state, dispatch ]: ReducerProviderValue<TestState, string, Sync<TestState>> = useReducer<TestState, string, Sync<TestState>>('testNamedReducer')
+  return (
+    <button onClick={(): TestState => dispatch('ACTION1')}>
+      Child{state.lastAction}
+    </button>
+  )
+}
+
+function TestAsyncReducerMainHookWithReturn(): ReactElement {
+  const [ state, dispatch ]: ReducerProviderValue<TestState, string, Async<TestState>> = useReducer<TestState, string, Async<TestState>>('testNamedReducer')
+  const someFunc = (value: TestState) => {}
+  return (
+    <button onClick={async (): Promise<void> => await dispatch('ACTION1')
+      .then(someFunc)
+    }>
+      Child{state.lastAction}
+    </button>
+  )
+}
+
 function TestReducerStateHook(): ReactElement {
   const theState: TestState = useReducerState<TestState>('testNamedReducer')
   return (
@@ -154,6 +175,29 @@ function TestAsyncReducerDispatcherHook(): ReactElement {
   const someFunc = () => {}
   return (
     <button onClick={(): Promise<void> => theDispatcher('ACTION1')
+      .then(someFunc)
+    }>
+      Children
+    </button>
+  )
+}
+
+function TestSyncReducerDispatcherHookWithReturn(): ReactElement {
+  const theDispatcher: Dispatcher<number, Sync<string>> = useReducerDispatcher<number, Sync<string>>('testNamedReducer')
+  return (
+    <button onClick={(): void => {
+      const newState: string = theDispatcher(123)
+    }}>
+      Children
+    </button>
+  )
+}
+
+function TestAsyncReducerDispatcherHookWithReturn(): ReactElement {
+  const theDispatcher: Dispatcher<number, Async<string>> = useReducerDispatcher<number, Async<string>>('testNamedReducer')
+  const someFunc = (value: string) => value.toLowerCase()
+  return (
+    <button onClick={(): Promise<string> => theDispatcher(123)
       .then(someFunc)
     }>
       Children

@@ -1,7 +1,7 @@
 {
   "name": "react-reducer-provider",
   "description": "Asynchronous/Synchronous React Reducer Provider with Hooks",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
   "main": "cjs/react-reducer-provider.js",

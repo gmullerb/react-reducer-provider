@@ -79,6 +79,8 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 
 4 . Define the Reducer Consumption:
 
+**Ignoring returned value**:
+
 *Types in function approach* (Recommended):
 
 * More Readable.
@@ -153,6 +155,78 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
+**Using returned value**:
+
+* Must define `DISPATCH` as `Sync<STATE>` or `STATE`:
+
+`useReducer`:
+
+```tsx
+  const [ state, dispatch ] = useReducer<TestState, string, Sync<STATE>>('testNamedReducer')
+  return (
+    <button onClick={(): void => console.log(dispatch('ACTION1'))}>
+      Child{state.lastAction}
+    </button>
+  )
+```
+
+`useReducerState`:
+
+```tsx
+  const theState = useReducerState<TestState>('testNamedReducer')
+  return (
+    <button>
+      Child{theState.lastAction}
+    </button>
+  )
+```
+
+`useReducerDispatcher`:
+
+```tsx
+  const theDispatcher = useReducerDispatcher<string, Sync<STATE>>('testNamedReducer')
+  return (
+    <button onClick={(): void => console.log(theDispatcher('ACTION1'))}>
+      Children
+    </button>
+  )
+```
+
+*Types in values approach*:
+
+`useReducer`:
+
+```tsx
+  const [ state, dispatch ]: ReducerProviderValue<TestState, string, Sync<STATE>> = useReducer('testNamedReducer')
+  return (
+    <button onClick={(): void => console.log(dispatch('ACTION1'))}>
+      Child{state.lastAction}
+    </button>
+  )
+```
+
+`useReducerState`:
+
+```tsx
+  const theState: TestState = useReducerState('testNamedReducer')
+  return (
+    <button>
+      Child{theState.lastAction}
+    </button>
+  )
+```
+
+`useReducerDispatcher`:
+
+```tsx
+  const theDispatcher: Dispatcher<string, Sync<STATE>> = useReducerDispatcher('testNamedReducer')
+  return (
+    <button onClick={(): void => console.log(theDispatcher('ACTION1'))}>
+      Children
+    </button>
+  )
+```
+
 ## Asynchronous Reducer
 
 1 . Define the State:
@@ -202,7 +276,9 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 
 4 . the Define Reducer Consumption:
 
-* Must define `DISPATCH` as `Async` or `Promise<void>`:
+**Ignoring returned value**:
+
+* Must define `DISPATCH` as `Async` (or `Async<>` for Flow) or `Promise<void>`:
   * `useReducer<STATE, ACTION, Async>('name')`, i.e Reduce `STATE` using `ACTION` `Async`hronously.
   * `useReducerDispatcher<ACTION, Async>('name')`, i.e dispatch `ACTION` `Async`hronously.
 
@@ -292,6 +368,96 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
+**Using returned value**:
+
+* Must define `DISPATCH` as `Async<STATE>` or `Promise<STATE>`:
+
+*Types in function approach* (Recommended):
+
+* More Readable.
+* Less coding.
+* Less imports.
+
+`useReducer`:
+
+```tsx
+  const [ state, dispatch ] = useReducer<TestState, string, Async<TestState>>('testNamedReducer')
+  const someFunc = () => {}
+  return (
+    <button onClick={async (): Promise<void> => await dispatch('ACTION1').then(newState => console.info(newState))
+      .then(someFunc)
+    }>
+      Child{state.lastAction}
+    </button>
+  )
+```
+
+`useReducerState`:
+
+```tsx
+  const theState = useReducerState<TestState>('testNamedReducer')
+  return (
+    <button>
+      Child{theState.lastAction}
+    </button>
+  )
+```
+
+`useReducerDispatcher`:
+
+```tsx
+  const theDispatcher = useReducerDispatcher<string, Async<TestState>>('testNamedReducer')
+  const someFunc = () => {}
+  return (
+    <button onClick={(): Promise<void> => theDispatcher('ACTION1').then(newState => console.info(newState))
+      .then(someFunc)
+    }>
+      Children
+    </button>
+  )
+```
+
+*Types in values approach*:
+
+`useReducer`:
+
+```tsx
+  const [ state, dispatch ]: ReducerProviderValue<TestState, string, Async<TestState>> = useReducer('testNamedReducer')
+  const someFunc = () => {}
+  return (
+    <button onClick={async (): Promise<void> => await dispatch('ACTION1').then(newState => console.info(newState))
+      .then(someFunc)
+    }>
+      Child{state.lastAction}
+    </button>
+  )
+```
+
+`useReducerState`:
+
+```tsx
+  const theState: TestState = useReducerState('testNamedReducer')
+  return (
+    <button>
+      Child{theState.lastAction}
+    </button>
+  )
+```
+
+`useReducerDispatcher`:
+
+```tsx
+  const theDispatcher: Dispatcher<string, Async<TestState>> = useReducerDispatcher('testNamedReducer')
+  const someFunc = () => {}
+  return (
+    <button onClick={(): Promise<void> => theDispatcher('ACTION1').then(newState => console.info(newState))
+      .then(someFunc)
+    }>
+      Children
+    </button>
+  )
+```
+
 ## Helper types
 
 Additionally a Helper type is available: `Action<TYPE, DATA>`, useful for defining more complex types of actions:
@@ -335,7 +501,7 @@ function reduce(prevState: AppState, action: AppAction): AppState {
 [![Edit gmullerb-react-reducer-provider-flow](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-flow-w5bmd?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > An asynchronous example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-async-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-ml8lp?module=%2Fsrc%2FSomeReducerProvider.tsx):  
 [![Edit gmullerb-react-reducer-provider-async-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-ml8lp?module=%2Fsrc%2FSomeReducerProvider.tsx)  
-> An example of use can be looked at [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
+> Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
 ## Main documentation
 

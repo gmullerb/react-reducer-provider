@@ -1,4 +1,6 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
+import * as React from 'react'
+
 import {
   AsyncReducerProvider,
   useReducer,
@@ -8,7 +10,6 @@ import {
 
 import { act } from 'react-dom/test-utils'
 import { mount } from 'enzyme'
-import React from 'react'
 
 function testReduce(prevState, action) {
   switch (action) {
@@ -150,5 +151,51 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
     })
 
     expect(provider).toHaveText('ChildA0ChildB1')
+  })
+
+  it('should get the new state when dispatching', async () => {
+    function testReduce(prevState, action) {
+      return prevState + 1
+    }
+    const testInitialState = 0
+    let newState = null
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducerAS9')
+      return (
+        <button onClick={async () => dispatch('ACTION1').then(value => newState = value)}>
+          Click
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useReducerState('testNamedReducerAS9')
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <AsyncReducerProvider
+        name='testNamedReducerAS9'
+        reducer={testReduce}
+        initialState={testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </AsyncReducerProvider>
+    )
+    expect(newState).toBeNull()
+    expect(provider).toHaveText('ClickChild0')
+
+    await act(() => {
+      provider.find('button').simulate('click')
+    })
+    await act(() => {
+      provider.find('button').simulate('click')
+    })
+
+    expect(newState).toBe(2)
+    expect(provider).toHaveText('ClickChild2')
   })
 })

@@ -22,7 +22,7 @@ __________________
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "3.1.0",
+    "react-reducer-provider": "3.2.0",
     ..
 ```
 
@@ -96,7 +96,10 @@ import React from 'react'
 export default function SomeComponent2() {
   const dispatch = useReducerDispatcher()
   return (
-    <button onClick={() => dispatch('ACTION2')}>
+    <button onClick={() => { 
+      const newState = dispatch('ACTION2')
+      console.info(newState)
+    }}>
       Go down!
     </button>
   )
@@ -145,7 +148,7 @@ export default function SomeContainer() {
 [![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-m0924?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > An asynchronous example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-oosyt?module=%2Fsrc%2FSomeReducerProvider.jsx):  
 [![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-oosyt?module=%2Fsrc%2FSomeReducerProvider.jsx)  
-> An example of use can be looked at [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
+> Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 > [1] Injection can be used in order to improve design, but in favor of quick example this was surrender, look at [Injection](readme/with-injection.md) for injection example.
 __________________
 
@@ -154,6 +157,7 @@ __________________
 With the introduction of React Hooks, in some way using Flux **library**[1] was deprecated, `react-reducer-provider` looks to **give a quick and easy alternative using hooks to implement Flux with reducers**.
 
 * It allows to use [**Asynchronous** Reducer/Dispatcher](readme/reference.md).
+* Dispatcher returns the new State or a Promise of the new State.
 * [**Each Reducer Provider can have a different names which allows for easy identification and nesting**](readme/reference.md#nesting).
 * It is ready for Tree Shaking optimization, so you get only what you need from the `react-reducer-provider` in the final app bundle.
 * It provides [its own **type definitions for Typescript and Flow**](readme/typings.md).

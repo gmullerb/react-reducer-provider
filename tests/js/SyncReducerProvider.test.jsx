@@ -1,4 +1,6 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
+import * as React from 'react'
+
 import {
   SyncReducerProvider,
   useReducer,
@@ -7,7 +9,6 @@ import {
 } from '../../cjs/react-reducer-provider'
 
 import { mount } from 'enzyme'
-import React from 'react'
 
 function testReduce(prevState, action) {
   switch (action) {
@@ -146,5 +147,453 @@ describe('SyncReducerProvider tests', () => {
     provider.update()
 
     expect(provider).toHaveText('ChildA0ChildB1')
+  })
+
+  it('should get the new state when dispatching', () => {
+    function testReduce(prevState, action) {
+      return prevState + 1
+    }
+    const testInitialState = 0
+    let newState = null
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducer9')
+      return (
+        <button onClick={() => newState = dispatch()}>
+          Click
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useReducerState('testNamedReducer9')
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <SyncReducerProvider
+        name='testNamedReducer9'
+        reducer={testReduce}
+        initialState={testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </SyncReducerProvider>
+    )
+    expect(newState).toBeNull()
+    expect(provider).toHaveText('ClickChild0')
+
+    provider.find('button').simulate('click')
+    provider.update()
+    provider.find('button').simulate('click')
+    provider.update()
+
+    expect(newState).toBe(2)
+    expect(provider).toHaveText('ClickChild2')
+  })
+
+  it('should get the different dispatcher references after state changes', async () => {
+    const testInitialState = '0'
+    let redraws = 0
+    let siblingRedraws = 0
+    let unrelatedChildrenRedraws = 0
+    let relatedChildrenRedraws = 0
+    const useReducerDispatcherSet = new Set()
+    const SiblingComponent = () => {
+      const [ state, setState ] = React.useState(1)
+      siblingRedraws++
+      return (
+        <button
+          id='buttonS'
+          onClick={() => setState(state + 1)}
+        >
+          Sibling{state}
+        </button>
+      )
+    }
+    const UnrelatedChildComponent = () => {
+      const [ state, setState ] = React.useState(2)
+      unrelatedChildrenRedraws++
+      return (
+        <button
+          id='buttonUC'
+          onClick={() => setState(state + 1)}
+        >
+          Unrelated{state}
+        </button>
+      )
+    }
+    const RelatedChildComponent = ({ onClick }) => {
+      const handleClick = React.useCallback(() => onClick('ACTION1'))
+      relatedChildrenRedraws++
+      return (
+        <button
+          id='buttonRC'
+          onClick={handleClick}
+        >
+          Related
+        </button>
+      )
+    }
+    const FunComponent = () => {
+      const [ state, dispatch ] = useReducer('testNamedReducer10')
+      redraws++
+      useReducerDispatcherSet.add(dispatch)
+      return (
+        <button
+          id='button1'
+          onClick={() => dispatch('ACTION1')}
+        >
+          Child{state}
+        </button>
+      )
+    }
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducer10')
+      redraws++
+      useReducerDispatcherSet.add(dispatch)
+      return React.useMemo(() => (
+        <RelatedChildComponent
+          onClick={dispatch}
+        />
+      ), [ dispatch ])
+    }
+    const provider = mount(
+      <div>
+        <SiblingComponent />
+        <SyncReducerProvider
+          name='testNamedReducer10'
+          reducer={testReduce}
+          initialState={testInitialState}
+        >
+          <FunComponent />
+          <FunComponent1 />
+          <UnrelatedChildComponent />
+        </SyncReducerProvider>
+      </div>
+    )
+    expect(redraws).toBe(2)
+    expect(siblingRedraws).toBe(1)
+    expect(unrelatedChildrenRedraws).toBe(1)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(provider.find('#button1')).toHaveText('Child0')
+
+    provider.find('#buttonRC').simulate('click')
+    provider.update()
+
+    expect(redraws).toBe(4)
+    expect(siblingRedraws).toBe(1)
+    expect(unrelatedChildrenRedraws).toBe(1)
+    expect(relatedChildrenRedraws).toBe(2)
+    expect(useReducerDispatcherSet.size).toBe(2)
+    expect(provider.find('#button1')).toHaveText('Child1')
+  })
+
+  it('should get the same references when Provider siblings changes', () => {
+    const testInitialState = '0'
+    let redraws = 0
+    let siblingRedraws = 0
+    let unrelatedChildrenRedraws = 0
+    let relatedChildrenRedraws = 0
+    const useReducerDispatcherSet = new Set()
+    const SiblingComponent = () => {
+      const [ state, setState ] = React.useState(1)
+      siblingRedraws++
+      return (
+        <button
+          id='buttonS'
+          onClick={() => setState(state + 1)}
+        >
+          Sibling{state}
+        </button>
+      )
+    }
+    const UnrelatedChildComponent = () => {
+      const [ state, setState ] = React.useState(2)
+      unrelatedChildrenRedraws++
+      return (
+        <button
+          id='buttonUC'
+          onClick={() => setState(state + 1)}
+        >
+          Unrelated{state}
+        </button>
+      )
+    }
+    const RelatedChildComponent = ({ onClick }) => {
+      const handleClick = React.useCallback(() => onClick('ACTION1'))
+      relatedChildrenRedraws++
+      return (
+        <button
+          id='buttonRC'
+          onClick={handleClick}
+        >
+          Related
+        </button>
+      )
+    }
+    const FunComponent = () => {
+      const [ state, dispatch ] = useReducer('testNamedReducer10')
+      redraws++
+      useReducerDispatcherSet.add(dispatch)
+      return (
+        <button
+          id='button1'
+          onClick={() => dispatch('ACTION1')}
+        >
+          Child{state}
+        </button>
+      )
+    }
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducer10')
+      redraws++
+      useReducerDispatcherSet.add(dispatch)
+      return (
+        <RelatedChildComponent
+          onClick={dispatch}
+        />
+      )
+    }
+    const provider = mount(
+      <div>
+        <SiblingComponent />
+        <SyncReducerProvider
+          name='testNamedReducer10'
+          reducer={testReduce}
+          initialState={testInitialState}
+        >
+          <FunComponent />
+          <FunComponent1 />
+          <UnrelatedChildComponent />
+        </SyncReducerProvider>
+      </div>
+    )
+    expect(redraws).toBe(2)
+    expect(siblingRedraws).toBe(1)
+    expect(unrelatedChildrenRedraws).toBe(1)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(provider.find('#buttonS')).toHaveText('Sibling1')
+
+    provider.find('#buttonS').simulate('click')
+    provider.update()
+
+    expect(redraws).toBe(2)
+    expect(siblingRedraws).toBe(2)
+    expect(unrelatedChildrenRedraws).toBe(1)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(provider.find('#buttonS')).toHaveText('Sibling2')
+  })
+
+  it('should get the same references when Unrelated children changes', () => {
+    const testInitialState = '0'
+    let redraws = 0
+    let siblingRedraws = 0
+    let unrelatedChildrenRedraws = 0
+    let relatedChildrenRedraws = 0
+    const useReducerDispatcherSet = new Set()
+    const SiblingComponent = () => {
+      const [ state, setState ] = React.useState(1)
+      siblingRedraws++
+      return (
+        <button
+          id='buttonS'
+          onClick={() => setState(state + 1)}
+        >
+          Sibling{state}
+        </button>
+      )
+    }
+    const UnrelatedChildComponent = () => {
+      const [ state, setState ] = React.useState(2)
+      unrelatedChildrenRedraws++
+      return (
+        <button
+          id='buttonUC'
+          onClick={() => setState(state + 1)}
+        >
+          Unrelated{state}
+        </button>
+      )
+    }
+    const RelatedChildComponent = ({ onClick }) => {
+      const handleClick = React.useCallback(() => onClick('ACTION1'))
+      relatedChildrenRedraws++
+      return (
+        <button
+          id='buttonRC'
+          onClick={handleClick}
+        >
+          Related
+        </button>
+      )
+    }
+    const FunComponent = () => {
+      const [ state, dispatch ] = useReducer('testNamedReducer10')
+      redraws++
+      useReducerDispatcherSet.add(dispatch)
+      return (
+        <button
+          id='button1'
+          onClick={() => dispatch('ACTION1')}
+        >
+          Child{state}
+        </button>
+      )
+    }
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducer10')
+      redraws++
+      useReducerDispatcherSet.add(dispatch)
+      return (
+        <RelatedChildComponent
+          onClick={dispatch}
+        />
+      )
+    }
+    const provider = mount(
+      <div>
+        <SiblingComponent />
+        <SyncReducerProvider
+          name='testNamedReducer10'
+          reducer={testReduce}
+          initialState={testInitialState}
+        >
+          <FunComponent />
+          <FunComponent1 />
+          <UnrelatedChildComponent />
+        </SyncReducerProvider>
+      </div>
+    )
+    expect(redraws).toBe(2)
+    expect(siblingRedraws).toBe(1)
+    expect(unrelatedChildrenRedraws).toBe(1)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(provider.find('#buttonUC')).toHaveText('Unrelated2')
+
+    provider.find('#buttonUC').simulate('click')
+    provider.update()
+
+    expect(redraws).toBe(2)
+    expect(siblingRedraws).toBe(1)
+    expect(unrelatedChildrenRedraws).toBe(2)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(provider.find('#buttonUC')).toHaveText('Unrelated3')
+  })
+
+  it('should get the same references when Parent changes', () => {
+    const testInitialState = '0'
+    let redraws = 0
+    let siblingRedraws = 0
+    let unrelatedChildrenRedraws = 0
+    let relatedChildrenRedraws = 0
+    const useReducerDispatcherSet = new Set()
+    const ParentComponent = ({ children }) => {
+      const [ state, setState ] = React.useState(3)
+      return (
+        <div
+          id='buttonP'
+          onClick={() => setState(state + 1)}
+        >
+          <span>Parent{state}</span>
+          { children }
+        </div>
+      )
+    }
+    const SiblingComponent = () => {
+      const [ state, setState ] = React.useState(1)
+      siblingRedraws++
+      return (
+        <button
+          id='buttonS'
+          onClick={() => setState(state + 1)}
+        >
+          Sibling{state}
+        </button>
+      )
+    }
+    const UnrelatedChildComponent = () => {
+      const [ state, setState ] = React.useState(2)
+      unrelatedChildrenRedraws++
+      return (
+        <button
+          id='buttonUC'
+          onClick={() => setState(state + 1)}
+        >
+          Unrelated{state}
+        </button>
+      )
+    }
+    const RelatedChildComponent = ({ onClick }) => {
+      const handleClick = React.useCallback(() => onClick('ACTION1'))
+      relatedChildrenRedraws++
+      return (
+        <button
+          id='buttonRC'
+          onClick={handleClick}
+        >
+          Related
+        </button>
+      )
+    }
+    const FunComponent = () => {
+      const [ state, dispatch ] = useReducer('testNamedReducer10')
+      redraws++
+      useReducerDispatcherSet.add(dispatch)
+      return (
+        <button
+          id='button1'
+          onClick={() => dispatch('ACTION1')}
+        >
+          Child{state}
+        </button>
+      )
+    }
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducer10')
+      redraws++
+      useReducerDispatcherSet.add(dispatch)
+      return (
+        <RelatedChildComponent
+          onClick={dispatch}
+        />
+      )
+    }
+    const provider = mount(
+      <ParentComponent>
+        <SiblingComponent />
+        <SyncReducerProvider
+          name='testNamedReducer10'
+          reducer={testReduce}
+          initialState={testInitialState}
+        >
+          <FunComponent />
+          <FunComponent1 />
+          <UnrelatedChildComponent />
+        </SyncReducerProvider>
+      </ParentComponent>
+    )
+    expect(redraws).toBe(2)
+    expect(siblingRedraws).toBe(1)
+    expect(unrelatedChildrenRedraws).toBe(1)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(provider.find('#buttonP span')).toHaveText('Parent3')
+
+    provider.find('#buttonP').simulate('click')
+    provider.update()
+
+    expect(redraws).toBe(2)
+    expect(siblingRedraws).toBe(1)
+    expect(unrelatedChildrenRedraws).toBe(1)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(provider.find('#buttonP span')).toHaveText('Parent4')
   })
 })

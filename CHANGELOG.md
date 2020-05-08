@@ -1,5 +1,12 @@
 # React Reducer Provider Change Log
 
+## 3.2.0 - May 2020
+
+* Now the Dispatcher returns the new State.
+  * Existing `Async` & `Sync` for Flow will required brackets, i.e. `Async<>` & `Sync<>` (Not bumping version to 4, just for Flow)
+* Fixes dependencies of `useCallback` for `wrappedDispatcher`.
+* Updates Documentation files.
+
 ## 3.1.0 - May 2020
 
 * Improves project configuration to allow Tree Shaking optimization.

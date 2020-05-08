@@ -20,7 +20,9 @@ export interface SyncReducer<STATE, ACTION> {
 
 export interface SyncReducerProps<STATE, ACTION> extends ReducerProps<STATE, SyncReducer<STATE, ACTION>> {}
 
-declare export function SyncReducerProvider<STATE, ACTION>(props: SyncReducerProps<STATE, ACTION>): Element<typeof SyncReducerProvider>
+declare export function SyncReducerProvider<STATE, ACTION>(
+  props: $ReadOnly<SyncReducerProps<STATE, ACTION>>
+): Element<typeof SyncReducerProvider>
 
 export interface AsyncReducer<STATE, ACTION> {
   (prevState: STATE, action: ACTION): Promise<STATE>;
@@ -28,25 +30,35 @@ export interface AsyncReducer<STATE, ACTION> {
 
 export interface AsyncReducerProps<STATE, ACTION> extends ReducerProps<STATE, AsyncReducer<STATE, ACTION>> {}
 
-declare export function AsyncReducerProvider<STATE, ACTION>(props: AsyncReducerProps<STATE, ACTION>): Element<typeof AsyncReducerProvider>
+declare export function AsyncReducerProvider<STATE, ACTION>(
+  props: $ReadOnly<AsyncReducerProps<STATE, ACTION>>
+): Element<typeof AsyncReducerProvider>
 
 // Reducer Consumption
 //////////////////////
 
-export type Sync = void
-export type Async = Promise<void>
+export type Sync<T = any> = T
+export type Async<T = any> = Promise<T>
 
-export interface Dispatcher<ACTION, DISPATCH: Async | Sync = Sync> {
+export interface Dispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>> {
   (value: ACTION): DISPATCH
 }
 
-export type ReducerProviderValue<STATE, ACTION, DISPATCH: Async | Sync = Sync> = [STATE, Dispatcher<ACTION, DISPATCH>]
+export type ReducerProviderValue<
+  STATE,
+  ACTION,
+  DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
+> = [STATE, Dispatcher<ACTION, DISPATCH>]
 
-declare export function useReducer<STATE, ACTION, DISPATCH: Async | Sync = Sync>(name?: string): ReducerProviderValue<STATE, ACTION, DISPATCH>
+declare export function useReducer<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
+  name?: string
+): ReducerProviderValue<STATE, ACTION, DISPATCH>
 
 declare export function useReducerState<STATE>(name?: string): STATE
 
-declare export function useReducerDispatcher<ACTION, DISPATCH: Async | Sync = Sync>(name?: string): Dispatcher<ACTION, DISPATCH>
+declare export function useReducerDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
+  name?: string
+): Dispatcher<ACTION, DISPATCH>
 
 // Helpers
 //////////

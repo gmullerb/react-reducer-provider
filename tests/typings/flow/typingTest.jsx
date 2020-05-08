@@ -126,7 +126,7 @@ function TestSyncReducerMainHook(): Node {
 }
 
 function TestAsyncReducerMainHook(): Node {
-  const [state, dispatch]: ReducerProviderValue<TestState, string, Async> = useReducer<TestState, string, Async>('testNamedReducer')
+  const [state, dispatch]: ReducerProviderValue<TestState, string, Async<>> = useReducer<TestState, string, Async<>>('testNamedReducer')
   const someFunc = () => {}
   return (
     <button onClick={async () => await dispatch('ACTION1')
@@ -156,7 +156,7 @@ function TestSyncReducerDispatcherHook(): Node {
 }
 
 function TestAsyncReducerDispatcherHook(): Node {
-  const theDispatcher: Dispatcher<string, Async> = useReducerDispatcher<string, Async>('testNamedReducer')
+  const theDispatcher: Dispatcher<string, Async<>> = useReducerDispatcher<string, Async<>>('testNamedReducer')
   const someFunc = () => {}
   return (
     <button onClick={(): Promise<void> => theDispatcher('ACTION1')

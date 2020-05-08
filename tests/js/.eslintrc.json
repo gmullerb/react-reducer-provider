@@ -6,6 +6,7 @@
     "jasmine": true
   },
   "rules": {
-    "import/no-namespace": "off"
+    "import/no-namespace": "off",
+    "max-lines": "off"
   }
 }

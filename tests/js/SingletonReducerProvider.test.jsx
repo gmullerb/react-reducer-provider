@@ -1,4 +1,6 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
+import * as React from 'react'
+
 import {
   SyncReducerProvider,
   useReducerDispatcher,
@@ -6,7 +8,6 @@ import {
 } from '../../cjs/react-reducer-provider'
 
 import { mount } from 'enzyme'
-import React from 'react'
 
 function testReduce(prevState, action) {
   switch (action) {
