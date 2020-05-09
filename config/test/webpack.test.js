@@ -14,7 +14,7 @@ const reactRule = {
 
 const istanbulRule = {
   test: /\.js(x?)$/,
-  include: /cjs/,
+  include: /src/,
   enforce: 'post',
   use: {
     loader: 'istanbul-instrumenter-loader',

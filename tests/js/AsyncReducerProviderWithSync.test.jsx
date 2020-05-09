@@ -6,7 +6,7 @@ import {
   useReducer,
   useReducerDispatcher,
   useReducerState
-} from '../../cjs/react-reducer-provider'
+} from '../../src/react-reducer-provider'
 
 import { act } from 'react-dom/test-utils'
 import { mount } from 'enzyme'

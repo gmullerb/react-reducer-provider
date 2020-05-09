@@ -1,18 +1,10 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
-import * as React from 'react'
-
-import { getReducerContext } from './ReducerProvider'
+import { createReducerProvider } from './ReducerProvider'
 
 export function SyncReducerProvider(props) {
-  const [ state, setter ] = React.useState(props.initialState)
-  const wrappedDispatcher = React.useCallback((action) => {
-    const nextState = props.reducer(state, action)
-    setter(nextState)
-    return nextState
-  }, [ state ])
-
-  return React.createElement(
-    getReducerContext(props.name).Provider,
-    { value: [ state, wrappedDispatcher ]},
-    props.children)
+  return createReducerProvider(props, (stateRef, reRenderTrigger) => (action) => {
+    stateRef.current = props.reducer(stateRef.current, action)
+    reRenderTrigger(stateRef.current)
+    return stateRef.current
+  })
 }

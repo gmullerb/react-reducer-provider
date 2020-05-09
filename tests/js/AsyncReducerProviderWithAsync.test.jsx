@@ -6,7 +6,7 @@ import {
   useReducer,
   useReducerDispatcher,
   useReducerState
-} from '../../cjs/react-reducer-provider'
+} from '../../src/react-reducer-provider'
 
 import delay from 'delay'
 import { mount } from 'enzyme'
@@ -150,8 +150,8 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
   })
 
   it('should get the new state when dispatching', async () => {
-    function testReduce(prevState, action) {
-      return prevState + 1
+    async function testReduce(prevState, action) {
+      return await delay(5, { value: prevState + 1 })
     }
     const testInitialState = 0
     let newState = null
@@ -185,17 +185,248 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
     expect(provider).toHaveText('ClickChild0')
 
     provider.find('button').simulate('click')
-    await delay(10)
+    provider.update()
+    await delay(20)
     provider.find('button').simulate('click')
-    await delay(10)
+    provider.update()
+    await delay(20)
 
     expect(newState).toBe(2)
     expect(provider).toHaveText('ClickChild2')
   })
 
-  it('should get the different dispatcher references after state changes', async () => {
+  it('should get the same dispatcher references after state changes', async () => {
     const testInitialState = '0'
-    let redraws = 0
+    let redrawsReducer = 0
+    let redrawsDispatcher = 0
+    let siblingRedraws = 0
+    let unrelatedChildrenRedraws = 0
+    let relatedChildrenRedraws = 0
+    const useReducerDispatcherSet = new Set()
+    const SiblingComponent = () => {
+      const [ state, setState ] = React.useState(1)
+      siblingRedraws++
+      return (
+        <button
+          id='buttonS'
+          onClick={() => setState(state + 1)}
+        >
+          Sibling{state}
+        </button>
+      )
+    }
+    const UnrelatedChildComponent = () => {
+      const [ state, setState ] = React.useState(2)
+      unrelatedChildrenRedraws++
+      return (
+        <button
+          id='buttonUC'
+          onClick={() => setState(state + 1)}
+        >
+          Unrelated{state}
+        </button>
+      )
+    }
+    const RelatedChildComponent = ({ onClick }) => {
+      const handleClick = React.useCallback(() => onClick('ACTION1'))
+      relatedChildrenRedraws++
+      return (
+        <button
+          id='buttonRC'
+          onFocus={handleClick}
+        >
+          Related
+        </button>
+      )
+    }
+    const FunComponent = () => {
+      const [ state, dispatch ] = useReducer('testNamedReducerAA10')
+      redrawsReducer++
+      useReducerDispatcherSet.add(dispatch)
+      return (
+        <button
+          id='button1'
+          onClick={() => dispatch('ACTION1')}
+        >
+          Child{state}
+        </button>
+      )
+    }
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducerAA10')
+      redrawsDispatcher++
+      useReducerDispatcherSet.add(dispatch)
+      return React.useMemo(() => (
+        <RelatedChildComponent
+          onClick={dispatch}
+        />
+      ), [ dispatch ])
+    }
+    const provider = mount(
+      <div>
+        <SiblingComponent />
+        <AsyncReducerProvider
+          name='testNamedReducerAA10'
+          reducer={testReduce}
+          initialState={testInitialState}
+        >
+          <FunComponent />
+          <FunComponent1 />
+          <UnrelatedChildComponent />
+        </AsyncReducerProvider>
+      </div>
+    )
+    expect(redrawsReducer).toBe(1)
+    expect(redrawsDispatcher).toBe(1)
+    expect(siblingRedraws).toBe(1)
+    expect(unrelatedChildrenRedraws).toBe(1)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(provider.find('#button1')).toHaveText('Child0')
+
+    provider.find('#buttonRC').simulate('focus')
+    provider.update()
+    await delay(100)
+
+    expect(redrawsReducer).toBe(2)
+    expect(redrawsDispatcher).toBe(2)
+    expect(siblingRedraws).toBe(1)
+    expect(unrelatedChildrenRedraws).toBe(1)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(provider.find('#button1')).toHaveText('Child1')
+  })
+
+  it('should get the same references when Inner children change', async () => {
+    const testInitialState = '0'
+    let redrawsReducer = 0
+    let redrawsDispatcher = 0
+    let innerChildrenRedraws = 0
+    let siblingRedraws = 0
+    let unrelatedChildrenRedraws = 0
+    let relatedChildrenRedraws = 0
+    const stateSet = new Set()
+    const useReducerDispatcherSet = new Set()
+    const SiblingComponent = () => {
+      const [ state, setState ] = React.useState(1)
+      siblingRedraws++
+      return (
+        <button
+          id='buttonS'
+          onClick={() => setState(state + 1)}
+        >
+          Sibling{state}
+        </button>
+      )
+    }
+    const UnrelatedChildComponent = () => {
+      const [ state, setState ] = React.useState(2)
+      unrelatedChildrenRedraws++
+      return (
+        <button
+          id='buttonUC'
+          onClick={() => setState(state + 1)}
+        >
+          Unrelated{state}
+        </button>
+      )
+    }
+    const RelatedChildComponent = ({ onClick }) => {
+      const handleClick = React.useCallback(() => onClick('ACTION1'))
+      relatedChildrenRedraws++
+      return (
+        <button
+          id='buttonRC'
+          onClick={handleClick}
+        >
+          Related
+        </button>
+      )
+    }
+    const InnerChildComponent = () => {
+      const [ state, setState ] = React.useState(2)
+      innerChildrenRedraws++
+      return (
+        <button
+          id='buttonIC'
+          onFocus={() => setState(state + 1)}
+        >
+          Inner{state}
+        </button>
+      )
+    }
+    const FunComponent = () => {
+      const [ state, dispatch ] = useReducer('testNamedReducerAA11z')
+      redrawsReducer++
+      stateSet.add(state)
+      useReducerDispatcherSet.add(dispatch)
+      return (
+        <div
+          id='buttonX1'
+          onClick={() => {
+            dispatch('ACTION1')
+          }}
+        >
+          Child{state}
+          <InnerChildComponent />
+        </div>
+      )
+    }
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducerAA11z')
+      redrawsDispatcher++
+      useReducerDispatcherSet.add(dispatch)
+      return React.useMemo(() => (
+        <RelatedChildComponent
+          onClick={dispatch}
+        />
+      ), [ dispatch ])
+    }
+    const provider = mount(
+      <div>
+        <SiblingComponent />
+        <AsyncReducerProvider
+          name='testNamedReducerAA11z'
+          reducer={testReduce}
+          initialState={testInitialState}
+        >
+          <FunComponent />
+          <FunComponent1 />
+          <UnrelatedChildComponent />
+        </AsyncReducerProvider>
+      </div>
+    )
+    expect(redrawsReducer).toBe(1)
+    expect(redrawsDispatcher).toBe(1)
+    expect(siblingRedraws).toBe(1)
+    expect(unrelatedChildrenRedraws).toBe(1)
+    expect(innerChildrenRedraws).toBe(1)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(stateSet.size).toBe(1)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(provider.find('#buttonIC').length).toBe(1)
+    expect(provider.find('#buttonIC')).toHaveText('Inner2')
+
+    provider.find('#buttonIC').simulate('focus')
+    provider.update()
+    await delay(10)
+
+    expect(stateSet.size).toBe(1)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(redrawsReducer).toBe(1)
+    expect(redrawsDispatcher).toBe(1)
+    expect(siblingRedraws).toBe(1)
+    expect(unrelatedChildrenRedraws).toBe(1)
+    expect(innerChildrenRedraws).toBe(2)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(provider.find('#buttonIC')).toHaveText('Inner3')
+  })
+
+  it('should get the same references when Inner Inner children change', async () => {
+    const testInitialState = '0'
+    let redrawsReducer = 0
+    let redrawsDispatcher = 0
+    let innerChildrenRedraws = 0
     let siblingRedraws = 0
     let unrelatedChildrenRedraws = 0
     let relatedChildrenRedraws = 0
@@ -236,22 +467,37 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
         </button>
       )
     }
-    const FunComponent = () => {
-      const [ state, dispatch ] = useReducer('testNamedReducer10')
-      redraws++
-      useReducerDispatcherSet.add(dispatch)
+    const InnerChildComponent = () => {
+      const [ state, setState ] = React.useState(2)
+      innerChildrenRedraws++
       return (
         <button
-          id='button1'
-          onClick={() => dispatch('ACTION1')}
+          id='buttonIC'
+          onFocus={() => setState(state + 1)}
         >
-          Child{state}
+          Inner{state}
         </button>
       )
     }
+    const FunComponent = () => {
+      const [ state, dispatch ] = useReducer('testNamedReducerAA12a')
+      redrawsReducer++
+      useReducerDispatcherSet.add(dispatch)
+      return (
+        <div>
+          <button
+            id='button1'
+            onClick={() => dispatch('ACTION1')}
+          >
+            Child{state}
+          </button>
+          <InnerChildComponent />
+        </div>
+      )
+    }
     const FunComponent1 = () => {
-      const dispatch = useReducerDispatcher('testNamedReducer10')
-      redraws++
+      const dispatch = useReducerDispatcher('testNamedReducerAA12a')
+      redrawsDispatcher++
       useReducerDispatcherSet.add(dispatch)
       return React.useMemo(() => (
         <RelatedChildComponent
@@ -263,7 +509,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       <div>
         <SiblingComponent />
         <AsyncReducerProvider
-          name='testNamedReducer10'
+          name='testNamedReducerAA12a'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -273,23 +519,27 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
         </AsyncReducerProvider>
       </div>
     )
-    expect(redraws).toBe(2)
+    expect(redrawsReducer).toBe(1)
+    expect(redrawsDispatcher).toBe(1)
     expect(siblingRedraws).toBe(1)
     expect(unrelatedChildrenRedraws).toBe(1)
+    expect(innerChildrenRedraws).toBe(1)
     expect(relatedChildrenRedraws).toBe(1)
     expect(useReducerDispatcherSet.size).toBe(1)
-    expect(provider.find('#button1')).toHaveText('Child0')
+    expect(provider.find('#buttonIC')).toHaveText('Inner2')
 
-    provider.find('#buttonRC').simulate('click')
+    provider.find('#buttonIC').simulate('focus')
     provider.update()
     await delay(10)
 
-    expect(redraws).toBe(4)
+    expect(useReducerDispatcherSet.size).toBe(1)
+    expect(redrawsReducer).toBe(1)
+    expect(redrawsDispatcher).toBe(1)
     expect(siblingRedraws).toBe(1)
     expect(unrelatedChildrenRedraws).toBe(1)
-    expect(relatedChildrenRedraws).toBe(2)
-    expect(useReducerDispatcherSet.size).toBe(2)
-    expect(provider.find('#button1')).toHaveText('Child1')
+    expect(innerChildrenRedraws).toBe(2)
+    expect(relatedChildrenRedraws).toBe(1)
+    expect(provider.find('#buttonIC')).toHaveText('Inner3')
   })
 
   it('should get the same references when Provider siblings changes', () => {
@@ -336,7 +586,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent = () => {
-      const [ state, dispatch ] = useReducer('testNamedReducer10')
+      const [ state, dispatch ] = useReducer('testNamedReducerAA12')
       redraws++
       useReducerDispatcherSet.add(dispatch)
       return (
@@ -349,7 +599,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent1 = () => {
-      const dispatch = useReducerDispatcher('testNamedReducer10')
+      const dispatch = useReducerDispatcher('testNamedReducerAA12')
       redraws++
       useReducerDispatcherSet.add(dispatch)
       return (
@@ -362,7 +612,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       <div>
         <SiblingComponent />
         <AsyncReducerProvider
-          name='testNamedReducer10'
+          name='testNamedReducerAA12'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -434,7 +684,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent = () => {
-      const [ state, dispatch ] = useReducer('testNamedReducer10')
+      const [ state, dispatch ] = useReducer('testNamedReducerAA13')
       redraws++
       useReducerDispatcherSet.add(dispatch)
       return (
@@ -447,7 +697,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent1 = () => {
-      const dispatch = useReducerDispatcher('testNamedReducer10')
+      const dispatch = useReducerDispatcher('testNamedReducerAA13')
       redraws++
       useReducerDispatcherSet.add(dispatch)
       return (
@@ -460,7 +710,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       <div>
         <SiblingComponent />
         <AsyncReducerProvider
-          name='testNamedReducer10'
+          name='testNamedReducerAA13'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -544,7 +794,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent = () => {
-      const [ state, dispatch ] = useReducer('testNamedReducer10')
+      const [ state, dispatch ] = useReducer('testNamedReducerAA14')
       redraws++
       useReducerDispatcherSet.add(dispatch)
       return (
@@ -557,7 +807,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent1 = () => {
-      const dispatch = useReducerDispatcher('testNamedReducer10')
+      const dispatch = useReducerDispatcher('testNamedReducerAA14')
       redraws++
       useReducerDispatcherSet.add(dispatch)
       return (
@@ -570,7 +820,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       <ParentComponent>
         <SiblingComponent />
         <AsyncReducerProvider
-          name='testNamedReducer10'
+          name='testNamedReducerAA14'
           reducer={testReduce}
           initialState={testInitialState}
         >

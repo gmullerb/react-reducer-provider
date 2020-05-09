@@ -1,8 +1,16 @@
 # React Reducer Provider Change Log
 
+## 3.2.1 - May 2020
+
+* Now the returned Dispatcher will be the same always, removes `useCallback`.
+* Adds new test cases.
+* Isolates mocking tests, they were messing with remaining tests.
+* Improves project configuration.
+* Updates Documentation files.
+
 ## 3.2.0 - May 2020
 
-* Now the Dispatcher returns the new State.
+* New Feature: Now the Dispatcher returns the new State.
   * Existing `Async` & `Sync` for Flow will required brackets, i.e. `Async<>` & `Sync<>` (Not bumping version to 4, just for Flow)
 * Fixes dependencies of `useCallback` for `wrappedDispatcher`.
 * Updates Documentation files.

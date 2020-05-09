@@ -7,7 +7,13 @@ module.exports = function (config) {
     files: [ 'testEntryPoint.js' ],
     exclude: [ '**/*.test.jsx' ],
     frameworks: [ 'jasmine' ],
-    browsers: [ 'jsdom' ],
+    browsers: [ 'ChromeHeadlessNoSandBox', 'ChromeHeadlessNoSandBox', 'jsdom', 'jsdom' ], // Running more than once
+    customLaunchers: {
+      ChromeHeadlessNoSandBox: {
+        base: 'ChromeHeadless',
+        flags: [ '--no-sandbox' ]
+      }
+    },
     preprocessors: {
       'testEntryPoint.js': [ 'webpack' ]
     },

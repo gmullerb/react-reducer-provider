@@ -5,7 +5,7 @@ import {
   SyncReducerProvider,
   useReducerDispatcher,
   useReducerState
-} from '../../cjs/react-reducer-provider'
+} from '../../src/react-reducer-provider'
 
 import { mount } from 'enzyme'
 

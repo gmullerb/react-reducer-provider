@@ -23,6 +23,7 @@ Each `SyncReducerProvider` or `AsyncReducerProvider` is equivalent to a Flux str
 * `initialState`: inception state for the component.
 * `name` (optional): constitutes the name that identifies the `SyncReducerProvider` or `AsyncReducerProvider`, which is useful when using more than 1 provider.
   * **developer must keep track of names to avoid overriding**.
+  * Internally, `SyncReducerProvider` and `AsyncReducerProvider` share the pool of names, i.e. when developing don't use the same name for a `SyncReducerProvider` and an `AsyncReducerProvider`.
 
 ```jsx
 <SyncReducerProvider
@@ -56,18 +57,20 @@ There are different ways of doing this:
 * **`useReducerDispatcher`**, which give access only the [`Dispatcher`](../src/react-reducer-provider.d.ts).
 * **`useReducerState`**, which give access only the State.
 
-> When using `useReducer`, `useReducerDispatcher` and/or `useReducerState`,  Be Aware that they use [`React.useContext`](https://reactjs.org/docs/hooks-reference.html#usecontext) and 'A component calling useContext will always re-render when the context value changes', in this case when `state` changes, therefore when using `useReducerDispatcher` although it not depends "directly" on `state` the component will be re-render when `state` changes. Final words, use `SyncReducerProvider` and/or `AsyncReducerProvider` everywhere is required and use `useReducer`, `useReducerDispatcher` and/or `useReducerState` wisely (small scopes). If children re-render is too expensive then `React.useMemo`, e.g. from [SyncReducerProvider.test.jsx](tests/js/SyncReducerProvider.test.jsx):
+> When using `useReducer`, `useReducerDispatcher` and/or `useReducerState`,  Be Aware that they use [`React.useContext`](https://reactjs.org/docs/hooks-reference.html#usecontext) and quote: 'A component calling useContext will always re-render when the context value changes', in this case when `state` changes, therefore when using `useReducerDispatcher` although it not depends "directly" on `state` the component will be re-render when `state` changes. Final words, use `SyncReducerProvider` and/or `AsyncReducerProvider` everywhere is required and use `useReducer`, `useReducerDispatcher` and/or `useReducerState` wisely (small scopes, as close to where is required with small amount of children). If children re-render is too expensive then `React.useMemo`:
 
-  ```js
-     const FunComponent1 = () => {
-      const dispatch = useReducerDispatcher('testNamedReducer10')
-      return React.useMemo(() => (
-        <RelatedChildComponent
-          onClick={dispatch}
-        />
-      ), [dispatch])
-    }
- ```
+```js
+const FunComponent1 = () => {
+  const dispatch = useReducerDispatcher('testNamedReducer10')
+  return React.useMemo(() => (
+    <RelatedChildComponent
+      onClick={dispatch}
+    />
+  ), [dispatch])
+}
+```
+
+(check test case 'should get the same dispatcher references after state changes' at [SyncReducerProvider.test.jsx](../tests/js/SyncReducerProvider.test.jsx) or [AsyncReducerProviderWithAsync.test.jsx](../tests/js/AsyncReducerProviderWithAsync.test.jsx))
 
 [`Dispatcher`](../src/react-reducer-provider.d.ts) returns the new State or a Promise of the new State:
 
@@ -329,7 +332,7 @@ or
 
 > An asynchronous example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-oosyt?module=%2Fsrc%2FSomeReducerProvider.jsx):  
 [![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-oosyt?module=%2Fsrc%2FSomeReducerProvider.jsx)  
-> An example of use can be looked at [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
+> > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
 ## Nesting
 
@@ -408,6 +411,7 @@ export default function SomeComponentB() {
 ```
 
 > Naming allows to identified each reducer provider.  
+> Names must exists and match, if not, an Error `Uncaught [TypeError: Cannot read property 'context' of undefined]` may be throw since your are trying to access a provider that doesn't exist.  
 > Although nesting can be rejected due to violation of single source of truth, In React is good to keep changes near to related components, i.e. a `SyncReducerProvider` or `AsyncReducerProvider` near to related components is better, why? because having a 1 Single Root `SyncReducerProvider` or `AsyncReducerProvider` will trigger changes to "all" components, even not related ones.  
 > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 __________________
