@@ -1,6 +1,8 @@
-# `SyncReducerProvider` | `AsyncReducerProvider` | `useReducer` | `useReducerState` | `useReducerDispatcher`
+# `AsyncReducerProvider` | `SyncReducerProvider` | `useReducer` | `useReducerState` | `useReducerDispatcher` | `AsyncMapperProvider` | `SyncMapperProvider` | `useMapper` | `useMapperState` | `useMapperDispatcher`
 
-[`SyncReducerProvider` & `AsyncReducerProvider`](../src/ReducerProvider.js) are React Components which defines a [React Context](https://reactjs.org/docs/context.html) that allows to Manage State using [Flux](http://facebook.github.io/flux), an application architecture that handles application states in a unidirectional way.
+## Definition
+
+`SyncReducerProvider` & `AsyncReducerProvider` are React Components which defines a [React Context](https://reactjs.org/docs/context.html) that allows to Manage State using [Flux](http://facebook.github.io/flux), an application architecture that handles application states in a unidirectional way.
 
 * Flux is composed basically with:
   * Stores: keeps states of the app (or components).
@@ -15,16 +17,28 @@ Each `SyncReducerProvider` or `AsyncReducerProvider` is equivalent to a Flux str
 
 ![`SyncReducerProvider` & `AsyncReducerProvider`](react-reducer-provider.svg "SyncReducerProvider & AsyncReducerProvider")
 
-[`SyncReducerProvider` & `AsyncReducerProvider`](../src/ReducerProvider.js) are React "Special" Elements defined by 3 properties:
+Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following stream:
+
+![`SyncMapperProvider` & `AsyncMapperProvider`](react-mapper-provider.svg "SyncMapperProvider & AsyncMapperProvider")
+
+[`AsyncReducerProvider`](../src/AsyncReducerProvider.js), [`SyncReducerProvider`](../src/SyncReducerProvider.js), [`AsyncMapperProvider`](../src/AsyncMapperProvider.js) & [`SyncMapperProvider`](../src/SyncMapperProvider.js) are React "Special" Elements defined by 3 properties:
 
 *properties*:
 
-* `reducer`: a asynchronous/synchronous function that will receive the current state and an action to produce a new state.
-* `initialState`: inception state for the component.
-* `name ?: string | number` (optional): constitutes the name that identifies the `SyncReducerProvider` or `AsyncReducerProvider`, which is useful when using more than 1 provider.
-  * **developer must keep track of names and numbers to avoid overriding**.
-  * Internally, `SyncReducerProvider` and `AsyncReducerProvider` share the pool of names and numbers, i.e. when developing don't use the same name or number for a `SyncReducerProvider` and an `AsyncReducerProvider`.
-    * `name` is used internally by a `Map`, so using numbers should be "faster" than strings.
+1 . `initialState`: inception state for the component.  
+2 . `name ?: string | number`: constitutes the name that identifies the `SyncReducerProvider` or `AsyncReducerProvider`, which is useful when using more than 1 provider.
+
+* **developer must keep track of names and numbers to avoid overriding**.
+* Internally, `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` and `AsyncMapperProvider` share the pool of names and numbers, i.e. when developing don't use the same name or number for any of them.
+  * `name` is used internally by a `Map`, so using numbers should be "faster" than strings.
+
+[`AsyncReducerProvider`](../src/AsyncReducerProvider.js) & [`SyncReducerProvider`](../src/SyncReducerProvider.js) have the following property:
+
+3 . `reducer`: a asynchronous/synchronous function that will receive the current state and an action to produce a new state [1].
+
+![Reducer](reducer.svg "Reducer")
+
+`function syncReduce<STATE, ACTION>(prevState: STATE, action: ACTION): STATE`
 
 ```jsx
 <SyncReducerProvider
@@ -38,6 +52,8 @@ Each `SyncReducerProvider` or `AsyncReducerProvider` is equivalent to a Flux str
 
   or
 
+`function asyncReduce<STATE, ACTION>(prevState: STATE, action: ACTION): Promise<STATE>`
+
 ```jsx
 <AsyncReducerProvider
   name={12345}
@@ -48,9 +64,43 @@ Each `SyncReducerProvider` or `AsyncReducerProvider` is equivalent to a Flux str
 </AsyncReducerProvider>
 ```
 
-> Internally are implemented only using [`useReducer` hook](https://reactjs.org/docs/hooks-reference.html#usereducer), [`useState` hook](https://reactjs.org/docs/hooks-reference.html#usestate) and [`useCallback` hook](https://reactjs.org/docs/hooks-reference.html#usecallback).
+[`AsyncMapperProvider`](../src/AsyncMapperProvider.js) & [`SyncMapperProvider`](../src/SyncMapperProvider.js) have the following property:
 
-Reducer will never be accessible directly from `children` elements, they will be **able to access the State and Dispatcher**.
+3 . `mapper`: a asynchronous/synchronous function that will receive an action to produce a new state [1].
+
+![Mapper](mapper.svg "Mapper")
+
+`function asyncMap<STATE, ACTION>(action: ACTION): Promise<STATE>`
+
+```jsx
+<AsyncMapperProvider
+  name={12345}
+  mapper={asyncMap}
+  initialState={initialState}
+>
+  {children}
+</AsyncMapperProvider>
+```
+
+or
+
+`function syncMap<STATE, ACTION>(action: ACTION): STATE`
+
+```jsx
+<SyncMapperProvider
+  name='someNamedMapper'
+  mapper={syncMap}
+  initialState={initialState}
+>
+  {children}
+</SyncMapperProvider>
+```
+
+> [1] Internally are implemented only using [`useState` hook](https://reactjs.org/docs/hooks-reference.html#usestate) and [`useRef` hook](https://reactjs.org/docs/hooks-reference.html#useref).
+
+## Consumption
+
+Reducer or Mapper will never be accessible directly from `children` elements, they will be **able to access the State and Dispatcher**.
 
 There are different ways of doing this:
 
@@ -58,7 +108,15 @@ There are different ways of doing this:
 * **`useReducerDispatcher`**, which give access only the [`Dispatcher`](../src/react-reducer-provider.d.ts).
 * **`useReducerState`**, which give access only the State.
 
-> When using `useReducer`, `useReducerDispatcher` and/or `useReducerState`,  Be Aware that they use [`React.useContext`](https://reactjs.org/docs/hooks-reference.html#usecontext) and quote: 'A component calling useContext will always re-render when the context value changes', in this case when `state` changes, therefore when using `useReducerDispatcher` although it not depends "directly" on `state` the component will be re-render when `state` changes. Final words, use `SyncReducerProvider` and/or `AsyncReducerProvider` everywhere is required and use `useReducer`, `useReducerDispatcher` and/or `useReducerState` wisely (small scopes, as close to where is required with small amount of children). If children re-render is too expensive then `React.useMemo`:
+or
+
+* **`useMapper`**, which give access both State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
+* **`useMapperDispatcher`**, which give access only the [`Dispatcher`](../src/react-reducer-provider.d.ts).
+* **`useMapperState`**, which give access only the State.
+
+![Consumption](use-provider.svg "Consumption")
+
+> When using `useReducer`/`useMapper`, `useReducerDispatcher`/`useMapperDispatcher` and/or `useReducerState`/`useMapperState`,  Be Aware that they use [`React.useContext`](https://reactjs.org/docs/hooks-reference.html#usecontext) and quote: 'A component calling useContext will always re-render when the context value changes', in this case when `state` changes, therefore when using `useReducerDispatcher`/`useMapperDispatcher` although it not depends "directly" on `state` the component will be re-render when `state` changes. Final words, use `SyncMapperProvider` and/or `AsyncMapperProvider`,`SyncReducerProvider` and/or `AsyncReducerProvider` everywhere is required and use `useReducer`/`useMapper`, `useReducerDispatcher`/`useMapperDispatcher` and/or `useReducerState`/`useMapperState` wisely (small scopes, as close to where is required with small amount of children). If children re-render is too expensive then `React.useMemo`:
 
 ```js
 const FunComponent1 = () => {
@@ -72,6 +130,8 @@ const FunComponent1 = () => {
 ```
 
 (check test case 'should get the same dispatcher references after state changes' at [SyncReducerProvider.test.jsx](../tests/js/SyncReducerProvider.test.jsx) or [AsyncReducerProviderWithAsync.test.jsx](../tests/js/AsyncReducerProviderWithAsync.test.jsx))
+
+### Dispatcher
 
 [`Dispatcher`](../src/react-reducer-provider.d.ts) returns the new State or a Promise of the new State:
 
@@ -93,14 +153,16 @@ If new State is not required, then return value can be ignored:
 dispatch(action)
 ```
 
+> Returned value is useful when using `useReducerDispatcher` or `useMapperDispatcher`.
+> By default, when using typings return value is ignored, i.e is `void` or `Promise<void>`.
 > Examples can be seen at: [`SyncReducerProvider.test.jsx`](../tests/js/SyncReducerProvider.test.jsx) and [`AsyncReducerProviderWithAsync.test.jsx`](../tests/js/AsyncReducerProviderWithAsync.test.jsx).
 > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
-## `useReducer`
+## `useReducer`/`useMapper`
 
 *parameters*:
 
-* `name ?: string | number` (optional): constitutes the name or number of the `SyncReducerProvider` or `AsyncReducerProvider` being accessed.
+* `name ?: string | number`: constitutes the name or number of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
 
 *returns*:
 
@@ -120,11 +182,11 @@ export default function SomeComponent1() {
 }
 ```
 
-## `useReducerDispatcher`
+## `useReducerDispatcher`/`useMapperDispatcher`
 
 *parameters*:
 
-* `name ?: string | number` (optional): constitutes the name or number of the `SyncReducerProvider` or `AsyncReducerProvider` being accessed.
+* `name ?: string | number`: constitutes the name or number of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
 
 *returns*:
 
@@ -144,11 +206,11 @@ export default function SomeComponent2() {
 }
 ```
 
-## `useReducerState`
+## `useReducerState`/`useMapperState`
 
 *parameters*:
 
-* `name ?: string | number` (optional): constitutes the name or number of the `SyncReducerProvider` or `AsyncReducerProvider` being accessed.
+* `name ?: string | number`: constitutes the name or number of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
 
 *returns*:
 
@@ -168,7 +230,9 @@ export default function SomeComponentN() {
 }
 ```
 
-## Synchronous Reducer => `SyncReducerProvider`
+## Synchronous Reducer/Mapper => `SyncReducerProvider`/`SyncMapperProvider`
+
+### `SyncReducerProvider`
 
 ```jsx
 <SyncReducerProvider
@@ -199,6 +263,40 @@ export default function SomeComponentN() {
   }
 ```
 
+### `SyncMapperProvider`
+
+```jsx
+<SyncMapperProvider
+  name='someNamedMapper'
+  mapper={syncMap}
+  initialState={initialState}
+>
+  {children}
+</SyncMapperProvider>
+```
+
+* `mapper` will be a synchronous function that will receive an action to produce a new state.
+
+    `sync function syncMapper<STATE, ACTION>(action: ACTION):STATE`
+
+    e.g.:
+
+```js
+  async function map(action) {
+    switch (action) {
+      case 'ACTION1':
+        return someSyncProcess1()
+      case 'ACTION2':
+        return someValue
+      default:
+        return prevState
+    }
+  }
+
+```
+
+### `Dispatcher`
+
 * when accessing the Reducer Provider, the `dispatcher` will be also a synchronous function:
 
     `function dispatch<ACTION>(action: ACTION): void`
@@ -216,7 +314,9 @@ export default function SomeComponentN() {
   }
 ```
 
-## Asynchronous Reducer => `AsyncReducerProvider`
+## Asynchronous Reducer/Mapper => `AsyncReducerProvider`/`AsyncMapperProvider`
+
+### `AsyncReducerProvider`
 
 ```jsx
 <AsyncReducerProvider
@@ -230,7 +330,7 @@ export default function SomeComponentN() {
 
 * `reducer` will be an **asynchronous** function that will receive the current state and an action to produce a `Promise` of the new state.
 
-    `async function syncReducer<STATE, ACTION>(prevState: STATE, action: ACTION): Promise<STATE>`
+    `async function asyncReducer<STATE, ACTION>(prevState: STATE, action: ACTION): Promise<STATE>`
 
     e.g.:
 
@@ -247,6 +347,40 @@ export default function SomeComponentN() {
   }
 
 ```
+
+### `AsyncMapperProvider`
+
+```jsx
+<AsyncMapperProvider
+  name='someNamedMapper'
+  mapper={asyncMap}
+  initialState={initialState}
+>
+  {children}
+</AsyncMapperProvider>
+```
+
+* `mapper` will be an **asynchronous** function that will receive an action to produce a `Promise` of the new state.
+
+    `async function asyncMapper<STATE, ACTION>(action: ACTION): Promise<STATE>`
+
+    e.g.:
+
+```js
+  async function map(action) {
+    switch (action) {
+      case 'ACTION1':
+        return await someAsyncProcess1()
+      case 'ACTION2':
+        return someAsyncProcess2()
+      default:
+        return prevState
+    }
+  }
+
+```
+
+### Dispatcher
 
 * when accessing the Reducer Provider, the `dispatcher` will be also a **asynchronous** function:
 
@@ -271,7 +405,7 @@ export default function SomeComponentN() {
 > Although `AsyncReducerProvider` can be used for synchronous reducer/dispatcher (check [AsyncReducerProviderWithSync.test.jsx](tests/js/AsyncReducerProviderWithSync.test.jsx)), It is not is purpose and implementation is suitable for asynchronous processes, long story short, for synchronous processes, use `SyncReducerProvider`.  
 > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
-## Singleton Reducer Provider
+## Singleton Reducer/Mapper Provider
 
 If no name or number is provided a "unique"[1] Reducer will be created.
 

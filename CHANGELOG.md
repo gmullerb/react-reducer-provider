@@ -1,5 +1,11 @@
 # React Reducer Provider Change Log
 
+## 3.4.0 - May 2020
+
+* New Feature: Mapper functions => `SyncMapperProvider`, `AsyncMapperProvider`, `useMapper`, `useMapperState` and `useMapperDispatcher`.
+* Deprecates: `ReducerProviderValue`, instead use `ProviderValue`, but prefer types in function, i.e. `useReducer<>` or `useMapper<>`.
+* Updates Documentation files.
+
 ## 3.3.0 - May 2020
 
 * New Feature: Now `AsyncReducerProvider` and `SyncReducerProvider` can be identified by number, not just by a string, number should be "faster".

@@ -2,7 +2,7 @@
   <img src="https://assets.gitlab-static.net/uploads/-/system/project/avatar/18113862/react-reducer-provider.png" alt=" "/>
 </p>
 
-<h1 align="center">Asynchronous/Synchronous React Reducer Provider with Hooks</h1>
+<h1 align="center">Asynchronous/Synchronous React Reducer/Mapper Provider with Hooks</h1>
 
 [![react-reducer-provider](https://badgen.net/badge/npm%20pack/react-reducer-provider/blue)](https://www.npmjs.com/package/react-reducer-provider)
 [![ ](https://badgen.net/npm/v/react-reducer-provider)](https://www.npmjs.com/package/react-reducer-provider)
@@ -22,15 +22,15 @@ __________________
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "3.3.0",
+    "react-reducer-provider": "3.4.0",
     ..
 ```
 
-2 . Create the **`SyncReducerProvider`** or **`AsyncReducerProvider`** component to manage state:
+2 . Create the **`AsyncReducerProvider`**, **`SyncReducerProvider`**, **`AsyncMapperProvider`** or **`SyncMapperProvider`** component to manage state:
 
 A . Define the initial state.  
-B . Define the reducer function.  
-C . Define the Reducer Provider.
+B . Define the reducer or mapper function.  
+C . Define the Reducer or Mapper Provider.
 
 **`SomeReducerProvider.jsx`**:
 
@@ -65,11 +65,11 @@ function SomeReducerProvider({ children }) {
 export default SomeReducerProvider
 ```
 
-3 . Access the `SomeReducerProvider` component using `'react-reducer-provider'` hooks:
+3 . Access the Provider component using `'react-reducer-provider'` hooks:
 
-* **`useReducer`**.
-* **`useReducerDispatcher`**.
-* **`useReducerState`**.
+* **`useReducer`/`useMapper`**.
+* **`useReducerDispatcher`/`useMapperDispatcher`**.
+* **`useReducerState`/`useMapperState`**.
 
 `SomeComponent1.jsx`[1] => using `useReducer`:
 
@@ -144,10 +144,14 @@ export default function SomeContainer() {
 }
 ```
 
-> This example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-m0924?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+> This `SyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-m0924?module=%2Fsrc%2FSomeReducerProvider.jsx):  
 [![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-m0924?module=%2Fsrc%2FSomeReducerProvider.jsx)  
-> An asynchronous example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-oosyt?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+> An `AsyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-oosyt?module=%2Fsrc%2FSomeReducerProvider.jsx):  
 [![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-oosyt?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> An `SyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-8yfm1?module=%2Fsrc%2FSomeMapperProvider.jsx):  
+[![Edit gmullerb-react-mapper-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-mapper-provider-8yfm1?module=%2Fsrc%2FSomeMapperProvider.jsx)  
+> An `AsyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-async-ledmg?module=%2Fsrc%2FSomeMapperProvider.jsx):  
+[![Edit gmullerb-react-mapper-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-mapper-provider-async-ledmg?module=%2Fsrc%2FSomeMapperProvider.jsx)  
 > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 > [1] Injection can be used in order to improve design, but in favor of quick example this was surrender, look at [Injection](readme/with-injection.md) for injection example.
 __________________
@@ -156,15 +160,18 @@ __________________
 
 With the introduction of React Hooks, in some way using Flux **library**[1] was deprecated, `react-reducer-provider` looks to **give a quick and easy alternative using hooks to implement Flux with reducers**.
 
-* It allows to use [**Asynchronous** Reducer/Dispatcher](readme/reference.md).
-* Dispatcher returns the new State or a Promise of the new State.
-* [**Each Reducer Provider can have a different names which allows for easy identification and nesting**](readme/reference.md#nesting).
+* Provides Reducers, but also Mappers.
+* It allows to use [**Asynchronous** Reducer/Mapper/Dispatcher](readme/reference.md#asyncreducerprovider).
+* [Dispatcher returns the new State or a Promise of the new State](readme/reference.md#dispatcher).
+* [**Each Reducer/Mapper Provider can have a different names or numbers which allows for easy identification and nesting**](readme/reference.md#nesting).
 * It is ready for Tree Shaking optimization, so you get only what you need from the `react-reducer-provider` in the final app bundle.
 * It provides [its own **type definitions for Typescript and Flow**](readme/typings.md).
 * Full Tested (not only focus in coverage, but also in cases).
 * It is the evolution of [react-named-reducer](https://www.npmjs.com/package/react-named-reducer) (which is a derivation of [react-reducer-context](https://www.npmjs.com/package/react-reducer-context)).
 
-![React Reducer Provider](readme/react-reducer-provider.svg "React Reducer Provider")
+![Reducers](readme/reducer.svg "Reducers")
+
+![Mappers](readme/mapper.svg "Mappers")
 
 > [1] Not the Flux architecture.
 __________________

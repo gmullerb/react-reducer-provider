@@ -3,10 +3,9 @@ import * as React from 'react'
 
 import { createProvider } from './Providers'
 
-export const createReducerProvider = function (props, createDispatcher) {
+export const createMapperProvider = function (props, createDispatcher) {
   const [ state, reRenderTrigger ] = React.useState(props.initialState)
-  const stateRef = React.useRef(props.initialState)
-  const wrappedDispatcher = React.useRef(createDispatcher(stateRef, reRenderTrigger))
+  const wrappedDispatcher = React.useRef(createDispatcher(reRenderTrigger))
 
   return createProvider(props.name, props.children, [ state, wrappedDispatcher.current ])
 }

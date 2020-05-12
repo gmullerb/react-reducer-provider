@@ -4,14 +4,19 @@ import type {
   Element
 } from 'react'
 
+// Provider Component
+/////////////////////
+interface ProviderProps<STATE> {
+  name?: string | number;
+  initialState: STATE;
+  children: Element<any>;
+}
+
 // Reducer Component Definition
 ///////////////////////////////
 
-export interface ReducerProps<STATE, REDUCER> {
-  name?: string | number;
+interface ReducerProps<STATE, REDUCER> extends ProviderProps<STATE> {
   reducer: REDUCER;
-  initialState: STATE;
-  children: Element<any>;
 }
 
 export interface SyncReducer<STATE, ACTION> {
@@ -34,8 +39,35 @@ declare export function AsyncReducerProvider<STATE, ACTION>(
   props: $ReadOnly<AsyncReducerProps<STATE, ACTION>>
 ): Element<typeof AsyncReducerProvider>
 
-// Reducer Consumption
-//////////////////////
+// Mapper Component Definition
+//////////////////////////////
+
+interface MapperProps<STATE, MAPPER> extends ProviderProps<STATE> {
+  mapper: MAPPER;
+}
+
+export interface SyncMapper<STATE, ACTION> {
+  (action: ACTION): STATE;
+}
+
+export interface SyncMapperProps<STATE, ACTION> extends MapperProps<STATE, SyncMapper<STATE, ACTION>> {}
+
+declare export function SyncMapperProvider<STATE, ACTION>(
+  props: $ReadOnly<SyncMapperProps<STATE, ACTION>>
+): Element<typeof SyncMapperProvider>
+
+export interface AsyncMapper<STATE, ACTION> {
+  (action: ACTION): Promise<STATE>;
+}
+
+export interface AsyncMapperProps<STATE, ACTION> extends MapperProps<STATE, AsyncMapper<STATE, ACTION>> {}
+
+declare export function AsyncMapperProvider<STATE, ACTION>(
+  props: $ReadOnly<AsyncMapperProps<STATE, ACTION>>
+): Element<typeof AsyncMapperProvider>
+
+// Providers Consumption
+////////////////////////
 
 export type Sync<T = any> = T
 export type Async<T = any> = Promise<T>
@@ -44,19 +76,34 @@ export interface Dispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>> {
   (value: ACTION): DISPATCH
 }
 
-export type ReducerProviderValue<
+export type ProviderValue<
   STATE,
   ACTION,
   DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
 > = [STATE, Dispatcher<ACTION, DISPATCH>]
 
+/**
+ * @deprecated since version 3.4.0, use 'ProviderValue' instead.
+ */
+export type ReducerProviderValue<STATE, ACTION, DISPATCH = Sync<void>> = ProviderValue<STATE, ACTION, DISPATCH>
+
 declare export function useReducer<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
   name?: string | number
-): ReducerProviderValue<STATE, ACTION, DISPATCH>
+): ProviderValue<STATE, ACTION, DISPATCH>
 
 declare export function useReducerState<STATE>(name?: string | number): STATE
 
 declare export function useReducerDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
+  name?: string | number
+): Dispatcher<ACTION, DISPATCH>
+
+declare export function useMapper<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
+  name?: string | number
+): ProviderValue<STATE, ACTION, DISPATCH>
+
+declare export function useMapperState<STATE>(name?: string | number): STATE
+
+declare export function useMapperDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
   name?: string | number
 ): Dispatcher<ACTION, DISPATCH>
 

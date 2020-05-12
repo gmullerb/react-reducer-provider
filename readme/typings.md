@@ -16,12 +16,22 @@ Both provide the following types:
   * `AsyncReducerProvider<STATE, ACTION>`: specifies the Function React Component structure.
     * and the respective props types: `AsyncReducerProps<STATE, ACTION>`
   * `AsyncReducer<STATE, ACTION>`: defines the structure of the asynchronous reducer function.
-* For Reducer Consumption:
+* For Mapper Component Definition:
+  * `SyncMapperProvider<STATE, ACTION>`: specifies the Function React Component structure.
+    * and the respective props types: `SyncMapperProps<STATE, ACTION>`
+  * `SyncMapper<STATE, ACTION>`: defines the structure of the synchronous mapper function.
+  * `AsyncMapperProvider<STATE, ACTION>`: specifies the Function React Component structure.
+    * and the respective props types: `AsyncMapperProps<STATE, ACTION>`
+  * `AsyncMapper<STATE, ACTION>`: defines the structure of the asynchronous mapper function.
+* For Consumption:
   * `Dispatcher<ACTION, DISPATCH>`: defines the function that receives the action that triggers the change of the state.
-  * `ReducerProviderValue<STATE, ACTION, DISPATCH>`: defines the structure of the value return by `useReducer`.
-  * `useReducer<STATE, ACTION, DISPATCH>: ReducerProviderValue<STATE, ACTION, DISPATCH>`: typings for `useReducer`.
-  * `useReducerState<STATE>(name?: string): STATE`: typings for `useReducerState`.
-  * `useReducerDispatcher<ACTION, DISPATCH>(name?: string): Dispatcher<ACTION, DISPATCH>`: typings for `useReducerState`.
+  * `ProviderValue<STATE, ACTION, DISPATCH>`: defines the structure of the value return by `useReducer`/`useMapper`.
+  * `useReducer<STATE, ACTION, DISPATCH>: ProviderValue<STATE, ACTION, DISPATCH>`.
+  * `useReducerState<STATE>(name?: string): STATE`.
+  * `useReducerDispatcher<ACTION, DISPATCH>(name?: string): Dispatcher<ACTION, DISPATCH>`.
+  * `useMapper<STATE, ACTION, DISPATCH>: ProviderValue<STATE, ACTION, DISPATCH>`.
+  * `useMapperState<STATE>(name?: string): STATE`.
+  * `useMapperDispatcher<ACTION, DISPATCH>(name?: string): Dispatcher<ACTION, DISPATCH>`.
 
 `STATE`: State type, defined by the developer.  
 `ACTION`: Action type, defined by the developer.  
@@ -31,12 +41,12 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 
 `DISPATCH` is required only for Reducer Consumption, and can take 1 of 2 values:
 
-* `Async`.
-* `Sync`, which is the default, and there is no need to be specified.
+* `Async<T>`.
+* `Sync<T>`, which is the default (`Sync<void>`), and there is no need to be specified.
 
 > [1] Only the usual Flow or Typescript configuration (e.g. no need for @types package).
 
-## Synchronous Reducer
+## Synchronous Reducer/Mapper
 
 1 . Define the State:
 
@@ -77,7 +87,34 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   </SyncReducerProvider>
 ```
 
-4 . Define the Reducer Consumption:
+2 . Define the Mapper:
+
+```tsx
+  function map(action: string): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return initialState
+    }
+  }
+```
+
+3 . Define the Mapper Provider:
+
+```tsx
+  <SyncMapperProvider
+    name='testNamedMapper'
+    mapper={map}
+    initialState={initialState}
+  >
+    {children}
+  </SyncMapperProvider>
+```
+
+4 . Define the Consumption:
 
 **Ignoring returned value**:
 
@@ -87,7 +124,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 * Less coding.
 * Less imports.
 
-`useReducer`:
+`useReducer`\`useMapper`:
 
 ```tsx
   const [ state, dispatch ] = useReducer<TestState, string>('testNamedReducer')
@@ -98,7 +135,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerState`:
+`useReducerState`\`useMapperState`:
 
 ```tsx
   const theState = useReducerState<TestState>('testNamedReducer')
@@ -109,7 +146,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerDispatcher`:
+`useReducerDispatcher`\`useMapperDispatcher`:
 
 ```tsx
   const theDispatcher = useReducerDispatcher<string>('testNamedReducer')
@@ -122,10 +159,10 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 
 *Types in values approach*:
 
-`useReducer`:
+`useReducer`\`useMapper`:
 
 ```tsx
-  const [ state, dispatch ]: ReducerProviderValue<TestState, string> = useReducer('testNamedReducer')
+  const [ state, dispatch ]: ProviderValue<TestState, string> = useReducer('testNamedReducer')
   return (
     <button onClick={(): void => dispatch('ACTION1')}>
       Child{state.lastAction}
@@ -133,7 +170,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerState`:
+`useReducerState`\`useMapperState`:
 
 ```tsx
   const theState: TestState = useReducerState('testNamedReducer')
@@ -144,7 +181,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerDispatcher`:
+`useReducerDispatcher`\`useMapperDispatcher`:
 
 ```tsx
   const theDispatcher: Dispatcher<string> = useReducerDispatcher('testNamedReducer')
@@ -159,7 +196,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 
 * Must define `DISPATCH` as `Sync<STATE>` or `STATE`:
 
-`useReducer`:
+`useReducer`\`useMapper`:
 
 ```tsx
   const [ state, dispatch ] = useReducer<TestState, string, Sync<STATE>>('testNamedReducer')
@@ -170,7 +207,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerState`:
+`useReducerState`\`useMapperState`:
 
 ```tsx
   const theState = useReducerState<TestState>('testNamedReducer')
@@ -181,7 +218,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerDispatcher`:
+`useReducerDispatcher`\`useMapperDispatcher`:
 
 ```tsx
   const theDispatcher = useReducerDispatcher<string, Sync<STATE>>('testNamedReducer')
@@ -194,10 +231,10 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 
 *Types in values approach*:
 
-`useReducer`:
+`useReducer`\`useMapper`:
 
 ```tsx
-  const [ state, dispatch ]: ReducerProviderValue<TestState, string, Sync<STATE>> = useReducer('testNamedReducer')
+  const [ state, dispatch ]: ProviderValue<TestState, string, Sync<STATE>> = useReducer('testNamedReducer')
   return (
     <button onClick={(): void => console.log(dispatch('ACTION1'))}>
       Child{state.lastAction}
@@ -205,7 +242,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerState`:
+`useReducerState`\`useMapperState`:
 
 ```tsx
   const theState: TestState = useReducerState('testNamedReducer')
@@ -216,7 +253,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerDispatcher`:
+`useReducerDispatcher`\`useMapperDispatcher`:
 
 ```tsx
   const theDispatcher: Dispatcher<string, Sync<STATE>> = useReducerDispatcher('testNamedReducer')
@@ -227,7 +264,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-## Asynchronous Reducer
+## Asynchronous Reducer/Mapper
 
 1 . Define the State:
 
@@ -243,7 +280,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 
 2 . Define the Reducer:
 
-* `async function syncReducer<STATE, ACTION>(prevState: STATE, action: ACTION): Promise<STATE>`
+* `async function asyncReducer<STATE, ACTION>(prevState: STATE, action: ACTION): Promise<STATE>`
 
 ```tsx
   async function reduce(prevState: TestState, action: string): Promise<TestState> {
@@ -274,6 +311,39 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   </AsyncReducerProvider>
 ```
 
+2 . Define the Mapper:
+
+* `async function asyncMapper<STATE, ACTION>(STATE, action: ACTION): Promise<STATE>`
+
+```tsx
+  async function map(action: string): Promise<TestState> {
+    switch (action) {
+      case 'ACTION1':
+        return someAsyncProcess()
+          .then(() =>({
+            lastAction: 1
+          }))
+          .catch(() =>({
+            lastAction: 0
+          }))
+      default:
+        return initialState
+    }
+  }
+```
+
+3 . Define the Mapper Provider:
+
+```tsx
+  <AsyncMapperProvider
+    name='testNamedReducer'
+    mapper={map}
+    initialState={initialState}
+  >
+    {children}
+  </AsyncMapperProvider>
+```
+
 4 . the Define Reducer Consumption:
 
 **Ignoring returned value**:
@@ -288,7 +358,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 * Less coding.
 * Less imports.
 
-`useReducer`:
+`useReducer`\`useMapper`:
 
 ```tsx
   const [ state, dispatch ] = useReducer<TestState, string, Async>('testNamedReducer')
@@ -302,7 +372,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerState`:
+`useReducerState`\`useMapperState`:
 
 ```tsx
   const theState = useReducerState<TestState>('testNamedReducer')
@@ -313,7 +383,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerDispatcher`:
+`useReducerDispatcher`\`useMapperDispatcher`:
 
 ```tsx
   const theDispatcher = useReducerDispatcher<string, Async>('testNamedReducer')
@@ -329,10 +399,10 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 
 *Types in values approach*:
 
-`useReducer`:
+`useReducer`\`useMapper`:
 
 ```tsx
-  const [ state, dispatch ]: ReducerProviderValue<TestState, string, Async> = useReducer('testNamedReducer')
+  const [ state, dispatch ]: ProviderValue<TestState, string, Async> = useReducer('testNamedReducer')
   const someFunc = () => {}
   return (
     <button onClick={async (): Promise<void> => await dispatch('ACTION1')
@@ -343,7 +413,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerState`:
+`useReducerState`\`useMapperState`:
 
 ```tsx
   const theState: TestState = useReducerState('testNamedReducer')
@@ -354,7 +424,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerDispatcher`:
+`useReducerDispatcher`\`useMapperDispatcher`:
 
 ```tsx
   const theDispatcher: Dispatcher<string, Async> = useReducerDispatcher('testNamedReducer')
@@ -378,7 +448,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 * Less coding.
 * Less imports.
 
-`useReducer`:
+`useReducer`\`useMapper`:
 
 ```tsx
   const [ state, dispatch ] = useReducer<TestState, string, Async<TestState>>('testNamedReducer')
@@ -392,7 +462,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerState`:
+`useReducerState`\`useMapperState`:
 
 ```tsx
   const theState = useReducerState<TestState>('testNamedReducer')
@@ -403,7 +473,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerDispatcher`:
+`useReducerDispatcher`\`useMapperDispatcher`:
 
 ```tsx
   const theDispatcher = useReducerDispatcher<string, Async<TestState>>('testNamedReducer')
@@ -419,10 +489,10 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 
 *Types in values approach*:
 
-`useReducer`:
+`useReducer`\`useMapper`:
 
 ```tsx
-  const [ state, dispatch ]: ReducerProviderValue<TestState, string, Async<TestState>> = useReducer('testNamedReducer')
+  const [ state, dispatch ]: ProviderValue<TestState, string, Async<TestState>> = useReducer('testNamedReducer')
   const someFunc = () => {}
   return (
     <button onClick={async (): Promise<void> => await dispatch('ACTION1').then(newState => console.info(newState))
@@ -433,7 +503,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerState`:
+`useReducerState`\`useMapperState`:
 
 ```tsx
   const theState: TestState = useReducerState('testNamedReducer')
@@ -444,7 +514,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   )
 ```
 
-`useReducerDispatcher`:
+`useReducerDispatcher`\`useMapperDispatcher`:
 
 ```tsx
   const theDispatcher: Dispatcher<string, Async<TestState>> = useReducerDispatcher('testNamedReducer')

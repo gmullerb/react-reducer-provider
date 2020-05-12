@@ -6,7 +6,7 @@
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "3.2.0",
+    "react-reducer-provider": "3.4.0",
     ..
 ```
 

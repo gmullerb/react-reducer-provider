@@ -8,7 +8,7 @@
 `"react-named-reducer": "2.0.1"`  
 
 * to:  
-`"react-reducer-provider": "3.2.0"`  
+`"react-reducer-provider": "3.4.0"`  
 
 2 . Change imports:
 
@@ -172,7 +172,7 @@ export default function SomeComponent1() {
 `NamedReducerInterface`
 
 * to:  
-`ReducerProviderValue`
+`ProviderValue`
 
 e.g.:
 
@@ -185,7 +185,7 @@ e.g.:
 *to*:
 
 ```tsx
-  const [ state, dispatch ]: ReducerProviderValue<State, Action> = useReducer("someNamedReducer");
+  const [ state, dispatch ]: ProviderValue<State, Action> = useReducer("someNamedReducer");
 ```
 
 > Prefer *Types in function approach*, [typings](typings.md).
