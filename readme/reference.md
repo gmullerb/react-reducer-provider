@@ -21,9 +21,10 @@ Each `SyncReducerProvider` or `AsyncReducerProvider` is equivalent to a Flux str
 
 * `reducer`: a asynchronous/synchronous function that will receive the current state and an action to produce a new state.
 * `initialState`: inception state for the component.
-* `name` (optional): constitutes the name that identifies the `SyncReducerProvider` or `AsyncReducerProvider`, which is useful when using more than 1 provider.
-  * **developer must keep track of names to avoid overriding**.
-  * Internally, `SyncReducerProvider` and `AsyncReducerProvider` share the pool of names, i.e. when developing don't use the same name for a `SyncReducerProvider` and an `AsyncReducerProvider`.
+* `name ?: string | number` (optional): constitutes the name that identifies the `SyncReducerProvider` or `AsyncReducerProvider`, which is useful when using more than 1 provider.
+  * **developer must keep track of names and numbers to avoid overriding**.
+  * Internally, `SyncReducerProvider` and `AsyncReducerProvider` share the pool of names and numbers, i.e. when developing don't use the same name or number for a `SyncReducerProvider` and an `AsyncReducerProvider`.
+    * `name` is used internally by a `Map`, so using numbers should be "faster" than strings.
 
 ```jsx
 <SyncReducerProvider
@@ -39,7 +40,7 @@ Each `SyncReducerProvider` or `AsyncReducerProvider` is equivalent to a Flux str
 
 ```jsx
 <AsyncReducerProvider
-  name='someNamedReducer'
+  name={12345}
   reducer={asyncReduce}
   initialState={initialState}
 >
@@ -99,7 +100,7 @@ dispatch(action)
 
 *parameters*:
 
-* `name` (optional): constitutes the name of the `SyncReducerProvider` or `AsyncReducerProvider` being accessed.
+* `name ?: string | number` (optional): constitutes the name or number of the `SyncReducerProvider` or `AsyncReducerProvider` being accessed.
 
 *returns*:
 
@@ -123,7 +124,7 @@ export default function SomeComponent1() {
 
 *parameters*:
 
-* `name` (optional): constitutes the name of the `SyncReducerProvider` or `AsyncReducerProvider` being accessed.
+* `name ?: string | number` (optional): constitutes the name or number of the `SyncReducerProvider` or `AsyncReducerProvider` being accessed.
 
 *returns*:
 
@@ -147,7 +148,7 @@ export default function SomeComponent2() {
 
 *parameters*:
 
-* `name` (optional): constitutes the name of the `SyncReducerProvider` or `AsyncReducerProvider` being accessed.
+* `name ?: string | number` (optional): constitutes the name or number of the `SyncReducerProvider` or `AsyncReducerProvider` being accessed.
 
 *returns*:
 
@@ -272,7 +273,7 @@ export default function SomeComponentN() {
 
 ## Singleton Reducer Provider
 
-If no name is provided a "unique"[1] Reducer will be created.
+If no name or number is provided a "unique"[1] Reducer will be created.
 
 > [1] This is a convention, i.e. is up to the developer not to created more Reducer Provider. Worth mentioning that no-named and named Reducer Providers can be combined.
 

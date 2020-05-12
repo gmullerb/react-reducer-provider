@@ -8,7 +8,7 @@ import type {
 ///////////////////////////////
 
 export interface ReducerProps<STATE, REDUCER> {
-  name?: string;
+  name?: string | number;
   reducer: REDUCER;
   initialState: STATE;
   children: Element<any>;
@@ -51,13 +51,13 @@ export type ReducerProviderValue<
 > = [STATE, Dispatcher<ACTION, DISPATCH>]
 
 declare export function useReducer<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
-  name?: string
+  name?: string | number
 ): ReducerProviderValue<STATE, ACTION, DISPATCH>
 
-declare export function useReducerState<STATE>(name?: string): STATE
+declare export function useReducerState<STATE>(name?: string | number): STATE
 
 declare export function useReducerDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
-  name?: string
+  name?: string | number
 ): Dispatcher<ACTION, DISPATCH>
 
 // Helpers

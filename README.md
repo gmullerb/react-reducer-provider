@@ -22,7 +22,7 @@ __________________
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "3.2.1",
+    "react-reducer-provider": "3.3.0",
     ..
 ```
 

@@ -1,5 +1,10 @@
 # React Reducer Provider Change Log
 
+## 3.3.0 - May 2020
+
+* New Feature: Now `AsyncReducerProvider` and `SyncReducerProvider` can be identified by number, not just by a string, number should be "faster".
+* Updates Documentation files.
+
 ## 3.2.1 - May 2020
 
 * Now the returned Dispatcher will be the same always, removes `useCallback`.

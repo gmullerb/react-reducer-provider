@@ -167,6 +167,101 @@ function TestAsyncReducerDispatcherHook(): Node {
   )
 }
 
+function TestNumberedSyncReducerProvider({ children }: {children: Element<any>}): Node {
+  function reduce(prevState: TestState, action: string): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <SyncReducerProvider
+      name={0}
+      reducer={reduce}
+      initialState={initialState}
+    >
+      {children}
+    </SyncReducerProvider>
+  )
+}
+
+function TestNumberedAsyncReducerProvider({ children }: {children: Element<any>}): Node {
+  async function reduce(prevState: TestState, action: string): Promise<TestState> {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: await Promise.resolve(1)
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <AsyncReducerProvider
+      name={0}
+      reducer={reduce}
+      initialState={initialState}
+    >
+      {children}
+    </AsyncReducerProvider>
+  )
+}
+
+function TestNumberedSyncReducerMainHook(): Node {
+  const [state, dispatch]: ReducerProviderValue<TestState, string> = useReducer<TestState, string>(0)
+  return (
+    <button onClick={(): void => dispatch('ACTION1')}>
+      Child{state.lastAction}
+    </button>
+  )
+}
+
+function TestNumberedAsyncReducerMainHook(): Node {
+  const [state, dispatch]: ReducerProviderValue<TestState, string, Async<>> = useReducer<TestState, string, Async<>>(0)
+  const someFunc = () => {}
+  return (
+    <button onClick={async () => await dispatch('ACTION1')
+      .then(someFunc)
+    }>
+      Child{state.lastAction}
+    </button>
+  )
+}
+
+function TestNumberedReducerStateHook(): Node {
+  const theState: TestState = useReducerState<TestState>(0)
+  return (
+    <button>
+      Child{theState.lastAction}
+    </button>
+  )
+}
+
+function TestNumberedSyncReducerDispatcherHook(): Node {
+  const theDispatcher: Dispatcher<string> = useReducerDispatcher<string>(0)
+  return (
+    <button onClick={(): void => theDispatcher('ACTION1')}>
+      Children
+    </button>
+  )
+}
+
+function TestNumberedAsyncReducerDispatcherHook(): Node {
+  const theDispatcher: Dispatcher<string, Async<>> = useReducerDispatcher<string, Async<>>(0)
+  const someFunc = () => {}
+  return (
+    <button onClick={(): Promise<void> => theDispatcher('ACTION1')
+      .then(someFunc)
+    }>
+      Children
+    </button>
+  )
+}
+
 function TestAction(): Action<string, string> {
   return {
     type: 'theType',

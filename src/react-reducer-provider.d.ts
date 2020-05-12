@@ -8,7 +8,7 @@ import {
 ///////////////////////////////
 
 declare interface ReducerProps<STATE, REDUCER> {
-  name?: string;
+  name?: string | number;
   reducer: REDUCER;
   initialState: STATE;
   children: ReactNode;
@@ -54,13 +54,13 @@ declare interface ReducerProviderValue<
 }
 
 declare function useReducer<STATE, ACTION, DISPATCH extends Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
-  name?: string
+  name?: string | number
 ): ReducerProviderValue<STATE, ACTION, DISPATCH>
 
-declare function useReducerState<STATE>(name?: string): STATE
+declare function useReducerState<STATE>(name?: string | number): STATE
 
 declare function useReducerDispatcher<ACTION, DISPATCH extends Async | Sync = Sync<void>>(
-  name?: string
+  name?: string | number
 ): Dispatcher<ACTION, DISPATCH>
 
 // Helpers
