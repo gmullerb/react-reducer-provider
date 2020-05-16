@@ -847,4 +847,49 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
     expect(useReducerDispatcherSet.size).toBe(1)
     expect(provider.find('#buttonP span')).toHaveText('Parent4')
   })
+
+  it('should reduce with useReducerDispatcher and get state with extra args', async () => {
+    const testInitialState = '0'
+    async function testReduce(prevState, action, extra1, extra2) {
+      switch (action) {
+        case 'ACTION1':
+          return await delay(5, { value: `${extra1}${extra2}` })
+        default:
+          return prevState
+      }
+    }
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducerAArgs001')
+      return (
+        <button onClick={() => dispatch('ACTION1', 'Wow', 'Good')}>
+          Click
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useReducerState('testNamedReducerAArgs001')
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <AsyncReducerProvider
+        name='testNamedReducerAArgs001'
+        reducer={testReduce}
+        initialState={testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </AsyncReducerProvider>
+    )
+    expect(provider).toHaveText('ClickChild0')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    await delay(10)
+    expect(provider).toHaveText('ClickChildWowGood')
+  })
 })

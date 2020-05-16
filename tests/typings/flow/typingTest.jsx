@@ -77,6 +77,51 @@ function TestAsyncReducerProvider({ children }: {children: Element<any>}): Node 
   )
 }
 
+function TestSyncReducerProviderChild(): Node {
+  function reduce(prevState: TestState, action: string): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <SyncReducerProvider
+      name='testNamedReducer'
+      reducer={reduce}
+      initialState={initialState}
+    >
+      <div>Child1</div>
+    </SyncReducerProvider>
+  )
+}
+
+function TestSyncReducerProviderChildren(): Node {
+  function reduce(prevState: TestState, action: string): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <SyncReducerProvider
+      name='testNamedReducer'
+      reducer={reduce}
+      initialState={initialState}
+    >
+      <div>Child1</div>
+      <div>ChildN</div>
+    </SyncReducerProvider>
+  )
+}
+
 function TestSingletonSyncReducerProvider({ children }: {children: Element<any>}): Node {
   function reduce(prevState: TestState, action: string): TestState {
     switch (action) {
@@ -355,6 +400,115 @@ function TestNumberedAsyncMapperDispatcherHook(): Node {
   const someFunc = () => {}
   return (
     <button onClick={(): Promise<void> => theDispatcher('ACTION1')
+      .then(someFunc)
+    }>
+      Children
+    </button>
+  )
+}
+
+function TestArgsSyncReducerProvider({ children }: {children: Element<any>}): Node {
+  function reduce(prevState: TestState, action: string, moreData1: string, moreDataN: {}): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <SyncReducerProvider
+      name={0}
+      reducer={reduce}
+      initialState={initialState}
+    >
+      {children}
+    </SyncReducerProvider>
+  )
+}
+
+function TestArgsAsyncReducerProvider({ children }: {children: Element<any>}): Node {
+  async function reduce(prevState: TestState, action: string, moreData1: string, moreDataN: {}): Promise<TestState> {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: await Promise.resolve(1)
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <AsyncReducerProvider
+      name={0}
+      reducer={reduce}
+      initialState={initialState}
+    >
+      {children}
+    </AsyncReducerProvider>
+  )
+}
+
+function TestArgsSyncMapperProvider({ children }: {children: Element<any>}): Node {
+  function map(action: string, moreData1: string, moreDataN: {}): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return initialState
+    }
+  }
+  return (
+    <SyncMapperProvider
+      name={0}
+      mapper={map}
+      initialState={initialState}
+    >
+      {children}
+    </SyncMapperProvider>
+  )
+}
+
+function TestArgsAsyncMapperProvider({ children }: {children: Element<any>}): Node {
+  async function map(action: string, moreData1: string, moreDataN: {}): Promise<TestState> {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: await Promise.resolve(1)
+        }
+      default:
+        return initialState
+    }
+  }
+  return (
+    <AsyncMapperProvider
+      name={0}
+      mapper={map}
+      initialState={initialState}
+    >
+      {children}
+    </AsyncMapperProvider>
+  )
+}
+
+function TestArgsSyncMapperDispatcherHook(): Node {
+  const theDispatcher: Dispatcher<string> = useMapperDispatcher<string>(0)
+  return (
+    <button onClick={(): void => theDispatcher('ACTION1', 'somevalue1', {})}>
+      Children
+    </button>
+  )
+}
+
+function TestArgsAsyncMapperDispatcherHook(): Node {
+  const theDispatcher: Dispatcher<string, Async<>> = useMapperDispatcher<string, Async<>>(0)
+  const someFunc = () => {}
+  return (
+    <button onClick={(): Promise<void> => theDispatcher('ACTION1', 'somevalue1', {})
       .then(someFunc)
     }>
       Children

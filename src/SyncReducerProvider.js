@@ -2,8 +2,8 @@
 import { createReducerProvider } from './ReducerProvider'
 
 export function SyncReducerProvider(props) {
-  return createReducerProvider(props, (stateRef, reRenderTrigger) => (action) => {
-    stateRef.current = props.reducer(stateRef.current, action)
+  return createReducerProvider(props, (stateRef, reRenderTrigger) => (action, ...args) => {
+    stateRef.current = props.reducer(stateRef.current, action, ...args)
     reRenderTrigger(stateRef.current)
     return stateRef.current
   })

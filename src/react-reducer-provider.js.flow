@@ -1,15 +1,19 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 
 import type {
-  Element
+  Element,
+  Node
 } from 'react'
 
 // Provider Component
 /////////////////////
+
+type ProviderName = string | number | Symbol
+
 interface ProviderProps<STATE> {
-  name?: string | number;
+  name?: ProviderName;
   initialState: STATE;
-  children: Element<any>;
+  children: Node;
 }
 
 // Reducer Component Definition
@@ -20,7 +24,7 @@ interface ReducerProps<STATE, REDUCER> extends ProviderProps<STATE> {
 }
 
 export interface SyncReducer<STATE, ACTION> {
-  (prevState: STATE, action: ACTION): STATE;
+  (prevState: STATE, action: ACTION, ...args: $ReadOnlyArray<any>): STATE;
 }
 
 export interface SyncReducerProps<STATE, ACTION> extends ReducerProps<STATE, SyncReducer<STATE, ACTION>> {}
@@ -30,7 +34,7 @@ declare export function SyncReducerProvider<STATE, ACTION>(
 ): Element<typeof SyncReducerProvider>
 
 export interface AsyncReducer<STATE, ACTION> {
-  (prevState: STATE, action: ACTION): Promise<STATE>;
+  (prevState: STATE, action: ACTION, ...args: $ReadOnlyArray<any>): Promise<STATE>;
 }
 
 export interface AsyncReducerProps<STATE, ACTION> extends ReducerProps<STATE, AsyncReducer<STATE, ACTION>> {}
@@ -47,7 +51,7 @@ interface MapperProps<STATE, MAPPER> extends ProviderProps<STATE> {
 }
 
 export interface SyncMapper<STATE, ACTION> {
-  (action: ACTION): STATE;
+  (action: ACTION, ...args: $ReadOnlyArray<any>): STATE;
 }
 
 export interface SyncMapperProps<STATE, ACTION> extends MapperProps<STATE, SyncMapper<STATE, ACTION>> {}
@@ -57,7 +61,7 @@ declare export function SyncMapperProvider<STATE, ACTION>(
 ): Element<typeof SyncMapperProvider>
 
 export interface AsyncMapper<STATE, ACTION> {
-  (action: ACTION): Promise<STATE>;
+  (action: ACTION, ...args: $ReadOnlyArray<any>): Promise<STATE>;
 }
 
 export interface AsyncMapperProps<STATE, ACTION> extends MapperProps<STATE, AsyncMapper<STATE, ACTION>> {}
@@ -73,7 +77,7 @@ export type Sync<T = any> = T
 export type Async<T = any> = Promise<T>
 
 export interface Dispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>> {
-  (value: ACTION): DISPATCH
+  (value: ACTION, ...args: $ReadOnlyArray<any>): DISPATCH
 }
 
 export type ProviderValue<
@@ -88,23 +92,23 @@ export type ProviderValue<
 export type ReducerProviderValue<STATE, ACTION, DISPATCH = Sync<void>> = ProviderValue<STATE, ACTION, DISPATCH>
 
 declare export function useReducer<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
-  name?: string | number
+  name?: ProviderName
 ): ProviderValue<STATE, ACTION, DISPATCH>
 
-declare export function useReducerState<STATE>(name?: string | number): STATE
+declare export function useReducerState<STATE>(name?: ProviderName): STATE
 
 declare export function useReducerDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
-  name?: string | number
+  name?: ProviderName
 ): Dispatcher<ACTION, DISPATCH>
 
 declare export function useMapper<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
-  name?: string | number
+  name?: ProviderName
 ): ProviderValue<STATE, ACTION, DISPATCH>
 
-declare export function useMapperState<STATE>(name?: string | number): STATE
+declare export function useMapperState<STATE>(name?: ProviderName): STATE
 
 declare export function useMapperDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
-  name?: string | number
+  name?: ProviderName
 ): Dispatcher<ACTION, DISPATCH>
 
 // Helpers

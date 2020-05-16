@@ -112,4 +112,49 @@ describe('AsyncMapperProvider tests', () => {
     await delay(10)
     expect(provider).toHaveText('Click1Child1')
   })
+
+  it('should reduce with useMapper and get state with extra args', async () => {
+    const testInitialState = 'A'
+    async function testMapArgs(action, extra) {
+      switch (action) {
+        case 'ACTION1':
+          return await delay(5, { value: extra })
+        default:
+          return '0'
+      }
+    }
+    const FunComponent1 = () => {
+      const [ state, dispatch ] = useMapper(595)
+      return (
+        <button onClick={() => dispatch('ACTION1', 'Superb')}>
+          Click{state}
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useMapperState(595)
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <AsyncMapperProvider
+        name={595}
+        mapper={testMapArgs}
+        initialState={testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </AsyncMapperProvider>
+    )
+    expect(provider).toHaveText('ClickAChildA')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    await delay(10)
+    expect(provider).toHaveText('ClickSuperbChildSuperb')
+  })
 })

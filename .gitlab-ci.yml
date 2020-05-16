@@ -1,4 +1,4 @@
-image: node:latest
+image: registry.gitlab.com/gmullerb/basecode-react-ts/debian-node-chromium-xvfb:9.12-14.2.0-73.0-1.19.2
 
 cache:
   key: "${CI_COMMIT_SHA}"

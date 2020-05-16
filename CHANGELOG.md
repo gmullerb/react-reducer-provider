@@ -1,5 +1,13 @@
 # React Reducer Provider Change Log
 
+## 3.5.0 - May 2020
+
+* New Features:
+  * Extra parameters for Mappers and Reducers => Extra arguments for Dispatchers.
+  * Allows `symbol` as identification for providers.
+* Improves project configuration.
+* Updates Documentation files.
+
 ## 3.4.0 - May 2020
 
 * New Feature: Mapper functions => `SyncMapperProvider`, `AsyncMapperProvider`, `useMapper`, `useMapperState` and `useMapperDispatcher`.

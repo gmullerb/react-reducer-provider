@@ -4,6 +4,8 @@
 
 <h1 align="center">Asynchronous/Synchronous React Reducer/Mapper Provider with Hooks</h1>
 
+<p align="center">Flux/Redux made easy</p>
+
 [![react-reducer-provider](https://badgen.net/badge/npm%20pack/react-reducer-provider/blue)](https://www.npmjs.com/package/react-reducer-provider)
 [![ ](https://badgen.net/npm/v/react-reducer-provider)](https://www.npmjs.com/package/react-reducer-provider)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)
@@ -22,7 +24,7 @@ __________________
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "3.4.0",
+    "react-reducer-provider": "3.5.0",
     ..
 ```
 
@@ -40,12 +42,12 @@ import { SyncReducerProvider } from 'react-reducer-provider'
 
 const initialState = 0
 
-function reduce(prevState, action) {
+function reduce(prevState, action, param1) {
   switch (action) {
     case 'ACTION1':
-      return prevState + 1
+      return prevState + param1
     case 'ACTION2':
-      return prevState - 1
+      return prevState - param1
     default:
       return prevState
   }
@@ -80,7 +82,7 @@ import React from 'react'
 export default function SomeComponent1() {
   const [ state, dispatch ] = useReducer()
   return (
-    <button onClick={() => dispatch('ACTION1')}>
+    <button onClick={() => dispatch('ACTION1', 2)}>
       Go up (from {state})!
     </button>
   )
@@ -97,7 +99,7 @@ export default function SomeComponent2() {
   const dispatch = useReducerDispatcher()
   return (
     <button onClick={() => { 
-      const newState = dispatch('ACTION2')
+      const newState = dispatch('ACTION2', 1)
       console.info(newState)
     }}>
       Go down!
@@ -162,8 +164,9 @@ With the introduction of React Hooks, in some way using Flux **library**[1] was 
 
 * Provides Reducers, but also Mappers.
 * It allows to use [**Asynchronous** Reducer/Mapper/Dispatcher](readme/reference.md#asyncreducerprovider).
-* [Dispatcher returns the new State or a Promise of the new State](readme/reference.md#dispatcher).
-* [**Each Reducer/Mapper Provider can have a different names or numbers which allows for easy identification and nesting**](readme/reference.md#nesting).
+* [Reducer/Mapper/Dispatcher can have **more parameters/arguments** than traditional reducer which have only (state, action)](readme/reference.md#extraparameters).
+* [Dispatcher **returns the new State or a Promise of the new State**](readme/reference.md#dispatcher).
+* [Each Reducer/Mapper Provider can have a **different names, numbers or symbols which allows for easy identification and nesting**](readme/reference.md#nesting).
 * It is ready for Tree Shaking optimization, so you get only what you need from the `react-reducer-provider` in the final app bundle.
 * It provides [its own **type definitions for Typescript and Flow**](readme/typings.md).
 * Full Tested (not only focus in coverage, but also in cases).
@@ -172,6 +175,8 @@ With the introduction of React Hooks, in some way using Flux **library**[1] was 
 ![Reducers](readme/reducer.svg "Reducers")
 
 ![Mappers](readme/mapper.svg "Mappers")
+
+![Dispatcher](readme/dispatcher.svg "Dispatcher")
 
 > [1] Not the Flux architecture.
 __________________

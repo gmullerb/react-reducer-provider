@@ -1,7 +1,7 @@
 {
   "name": "react-reducer-provider",
   "description": "Asynchronous/Synchronous React Reducer/Mapper Provider with Hooks",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
   "main": "cjs/react-reducer-provider.js",
@@ -24,6 +24,8 @@
   "keywords": [
     "SyncReducerProvider",
     "AsyncReducerProvider",
+    "SyncMapperProvider",
+    "AsyncMapperProvider",
     "useReducer",
     "useReducerState",
     "useReducerDispatcher",
@@ -106,15 +108,14 @@
     "prepublishOnly": "npm run check"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
     "@babel/core": "~7.6.0",
     "@babel/preset-env": "~7.6.0",
     "@babel/preset-react": "~7.0.0",
-    "@babel/plugin-transform-modules-commonjs": "^7.9.6",
     "@typescript-eslint/eslint-plugin": "^2.31.0",
     "@typescript-eslint/parser": "^2.31.0",
     "@types/enzyme": "^3.10.5",
     "@types/jasmine": "~3.5.10",
+    "@types/jasmine-enzyme": "^7.0.0",
     "@types/react": "~16.9.5",
     "babel-eslint": "10.0.3",
     "babel-loader": "~8.0.6",
@@ -129,6 +130,7 @@
     "eslint-plugin-react": "~7.14.3",
     "eslint-plugin-regex": "^1.1.0",
     "flow-bin": "~0.107.0",
+    "husky": "^4.2.5",
     "istanbul-instrumenter-loader": "^3.0.1",
     "jsdom": "^16.2.2",
     "jasmine-core": "^3.4.0",
@@ -151,5 +153,10 @@
     "rollup-plugin-cleanup": "^1.0.1",
     "typescript": "^3.8.3",
     "webpack": "~4.39.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run check"
+    }
   }
 }

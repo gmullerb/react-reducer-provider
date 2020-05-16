@@ -946,4 +946,49 @@ describe('SyncReducerProvider tests', () => {
     expect(useReducerDispatcherSet.size).toBe(1)
     expect(provider.find('#buttonP span')).toHaveText('Parent4')
   })
+
+  it('should reduce with useReducerDispatcher and get state with extra args', () => {
+    const testInitialState = '0'
+    function testReduceArgs(prevState, action, extra) {
+      switch (action) {
+        case 'ACTION1':
+          return extra
+        default:
+          return prevState
+      }
+    }
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducerArgs001')
+      return (
+        <button onClick={() => dispatch('ACTION1', 'What!')}>
+          Click
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useReducerState('testNamedReducerArgs001')
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <SyncReducerProvider
+        name='testNamedReducerArgs001'
+        reducer={testReduceArgs}
+        initialState={testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </SyncReducerProvider>
+    )
+    expect(provider).toHaveText('ClickChild0')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ClickChildWhat!')
+  })
+
 })

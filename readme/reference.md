@@ -26,17 +26,17 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 *properties*:
 
 1 . `initialState`: inception state for the component.  
-2 . `name ?: string | number`: constitutes the name that identifies the `SyncReducerProvider` or `AsyncReducerProvider`, which is useful when using more than 1 provider.
+2 . `name ?: string | number | symbol`: constitutes the name that identifies the `SyncReducerProvider` or `AsyncReducerProvider`, which is useful when using more than 1 provider.
 
 * **developer must keep track of names and numbers to avoid overriding**.
-* Internally, `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` and `AsyncMapperProvider` share the pool of names and numbers, i.e. when developing don't use the same name or number for any of them.
-  * `name` is used internally by a `Map`, so using numbers should be "faster" than strings.
+* Internally, `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` and `AsyncMapperProvider` share the pool of names, numbers and symbols, i.e. when developing don't use the same name or number for any of them.
+  * `name` is used internally by a `Map`, so using numbers or symbols should be "faster" than strings.
 
 [`AsyncReducerProvider`](../src/AsyncReducerProvider.js) & [`SyncReducerProvider`](../src/SyncReducerProvider.js) have the following property:
 
 3 . `reducer`: a asynchronous/synchronous function that will receive the current state and an action to produce a new state [1].
 
-![Reducer](reducer.svg "Reducer")
+![Reducer](reducerNoArgs.svg "Reducer")
 
 `function syncReduce<STATE, ACTION>(prevState: STATE, action: ACTION): STATE`
 
@@ -68,7 +68,7 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 
 3 . `mapper`: a asynchronous/synchronous function that will receive an action to produce a new state [1].
 
-![Mapper](mapper.svg "Mapper")
+![Mapper](mapperNoArgs.svg "Mapper")
 
 `function asyncMap<STATE, ACTION>(action: ACTION): Promise<STATE>`
 
@@ -135,6 +135,8 @@ const FunComponent1 = () => {
 
 [`Dispatcher`](../src/react-reducer-provider.d.ts) returns the new State or a Promise of the new State:
 
+![Dispatcher](dispatcherNoArgs.svg "Dispatcher")
+
 Synchronous dispatcher:
 
 ```js
@@ -162,7 +164,7 @@ dispatch(action)
 
 *parameters*:
 
-* `name ?: string | number`: constitutes the name or number of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
+* `name ?: string | number | symbol`: constitutes the name, number or symbol of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
 
 *returns*:
 
@@ -186,7 +188,7 @@ export default function SomeComponent1() {
 
 *parameters*:
 
-* `name ?: string | number`: constitutes the name or number of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
+* `name ?: string | number | symbol`: constitutes the name, number or symbol of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
 
 *returns*:
 
@@ -210,7 +212,7 @@ export default function SomeComponent2() {
 
 *parameters*:
 
-* `name ?: string | number`: constitutes the name or number of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
+* `name ?: string | number | symbol`: constitutes the name, number or symbol of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
 
 *returns*:
 
@@ -345,7 +347,6 @@ export default function SomeComponentN() {
         return prevState
     }
   }
-
 ```
 
 ### `AsyncMapperProvider`
@@ -377,7 +378,6 @@ export default function SomeComponentN() {
         return prevState
     }
   }
-
 ```
 
 ### Dispatcher
@@ -404,6 +404,63 @@ export default function SomeComponentN() {
 [![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-m0924?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > Although `AsyncReducerProvider` can be used for synchronous reducer/dispatcher (check [AsyncReducerProviderWithSync.test.jsx](tests/js/AsyncReducerProviderWithSync.test.jsx)), It is not is purpose and implementation is suitable for asynchronous processes, long story short, for synchronous processes, use `SyncReducerProvider`.  
 > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
+
+## Extra parameters
+
+Dispatcher can send **any number of additional arguments**:
+
+![Dispatcher](dispatcher.svg "Dispatcher")
+
+```jsx
+  export default function SomeComponent2() {
+    const dispatch = useReducerDispatcher('someNamedReducer)
+    return (
+      <button onClick={(async () => dispatch('ACTION2', arg1, arg2, argN).then(someProcess())}>
+        Go down!
+      </button>
+    )
+  }
+```
+
+Then, respectively:
+
+* Reducer can have **any number of additional parameters**, and use them as pleased:
+
+![Reducer](reducer.svg "Reducer")
+
+```js
+  async function reduce(prevState, action, param1, param2, paramN) {
+    switch (action) {
+      case 'ACTION1':
+        return await someAsyncProcess1(prevState, param1, param2, paramN)
+      case 'ACTION2':
+        return someAsyncProcess2(prevState, param1, param2, paramN)
+      default:
+        return prevState
+    }
+  }
+```
+
+* Mapper can have **any number of additional parameters**, and use them as pleased:
+
+![Mapper](mapper.svg "Mapper")
+
+```js
+  async function map(action, param1, param2, paramN) {
+    switch (action) {
+      case 'ACTION1':
+        return await someAsyncProcess1(param1, param2, paramN)
+      case 'ACTION2':
+        return someAsyncProcess2(param1, param2, paramN)
+      default:
+        return prevState
+    }
+  }
+```
+
+> An example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-zxply?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-zxply?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> This makes "obsolete" the [Action](typings.md#helpertypes), but at the end can be matter of preference.
 
 ## Singleton Reducer/Mapper Provider
 

@@ -109,4 +109,48 @@ describe('SyncMapperProvider tests', () => {
 
     expect(provider).toHaveText('Click1Child1')
   })
+
+  it('should reduce with useMapper and get state with extra args', () => {
+    const testInitialState = 'A'
+    function testMapArgs(action, extra) {
+      switch (action) {
+        case 'ACTION1':
+          return extra
+        default:
+          return '0'
+      }
+    }
+    const FunComponent1 = () => {
+      const [ state, dispatch ] = useMapper(495)
+      return (
+        <button onClick={() => dispatch('ACTION1', 'Yes!')}>
+          Click{state}
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useMapperState(495)
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <SyncMapperProvider
+        name={495}
+        mapper={testMapArgs}
+        initialState={testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </SyncMapperProvider>
+    )
+    expect(provider).toHaveText('ClickAChildA')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ClickYes!ChildYes!')
+  })
 })

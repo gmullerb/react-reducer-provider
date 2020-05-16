@@ -75,6 +75,21 @@ Defines how the action is dispatch, thereby, the type of the reducer.
   }
 ```
 
+or with additional parameters:
+
+```tsx
+  function reduce(prevState: TestState, action: string, param1: number, param2: boolean, paramN: {}): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
+  }
+```
+
 3 . Define the Reducer Provider:
 
 ```tsx
@@ -91,6 +106,21 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 
 ```tsx
   function map(action: string): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return initialState
+    }
+  }
+```
+
+or with additional parameters:
+
+```tsx
+  function map(action: string, param1: number, param2: boolean, paramN: {}): TestState {
     switch (action) {
       case 'ACTION1':
         return {

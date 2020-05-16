@@ -7,8 +7,10 @@ import {
 // Provider Component
 /////////////////////
 
+type ProviderName = string | number | symbol
+
 declare interface ProviderProps<STATE> {
-  name?: string | number;
+  name?: ProviderName;
   initialState: STATE;
   children: ReactNode;
 }
@@ -21,7 +23,7 @@ declare interface ReducerProps<STATE, REDUCER> extends ProviderProps<STATE> {
 }
 
 declare interface SyncReducer<STATE, ACTION> {
-  (prevState: STATE, action: ACTION): STATE
+  (prevState: STATE, action: ACTION, ...args: ReadonlyArray<any>): STATE
 }
 
 declare interface SyncReducerProps<STATE, ACTION> extends ReducerProps<STATE, SyncReducer<STATE, ACTION>> {}
@@ -31,7 +33,7 @@ declare function SyncReducerProvider<STATE, ACTION>(
 ): ReactElement<SyncReducerProps<STATE, ACTION>>
 
 declare interface AsyncReducer<STATE, ACTION> {
-  (prevState: STATE, action: ACTION): Promise<STATE>
+  (prevState: STATE, action: ACTION, ...args: ReadonlyArray<any>): Promise<STATE>
 }
 
 declare interface AsyncReducerProps<STATE, ACTION> extends ReducerProps<STATE, AsyncReducer<STATE, ACTION>> {}
@@ -48,7 +50,7 @@ declare interface MapperProps<STATE, MAPPER> extends ProviderProps<STATE> {
 }
 
 declare interface SyncMapper<STATE, ACTION> {
-  (action: ACTION): STATE
+  (action: ACTION, ...args: ReadonlyArray<any>): STATE
 }
 
 declare interface SyncMapperProps<STATE, ACTION> extends MapperProps<STATE, SyncMapper<STATE, ACTION>> {}
@@ -58,7 +60,7 @@ declare function SyncMapperProvider<STATE, ACTION>(
 ): ReactElement<SyncMapperProps<STATE, ACTION>>
 
 declare interface AsyncMapper<STATE, ACTION> {
-  (action: ACTION): Promise<STATE>
+  (action: ACTION, ...args: ReadonlyArray<any>): Promise<STATE>
 }
 
 declare interface AsyncMapperProps<STATE, ACTION> extends MapperProps<STATE, AsyncMapper<STATE, ACTION>> {}
@@ -74,7 +76,7 @@ type Sync<T = any> = T
 type Async<T = any> = Promise<T>
 
 declare interface Dispatcher<ACTION, DISPATCH extends Async | Sync = Sync<void>> {
-  (value: ACTION): DISPATCH
+  (value: ACTION, ...args: ReadonlyArray<any>): DISPATCH
 }
 
 declare interface ProviderValue<
@@ -87,13 +89,13 @@ declare interface ProviderValue<
 }
 
 declare function useReducer<STATE, ACTION, DISPATCH extends Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
-  name?: string | number
+  name?: ProviderName
 ): ProviderValue<STATE, ACTION, DISPATCH>
 
-declare function useReducerState<STATE>(name?: string | number): STATE
+declare function useReducerState<STATE>(name?: ProviderName): STATE
 
 declare function useReducerDispatcher<ACTION, DISPATCH extends Async | Sync = Sync<void>>(
-  name?: string | number
+  name?: ProviderName
 ): Dispatcher<ACTION, DISPATCH>
 
 // Helpers

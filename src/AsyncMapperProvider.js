@@ -2,8 +2,8 @@
 import { createMapperProvider } from './MapperProvider'
 
 export function AsyncMapperProvider(props) {
-  return createMapperProvider(props, (reRenderTrigger) => async (action) => {
-    const newState = await props.mapper(action)
+  return createMapperProvider(props, (reRenderTrigger) => async (action, ...args) => {
+    const newState = await props.mapper(action, ...args)
     reRenderTrigger(newState)
     return newState
   })

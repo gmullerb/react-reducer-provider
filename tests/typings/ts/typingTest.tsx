@@ -8,6 +8,7 @@ import {
   ProviderValue,
   Sync,
   SyncMapperProvider,
+  SyncReducerProps,
   SyncReducerProvider,
   useMapper,
   useMapperDispatcher,
@@ -73,6 +74,51 @@ function TestAsyncReducerProvider({ children }: {children: ReactNode}): ReactEle
   )
 }
 
+function TestSyncReducerProviderChild(): ReactElement {
+  function reduce(prevState: TestState, action: string): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <SyncReducerProvider
+      name='testNamedReducer'
+      reducer={reduce}
+      initialState={initialState}
+    >
+      <div>Child1</div>
+    </SyncReducerProvider>
+  )
+}
+
+function TestSyncReducerProviderChildren(): ReactElement {
+  function reduce(prevState: TestState, action: string): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <SyncReducerProvider
+      name='testNamedReducer'
+      reducer={reduce}
+      initialState={initialState}
+    >
+      <div>Child1</div>
+      <div>ChildN</div>
+    </SyncReducerProvider>
+  )
+}
+
 function TestSingletonSyncReducerProvider({ children }: {children: ReactNode}): ReactElement {
   function reduce(prevState: TestState, action: string): TestState {
     switch (action) {
@@ -90,6 +136,19 @@ function TestSingletonSyncReducerProvider({ children }: {children: ReactNode}): 
       initialState={initialState}
     >
       {children}
+    </SyncReducerProvider>
+  )
+}
+
+function TestSyncReducerComponent(props: SyncReducerProps<TestState, string>): ReactElement {
+  return (
+    <SyncReducerProvider
+      name={props.name}
+      reducer={props.reducer}
+      initialState={props.initialState}
+    >
+      <div>Child1</div>
+      <div>ChildN</div>
     </SyncReducerProvider>
   )
 }
@@ -481,6 +540,115 @@ function TestNumberedAsyncMapperDispatcherHookWithReturn(): ReactElement {
   const someFunc = (value: string) => value.toLowerCase()
   return (
     <button onClick={(): Promise<string> => theDispatcher(123)
+      .then(someFunc)
+    }>
+      Children
+    </button>
+  )
+}
+
+function TestArgsSyncReducerProvider({ children }: {children: ReactNode}): ReactElement {
+  function reduce(prevState: TestState, action: string, moreData1: string, moreDataN: {}): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <SyncReducerProvider
+      name={0}
+      reducer={reduce}
+      initialState={initialState}
+    >
+      {children}
+    </SyncReducerProvider>
+  )
+}
+
+function TestArgsAsyncReducerProvider({ children }: {children: ReactNode}): ReactElement {
+  async function reduce(prevState: TestState, action: string, moreData1: string, moreDataN: {}): Promise<TestState> {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: await Promise.resolve(1)
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <AsyncReducerProvider
+      name={0}
+      reducer={reduce}
+      initialState={initialState}
+    >
+      {children}
+    </AsyncReducerProvider>
+  )
+}
+
+function TestArgsSyncMapperProvider({ children }: {children: ReactNode}): ReactElement {
+  function map(action: string, moreData1: string, moreDataN: {}): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return initialState
+    }
+  }
+  return (
+    <SyncMapperProvider
+      name={0}
+      mapper={map}
+      initialState={initialState}
+    >
+      {children}
+    </SyncMapperProvider>
+  )
+}
+
+function TestArgsAsyncMapperProvider({ children }: {children: ReactNode}): ReactElement {
+  async function map(action: string, moreData1: string, moreDataN: {}): Promise<TestState> {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: await Promise.resolve(1)
+        }
+      default:
+        return initialState
+    }
+  }
+  return (
+    <AsyncMapperProvider
+      name={0}
+      mapper={map}
+      initialState={initialState}
+    >
+      {children}
+    </AsyncMapperProvider>
+  )
+}
+
+function TestArgsSyncMapperDispatcherHook(): ReactElement {
+  const theDispatcher: Dispatcher<string> = useMapperDispatcher<string>(0)
+  return (
+    <button onClick={(): void => theDispatcher('ACTION1', 'somevalue1', {})}>
+      Children
+    </button>
+  )
+}
+
+function TestArgsAsyncMapperDispatcherHook(): ReactElement {
+  const theDispatcher: Dispatcher<string, Async> = useMapperDispatcher<string, Async>(0)
+  const someFunc = () => {}
+  return (
+    <button onClick={(): Promise<void> => theDispatcher('ACTION1', 'somevalue1', {})
       .then(someFunc)
     }>
       Children
