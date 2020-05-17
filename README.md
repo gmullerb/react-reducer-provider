@@ -98,7 +98,7 @@ import React from 'react'
 export default function SomeComponent2() {
   const dispatch = useReducerDispatcher()
   return (
-    <button onClick={() => { 
+    <button onClick={() => {
       const newState = dispatch('ACTION2', 1)
       console.info(newState)
     }}>
@@ -170,7 +170,6 @@ With the introduction of React Hooks, in some way using Flux **library**[1] was 
 * It is ready for Tree Shaking optimization, so you get only what you need from the `react-reducer-provider` in the final app bundle.
 * It provides [its own **type definitions for Typescript and Flow**](readme/typings.md).
 * Full Tested (not only focus in coverage, but also in cases).
-* It is the evolution of [react-named-reducer](https://www.npmjs.com/package/react-named-reducer) (which is a derivation of [react-reducer-context](https://www.npmjs.com/package/react-reducer-context)).
 
 ![Reducers](readme/reducer.svg "Reducers")
 
@@ -178,7 +177,8 @@ With the introduction of React Hooks, in some way using Flux **library**[1] was 
 
 ![Dispatcher](readme/dispatcher.svg "Dispatcher")
 
-> [1] Not the Flux architecture.
+> [1] Not the Flux architecture.  
+> `react-reducer-provider` is the evolution of [react-named-reducer](https://www.npmjs.com/package/react-named-reducer) (which is a derivation of [react-reducer-context](https://www.npmjs.com/package/react-reducer-context)).
 __________________
 
 ## Documentation

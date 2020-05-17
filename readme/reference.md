@@ -31,6 +31,9 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 * **developer must keep track of names and numbers to avoid overriding**.
 * Internally, `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` and `AsyncMapperProvider` share the pool of names, numbers and symbols, i.e. when developing don't use the same name or number for any of them.
   * `name` is used internally by a `Map`, so using numbers or symbols should be "faster" than strings.
+    * Excellent when using `const enum`.
+  * Using symbols guarantees that there will be never be collisions.
+    * Perfect for custom libraries.
 
 [`AsyncReducerProvider`](../src/AsyncReducerProvider.js) & [`SyncReducerProvider`](../src/SyncReducerProvider.js) have the following property:
 

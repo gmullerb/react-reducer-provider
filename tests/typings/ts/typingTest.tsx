@@ -656,6 +656,42 @@ function TestArgsAsyncMapperDispatcherHook(): ReactElement {
   )
 }
 
+function TestArgsSyncMapperSymbolProvider({ children }: {children: ReactNode}): ReactElement {
+  const id = Symbol()
+  function map(action: string, moreData1: string, moreDataN: {}): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return initialState
+    }
+  }
+  return (
+    <SyncMapperProvider
+      name={id}
+      mapper={map}
+      initialState={initialState}
+    >
+      {children}
+    </SyncMapperProvider>
+  )
+}
+
+function TestArgsAsyncMapperSymbolDispatcherHook(): ReactElement {
+  const id = Symbol()
+  const theDispatcher: Dispatcher<string, Async> = useMapperDispatcher<string, Async>(id)
+  const someFunc = () => {}
+  return (
+    <button onClick={(): Promise<void> => theDispatcher('ACTION1', 'somevalue1', {})
+      .then(someFunc)
+    }>
+      Children
+    </button>
+  )
+}
+
 function TestAction(): Action<string, string> {
   return {
     type: 'theType',

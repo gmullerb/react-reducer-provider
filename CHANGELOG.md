@@ -1,5 +1,9 @@
 # React Reducer Provider Change Log
 
+## 3.5.1 - May 2020
+
+* Singleton now use a Symbol id => This will avoid any collision.
+
 ## 3.5.0 - May 2020
 
 * New Features:

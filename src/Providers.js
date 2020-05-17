@@ -3,11 +3,13 @@ import * as React from 'react'
 
 const providers = new Map()
 
-const captureProvider = function (name) {
+const SINGLETON_ID = Symbol('react-reducer-provider-singleton')
+
+const captureProvider = function (name = SINGLETON_ID) {
   return providers.get(name)
 }
 
-const createProvider = function (name, children, value) {
+const createProvider = function (children, value, name = SINGLETON_ID) {
   return React.createElement(
     (providers.get(name) || providers.set(name, React.createContext(null)).get(name)).Provider,
     { value },
@@ -17,5 +19,6 @@ const createProvider = function (name, children, value) {
 
 export {
   captureProvider,
-  createProvider
+  createProvider,
+  SINGLETON_ID
 }
