@@ -6,7 +6,7 @@
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "3.5.0",
+    "react-reducer-provider": "4.0.0",
     ..
 ```
 
@@ -39,7 +39,7 @@ function reduce(prevState: number, action: string): number {
 function SomeReducerProvider({ children }: {children: Element<any>}): Node {
   return (
     <SyncReducerProvider
-      name='someNamedReducer'
+      id='someNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >

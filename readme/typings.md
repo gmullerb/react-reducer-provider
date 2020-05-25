@@ -27,11 +27,11 @@ Both provide the following types:
   * `Dispatcher<ACTION, DISPATCH>`: defines the function that receives the action that triggers the change of the state.
   * `ProviderValue<STATE, ACTION, DISPATCH>`: defines the structure of the value return by `useReducer`/`useMapper`.
   * `useReducer<STATE, ACTION, DISPATCH>: ProviderValue<STATE, ACTION, DISPATCH>`.
-  * `useReducerState<STATE>(name?: string): STATE`.
-  * `useReducerDispatcher<ACTION, DISPATCH>(name?: string): Dispatcher<ACTION, DISPATCH>`.
+  * `useReducerState<STATE>(id?: string): STATE`.
+  * `useReducerDispatcher<ACTION, DISPATCH>(id?: string): Dispatcher<ACTION, DISPATCH>`.
   * `useMapper<STATE, ACTION, DISPATCH>: ProviderValue<STATE, ACTION, DISPATCH>`.
-  * `useMapperState<STATE>(name?: string): STATE`.
-  * `useMapperDispatcher<ACTION, DISPATCH>(name?: string): Dispatcher<ACTION, DISPATCH>`.
+  * `useMapperState<STATE>(id?: string): STATE`.
+  * `useMapperDispatcher<ACTION, DISPATCH>(id?: string): Dispatcher<ACTION, DISPATCH>`.
 
 `STATE`: State type, defined by the developer.  
 `ACTION`: Action type, defined by the developer.  
@@ -94,7 +94,7 @@ or with additional parameters:
 
 ```tsx
   <SyncReducerProvider
-    name='testNamedReducer'
+    id='testNamedReducer'
     reducer={reduce}
     initialState={initialState}
   >
@@ -136,7 +136,7 @@ or with additional parameters:
 
 ```tsx
   <SyncMapperProvider
-    name='testNamedMapper'
+    id='testNamedMapper'
     mapper={map}
     initialState={initialState}
   >
@@ -333,7 +333,7 @@ or with additional parameters:
 
 ```tsx
   <AsyncReducerProvider
-    name='testNamedReducer'
+    id='testNamedReducer'
     reducer={reduce}
     initialState={initialState}
   >
@@ -366,7 +366,7 @@ or with additional parameters:
 
 ```tsx
   <AsyncMapperProvider
-    name='testNamedReducer'
+    id='testNamedReducer'
     mapper={map}
     initialState={initialState}
   >
@@ -595,12 +595,12 @@ function reduce(prevState: AppState, action: AppAction): AppState {
 * A more "complete" example with Typescript can be seen at: [`typingTest.tsx`](../tests/typings/ts/typingTest.tsx).
 * A more "complete" example with Flow can be seen at: [`typingTest.jsx`](../tests/typings/flow/typingTest.jsx).
 
-> An example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-v3t7h?module=%2Fsrc%2FSomeReducerProvider.tsx):  
-[![Edit gmullerb-react-reducer-provider-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-v3t7h?module=%2Fsrc%2FSomeReducerProvider.tsx)  
-> An example with Flow typings can be checked on line at [gmullerb-react-reducer-provider-flow codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-flow-w5bmd?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider-flow](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-flow-w5bmd?module=%2Fsrc%2FSomeReducerProvider.jsx)  
-> An asynchronous example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-async-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-ml8lp?module=%2Fsrc%2FSomeReducerProvider.tsx):  
-[![Edit gmullerb-react-reducer-provider-async-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-ml8lp?module=%2Fsrc%2FSomeReducerProvider.tsx)  
+> An example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-4zi7k?module=%2Fsrc%2FSomeReducerProvider.tsx):  
+[![Edit gmullerb-react-reducer-provider-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-4zi7k?module=%2Fsrc%2FSomeReducerProvider.tsx)  
+> An example with Flow typings can be checked on line at [gmullerb-react-reducer-provider-flow codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-flow-l6txu?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-flow](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-flow-l6txu?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> An asynchronous example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-async-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-v4syt?module=%2Fsrc%2FSomeReducerProvider.tsx):  
+[![Edit gmullerb-react-reducer-provider-async-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-v4syt?module=%2Fsrc%2FSomeReducerProvider.tsx)  
 > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
 ## Main documentation

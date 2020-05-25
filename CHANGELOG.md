@@ -1,5 +1,10 @@
 # React Reducer Provider Change Log
 
+## 4.0.0 - May 2020
+
+* Breaking change: Now the `name` can be a number or Symbol, then `id` looks more semantically correct, so `name` is changed to `id`.
+* Updates Documentation files.
+
 ## 3.5.1 - May 2020
 
 * Singleton now use a Symbol id => This will avoid any collision.

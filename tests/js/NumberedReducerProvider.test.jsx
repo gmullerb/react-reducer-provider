@@ -39,7 +39,7 @@ describe('NumberedReducerProvider tests', () => {
     }
     const provider = mount(
       <SyncReducerProvider
-        name={0}
+        id={0}
         reducer={testReduce}
         initialState={testInitialState}
       >

@@ -25,7 +25,7 @@ describe('SyncReducerProvider tests', () => {
 
     const provider = mount(
       <SyncReducerProvider
-        name='testNamedReducer0'
+        id='testNamedReducer0'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -34,7 +34,7 @@ describe('SyncReducerProvider tests', () => {
     )
 
     expect(provider).toHaveText('Child')
-    expect(provider).toHaveProp('name', 'testNamedReducer0')
+    expect(provider).toHaveProp('id', 'testNamedReducer0')
     expect(provider).toHaveProp('reducer', testReduce)
     expect(provider).toHaveProp('initialState', testInitialState)
   })
@@ -59,7 +59,7 @@ describe('SyncReducerProvider tests', () => {
     }
     const provider = mount(
       <SyncReducerProvider
-        name='testNamedReducer2'
+        id='testNamedReducer2'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -91,7 +91,7 @@ describe('SyncReducerProvider tests', () => {
     }
     const provider = mount(
       <SyncReducerProvider
-        name='testNamedReducer1'
+        id='testNamedReducer1'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -125,7 +125,7 @@ describe('SyncReducerProvider tests', () => {
 
     const provider = mount(
       <SyncReducerProvider
-        name='testNamedReducer7'
+        id='testNamedReducer7'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -134,7 +134,7 @@ describe('SyncReducerProvider tests', () => {
           reducer='testNamedReducer7'
         />
         <SyncReducerProvider
-          name='testNamedReducer8'
+          id='testNamedReducer8'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -178,7 +178,7 @@ describe('SyncReducerProvider tests', () => {
     }
     const provider = mount(
       <SyncReducerProvider
-        name='testNamedReducer9'
+        id='testNamedReducer9'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -228,7 +228,7 @@ describe('SyncReducerProvider tests', () => {
     }
     const provider = mount(
       <SyncReducerProvider
-        name='testNamedReducerD11'
+        id='testNamedReducerD11'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -278,7 +278,7 @@ describe('SyncReducerProvider tests', () => {
     }
     const provider = mount(
       <SyncReducerProvider
-        name='testNamedReducerD12'
+        id='testNamedReducerD12'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -369,7 +369,7 @@ describe('SyncReducerProvider tests', () => {
       <div>
         <SiblingComponent />
         <SyncReducerProvider
-          name='testNamedReducer10'
+          id='testNamedReducer10'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -488,7 +488,7 @@ describe('SyncReducerProvider tests', () => {
       <div>
         <SiblingComponent />
         <SyncReducerProvider
-          name='testNamedReducerS11'
+          id='testNamedReducerS11'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -608,7 +608,7 @@ describe('SyncReducerProvider tests', () => {
       <div>
         <SiblingComponent />
         <SyncReducerProvider
-          name='testNamedReducerS12a'
+          id='testNamedReducerS12a'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -711,7 +711,7 @@ describe('SyncReducerProvider tests', () => {
       <div>
         <SiblingComponent />
         <SyncReducerProvider
-          name='testNamedReducer11'
+          id='testNamedReducer11'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -809,7 +809,7 @@ describe('SyncReducerProvider tests', () => {
       <div>
         <SiblingComponent />
         <SyncReducerProvider
-          name='testNamedReducer12'
+          id='testNamedReducer12'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -919,7 +919,7 @@ describe('SyncReducerProvider tests', () => {
       <ParentComponent>
         <SiblingComponent />
         <SyncReducerProvider
-          name='testNamedReducer13'
+          id='testNamedReducer13'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -975,7 +975,7 @@ describe('SyncReducerProvider tests', () => {
     }
     const provider = mount(
       <SyncReducerProvider
-        name='testNamedReducerArgs001'
+        id='testNamedReducerArgs001'
         reducer={testReduceArgs}
         initialState={testInitialState}
       >
@@ -1020,7 +1020,7 @@ describe('SyncReducerProvider tests', () => {
     }
     const provider = mount(
       <SyncReducerProvider
-        name={id}
+        id={id}
         reducer={testReduceArgs}
         initialState={testInitialState}
       >

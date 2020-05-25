@@ -26,7 +26,7 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
 
     const provider = mount(
       <AsyncReducerProvider
-        name='testNamedReducerAS0'
+        id='testNamedReducerAS0'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -35,7 +35,7 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
     )
 
     expect(provider).toHaveText('Child')
-    expect(provider).toHaveProp('name', 'testNamedReducerAS0')
+    expect(provider).toHaveProp('id', 'testNamedReducerAS0')
     expect(provider).toHaveProp('reducer', testReduce)
     expect(provider).toHaveProp('initialState', testInitialState)
   })
@@ -60,7 +60,7 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
     }
     const provider = mount(
       <AsyncReducerProvider
-        name='testNamedReducerAS2'
+        id='testNamedReducerAS2'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -90,7 +90,7 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
     }
     const provider = mount(
       <AsyncReducerProvider
-        name='testNamedReducerAS1'
+        id='testNamedReducerAS1'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -123,7 +123,7 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
 
     const provider = mount(
       <AsyncReducerProvider
-        name='testNamedReducerAS7'
+        id='testNamedReducerAS7'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -132,7 +132,7 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
           reducer='testNamedReducerAS7'
         />
         <AsyncReducerProvider
-          name='testNamedReducerAS8'
+          id='testNamedReducerAS8'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -177,7 +177,7 @@ describe('AsyncReducerProvider wit Sync reducer tests', () => {
     }
     const provider = mount(
       <AsyncReducerProvider
-        name='testNamedReducerAS9'
+        id='testNamedReducerAS9'
         reducer={testReduce}
         initialState={testInitialState}
       >

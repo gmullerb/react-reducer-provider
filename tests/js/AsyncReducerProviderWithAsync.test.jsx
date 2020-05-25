@@ -26,7 +26,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
 
     const provider = mount(
       <AsyncReducerProvider
-        name='testNamedReducerAA0'
+        id='testNamedReducerAA0'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -35,7 +35,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
     )
 
     expect(provider).toHaveText('Child')
-    expect(provider).toHaveProp('name', 'testNamedReducerAA0')
+    expect(provider).toHaveProp('id', 'testNamedReducerAA0')
     expect(provider).toHaveProp('reducer', testReduce)
     expect(provider).toHaveProp('initialState', testInitialState)
   })
@@ -60,7 +60,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
     }
     const provider = mount(
       <AsyncReducerProvider
-        name='testNamedReducerAA1'
+        id='testNamedReducerAA1'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -89,7 +89,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
     }
     const provider = mount(
       <AsyncReducerProvider
-        name='testNamedReducerAA2'
+        id='testNamedReducerAA2'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -120,7 +120,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
 
     const provider = mount(
       <AsyncReducerProvider
-        name='testNamedReducerAA7'
+        id='testNamedReducerAA7'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -129,7 +129,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
           reducer='testNamedReducerAA7'
         />
         <AsyncReducerProvider
-          name='testNamedReducerAA8'
+          id='testNamedReducerAA8'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -173,7 +173,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
     }
     const provider = mount(
       <AsyncReducerProvider
-        name='testNamedReducerAA9'
+        id='testNamedReducerAA9'
         reducer={testReduce}
         initialState={testInitialState}
       >
@@ -266,7 +266,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       <div>
         <SiblingComponent />
         <AsyncReducerProvider
-          name='testNamedReducerAA10'
+          id='testNamedReducerAA10'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -386,7 +386,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       <div>
         <SiblingComponent />
         <AsyncReducerProvider
-          name='testNamedReducerAA11z'
+          id='testNamedReducerAA11z'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -509,7 +509,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       <div>
         <SiblingComponent />
         <AsyncReducerProvider
-          name='testNamedReducerAA12a'
+          id='testNamedReducerAA12a'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -612,7 +612,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       <div>
         <SiblingComponent />
         <AsyncReducerProvider
-          name='testNamedReducerAA12'
+          id='testNamedReducerAA12'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -710,7 +710,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       <div>
         <SiblingComponent />
         <AsyncReducerProvider
-          name='testNamedReducerAA13'
+          id='testNamedReducerAA13'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -820,7 +820,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
       <ParentComponent>
         <SiblingComponent />
         <AsyncReducerProvider
-          name='testNamedReducerAA14'
+          id='testNamedReducerAA14'
           reducer={testReduce}
           initialState={testInitialState}
         >
@@ -876,7 +876,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
     }
     const provider = mount(
       <AsyncReducerProvider
-        name='testNamedReducerAArgs001'
+        id='testNamedReducerAArgs001'
         reducer={testReduce}
         initialState={testInitialState}
       >

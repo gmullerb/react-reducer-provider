@@ -43,7 +43,7 @@ function TestSyncReducerProvider({ children }: {children: ReactNode}): ReactElem
   }
   return (
     <SyncReducerProvider
-      name='testNamedReducer'
+      id='testNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
@@ -65,7 +65,7 @@ function TestAsyncReducerProvider({ children }: {children: ReactNode}): ReactEle
   }
   return (
     <AsyncReducerProvider
-      name='testNamedReducer'
+      id='testNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
@@ -87,7 +87,7 @@ function TestSyncReducerProviderChild(): ReactElement {
   }
   return (
     <SyncReducerProvider
-      name='testNamedReducer'
+      id='testNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
@@ -109,7 +109,7 @@ function TestSyncReducerProviderChildren(): ReactElement {
   }
   return (
     <SyncReducerProvider
-      name='testNamedReducer'
+      id='testNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
@@ -143,7 +143,7 @@ function TestSingletonSyncReducerProvider({ children }: {children: ReactNode}): 
 function TestSyncReducerComponent(props: SyncReducerProps<TestState, string>): ReactElement {
   return (
     <SyncReducerProvider
-      name={props.name}
+      id={props.id}
       reducer={props.reducer}
       initialState={props.initialState}
     >
@@ -282,7 +282,7 @@ function TestNumberedSyncReducerProvider({ children }: {children: ReactNode}): R
   }
   return (
     <SyncReducerProvider
-      name={0}
+      id={0}
       reducer={reduce}
       initialState={initialState}
     >
@@ -304,7 +304,7 @@ function TestNumberedAsyncReducerProvider({ children }: {children: ReactNode}): 
   }
   return (
     <AsyncReducerProvider
-      name={0}
+      id={0}
       reducer={reduce}
       initialState={initialState}
     >
@@ -421,7 +421,7 @@ function TestNumberedSyncMapperProvider({ children }: {children: ReactNode}): Re
   }
   return (
     <SyncMapperProvider
-      name={0}
+      id={0}
       mapper={map}
       initialState={initialState}
     >
@@ -443,7 +443,7 @@ function TestNumberedAsyncMapperProvider({ children }: {children: ReactNode}): R
   }
   return (
     <AsyncMapperProvider
-      name={0}
+      id={0}
       mapper={map}
       initialState={initialState}
     >
@@ -560,7 +560,7 @@ function TestArgsSyncReducerProvider({ children }: {children: ReactNode}): React
   }
   return (
     <SyncReducerProvider
-      name={0}
+      id={0}
       reducer={reduce}
       initialState={initialState}
     >
@@ -582,7 +582,7 @@ function TestArgsAsyncReducerProvider({ children }: {children: ReactNode}): Reac
   }
   return (
     <AsyncReducerProvider
-      name={0}
+      id={0}
       reducer={reduce}
       initialState={initialState}
     >
@@ -604,7 +604,7 @@ function TestArgsSyncMapperProvider({ children }: {children: ReactNode}): ReactE
   }
   return (
     <SyncMapperProvider
-      name={0}
+      id={0}
       mapper={map}
       initialState={initialState}
     >
@@ -626,7 +626,7 @@ function TestArgsAsyncMapperProvider({ children }: {children: ReactNode}): React
   }
   return (
     <AsyncMapperProvider
-      name={0}
+      id={0}
       mapper={map}
       initialState={initialState}
     >
@@ -670,7 +670,7 @@ function TestArgsSyncMapperSymbolProvider({ children }: {children: ReactNode}): 
   }
   return (
     <SyncMapperProvider
-      name={id}
+      id={id}
       mapper={map}
       initialState={initialState}
     >

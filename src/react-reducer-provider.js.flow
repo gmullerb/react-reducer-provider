@@ -11,7 +11,7 @@ import type {
 type ProviderName = string | number | Symbol
 
 interface ProviderProps<STATE> {
-  name?: ProviderName;
+  id?: ProviderName;
   initialState: STATE;
   children: Node;
 }
@@ -92,23 +92,23 @@ export type ProviderValue<
 export type ReducerProviderValue<STATE, ACTION, DISPATCH = Sync<void>> = ProviderValue<STATE, ACTION, DISPATCH>
 
 declare export function useReducer<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
-  name?: ProviderName
+  id?: ProviderName
 ): ProviderValue<STATE, ACTION, DISPATCH>
 
-declare export function useReducerState<STATE>(name?: ProviderName): STATE
+declare export function useReducerState<STATE>(id?: ProviderName): STATE
 
 declare export function useReducerDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
-  name?: ProviderName
+  id?: ProviderName
 ): Dispatcher<ACTION, DISPATCH>
 
 declare export function useMapper<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
-  name?: ProviderName
+  id?: ProviderName
 ): ProviderValue<STATE, ACTION, DISPATCH>
 
-declare export function useMapperState<STATE>(name?: ProviderName): STATE
+declare export function useMapperState<STATE>(id?: ProviderName): STATE
 
 declare export function useMapperDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
-  name?: ProviderName
+  id?: ProviderName
 ): Dispatcher<ACTION, DISPATCH>
 
 // Helpers

@@ -22,7 +22,8 @@ import type {
   Action,
   Async,
   Dispatcher,
-  ProviderValue
+  ProviderValue,
+  SyncReducerProps
 } from '../../../src/react-reducer-provider'
 
 interface TestState {
@@ -46,7 +47,7 @@ function TestSyncReducerProvider({ children }: {children: Element<any>}): Node {
   }
   return (
     <SyncReducerProvider
-      name='testNamedReducer'
+      id='testNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
@@ -68,7 +69,7 @@ function TestAsyncReducerProvider({ children }: {children: Element<any>}): Node 
   }
   return (
     <AsyncReducerProvider
-      name='testNamedReducer'
+      id='testNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
@@ -90,7 +91,7 @@ function TestSyncReducerProviderChild(): Node {
   }
   return (
     <SyncReducerProvider
-      name='testNamedReducer'
+      id='testNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
@@ -112,7 +113,7 @@ function TestSyncReducerProviderChildren(): Node {
   }
   return (
     <SyncReducerProvider
-      name='testNamedReducer'
+      id='testNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
@@ -135,11 +136,24 @@ function TestSingletonSyncReducerProvider({ children }: {children: Element<any>}
   }
   return (
     <SyncReducerProvider
-      name='testNamedReducer'
+      id='testNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
       {children}
+    </SyncReducerProvider>
+  )
+}
+
+function TestSyncReducerComponent(props: SyncReducerProps<TestState, string>): Node {
+  return (
+    <SyncReducerProvider
+      id={props.id}
+      reducer={props.reducer}
+      initialState={props.initialState}
+    >
+      <div>Child1</div>
+      <div>ChildN</div>
     </SyncReducerProvider>
   )
 }
@@ -157,7 +171,7 @@ function TestSingletonAsyncReducerProvider({ children }: {children: Element<any>
   }
   return (
     <AsyncReducerProvider
-      name='testNamedReducer'
+      id='testNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
@@ -230,7 +244,7 @@ function TestNumberedSyncReducerProvider({ children }: {children: Element<any>})
   }
   return (
     <SyncReducerProvider
-      name={0}
+      id={0}
       reducer={reduce}
       initialState={initialState}
     >
@@ -252,7 +266,7 @@ function TestNumberedAsyncReducerProvider({ children }: {children: Element<any>}
   }
   return (
     <AsyncReducerProvider
-      name={0}
+      id={0}
       reducer={reduce}
       initialState={initialState}
     >
@@ -325,7 +339,7 @@ function TestNumberedSyncMapperProvider({ children }: {children: Element<any>}):
   }
   return (
     <SyncMapperProvider
-      name={0}
+      id={0}
       mapper={map}
       initialState={initialState}
     >
@@ -347,7 +361,7 @@ function TestNumberedAsyncMapperProvider({ children }: {children: Element<any>})
   }
   return (
     <AsyncMapperProvider
-      name={0}
+      id={0}
       mapper={map}
       initialState={initialState}
     >
@@ -420,7 +434,7 @@ function TestArgsSyncReducerProvider({ children }: {children: Element<any>}): No
   }
   return (
     <SyncReducerProvider
-      name={0}
+      id={0}
       reducer={reduce}
       initialState={initialState}
     >
@@ -442,7 +456,7 @@ function TestArgsAsyncReducerProvider({ children }: {children: Element<any>}): N
   }
   return (
     <AsyncReducerProvider
-      name={0}
+      id={0}
       reducer={reduce}
       initialState={initialState}
     >
@@ -464,7 +478,7 @@ function TestArgsSyncMapperProvider({ children }: {children: Element<any>}): Nod
   }
   return (
     <SyncMapperProvider
-      name={0}
+      id={0}
       mapper={map}
       initialState={initialState}
     >
@@ -486,7 +500,7 @@ function TestArgsAsyncMapperProvider({ children }: {children: Element<any>}): No
   }
   return (
     <AsyncMapperProvider
-      name={0}
+      id={0}
       mapper={map}
       initialState={initialState}
     >
@@ -530,7 +544,7 @@ function TestArgsSyncMapperSymbolProvider({ children }: {children: Element<any>}
   }
   return (
     <SyncMapperProvider
-      name={id}
+      id={id}
       mapper={map}
       initialState={initialState}
     >

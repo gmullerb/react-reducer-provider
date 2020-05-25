@@ -26,12 +26,12 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 *properties*:
 
 1 . `initialState`: inception state for the component.  
-2 . `name ?: string | number | symbol`: constitutes the name that identifies the `SyncReducerProvider` or `AsyncReducerProvider`, which is useful when using more than 1 provider.
+2 . `id ?: string | number | symbol`: constitutes the identifier of the `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` or `AsyncMapperProvider`, which is useful when using more than 1 provider.
 
 * **developer must keep track of names and numbers to avoid overriding**.
-* Internally, `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` and `AsyncMapperProvider` share the pool of names, numbers and symbols, i.e. when developing don't use the same name or number for any of them.
-  * `name` is used internally by a `Map`, so using numbers or symbols should be "faster" than strings.
-    * Excellent when using `const enum`.
+* Internally, `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` and `AsyncMapperProvider` share the pool of names, numbers and symbols, i.e. when developing don't use the same `id` for any of them.
+  * `id` is used internally by a `Map`, so using numbers or symbols should be "faster" than strings.
+    * Numbers are Excellent when using `const enum`.
   * Using symbols guarantees that there will be never be collisions.
     * Perfect for custom libraries.
 
@@ -45,7 +45,7 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 
 ```jsx
 <SyncReducerProvider
-  name='someNamedReducer'
+  id='someNamedReducer'
   reducer={syncReduce}
   initialState={initialState}
 >
@@ -59,7 +59,7 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 
 ```jsx
 <AsyncReducerProvider
-  name={12345}
+  id={12345}
   reducer={asyncReduce}
   initialState={initialState}
 >
@@ -77,7 +77,7 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 
 ```jsx
 <AsyncMapperProvider
-  name={12345}
+  id={12345}
   mapper={asyncMap}
   initialState={initialState}
 >
@@ -91,7 +91,7 @@ or
 
 ```jsx
 <SyncMapperProvider
-  name='someNamedMapper'
+  id='someNamedMapper'
   mapper={syncMap}
   initialState={initialState}
 >
@@ -163,11 +163,11 @@ dispatch(action)
 > Examples can be seen at: [`SyncReducerProvider.test.jsx`](../tests/js/SyncReducerProvider.test.jsx) and [`AsyncReducerProviderWithAsync.test.jsx`](../tests/js/AsyncReducerProviderWithAsync.test.jsx).
 > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
-## `useReducer`/`useMapper`
+### `useReducer`/`useMapper`
 
 *parameters*:
 
-* `name ?: string | number | symbol`: constitutes the name, number or symbol of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
+* `id ?: string | number | symbol`: constitutes the identifier (name, number or symbol) of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
 
 *returns*:
 
@@ -187,11 +187,11 @@ export default function SomeComponent1() {
 }
 ```
 
-## `useReducerDispatcher`/`useMapperDispatcher`
+### `useReducerDispatcher`/`useMapperDispatcher`
 
 *parameters*:
 
-* `name ?: string | number | symbol`: constitutes the name, number or symbol of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
+* `id ?: string | number | symbol`: constitutes the identifier (name, number or symbol) of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
 
 *returns*:
 
@@ -211,11 +211,11 @@ export default function SomeComponent2() {
 }
 ```
 
-## `useReducerState`/`useMapperState`
+### `useReducerState`/`useMapperState`
 
 *parameters*:
 
-* `name ?: string | number | symbol`: constitutes the name, number or symbol of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
+* `id ?: string | number | symbol`: constitutes the identifier (name, number or symbol) of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
 
 *returns*:
 
@@ -235,13 +235,21 @@ export default function SomeComponentN() {
 }
 ```
 
+### Error
+
+When the associated Reducer Provider can not be found, i.e. the `id` trying to be used by any `react-reducer-provider` hook is not defined, the the following error may appear:
+
+`TypeError: Cannot read property '_context' of undefined`
+
+Check the `id` of the defined Reducer Providers, and use a valid one.
+
 ## Synchronous Reducer/Mapper => `SyncReducerProvider`/`SyncMapperProvider`
 
 ### `SyncReducerProvider`
 
 ```jsx
 <SyncReducerProvider
-  name='someNamedReducer'
+  id='someNamedReducer'
   reducer={syncReduce}
   initialState={initialState}
 >
@@ -272,7 +280,7 @@ export default function SomeComponentN() {
 
 ```jsx
 <SyncMapperProvider
-  name='someNamedMapper'
+  id='someNamedMapper'
   mapper={syncMap}
   initialState={initialState}
 >
@@ -319,13 +327,18 @@ export default function SomeComponentN() {
   }
 ```
 
+> An `SyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-qf356?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-qf356?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> An `SyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-c7hyq?module=%2Fsrc%2FSomeMapperProvider.jsx):  
+[![Edit gmullerb-react-mapper-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-mapper-provider-c7hyq?module=%2Fsrc%2FSomeMapperProvider.jsx)  
+
 ## Asynchronous Reducer/Mapper => `AsyncReducerProvider`/`AsyncMapperProvider`
 
 ### `AsyncReducerProvider`
 
 ```jsx
 <AsyncReducerProvider
-  name='someNamedReducer'
+  id='someNamedReducer'
   reducer={asyncReduce}
   initialState={initialState}
 >
@@ -356,7 +369,7 @@ export default function SomeComponentN() {
 
 ```jsx
 <AsyncMapperProvider
-  name='someNamedMapper'
+  id='someNamedMapper'
   mapper={asyncMap}
   initialState={initialState}
 >
@@ -403,8 +416,10 @@ export default function SomeComponentN() {
 ```
 
 > When the `dispatch` is resolved is an indication that the state was change, but not of any required re-rendering being done.  
-> An example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-m0924?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-m0924?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> An `AsyncReducerProvider` can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-qf356?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-qf356?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> An `AsyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-async-i9iyk?module=%2Fsrc%2FSomeMapperProvider.jsx):  
+[![Edit gmullerb-react-mapper-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-mapper-provider-async-i9iyk?module=%2Fsrc%2FSomeMapperProvider.jsx)  
 > Although `AsyncReducerProvider` can be used for synchronous reducer/dispatcher (check [AsyncReducerProviderWithSync.test.jsx](tests/js/AsyncReducerProviderWithSync.test.jsx)), It is not is purpose and implementation is suitable for asynchronous processes, long story short, for synchronous processes, use `SyncReducerProvider`.  
 > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
@@ -461,15 +476,15 @@ Then, respectively:
   }
 ```
 
-> An example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-zxply?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-zxply?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> An example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-gpst9?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-gpst9?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > This makes "obsolete" the [Action](typings.md#helpertypes), but at the end can be matter of preference.
 
 ## Singleton Reducer/Mapper Provider
 
-If no name or number is provided a "unique"[1] Reducer will be created.
+If no `id` (name, number or symbol) is provided a "unique"[1] Reducer will be created.
 
-> [1] This is a convention, i.e. is up to the developer not to created more Reducer Provider. Worth mentioning that no-named and named Reducer Providers can be combined.
+> [1] This is a convention, i.e. is up to the developer not to created more Reducer Provider. Worth mentioning that unidentified and identified Reducer Providers can be combined.
 
 ```jsx
 function SomeReducerProvider({ children }) {
@@ -486,7 +501,7 @@ function SomeReducerProvider({ children }) {
 export default SomeReducerProvider
 ```
 
-When accessing the provider, the `name` is not required:
+When accessing the provider, the `id` is not required:
 
 ```jsx
   export default function SomeComponent1() {
@@ -525,8 +540,8 @@ or
   }
 ```
 
-> An asynchronous example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-oosyt?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-oosyt?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> An asynchronous example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-m1fph?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-m1fph?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
 ## Nesting
@@ -535,13 +550,13 @@ or
 
 ```jsx
 <SyncReducerProvider
-  name='someNamedReducer1'
+  id='someNamedReducer1'
   reducer={reduce1}
   initialState={initialState1}
 >
   {someChildren}
   <SyncReducerProvider
-    name='someNamedReducerN'
+    id='someNamedReducerN'
     reducer={reduceN}
     initialState={initialStateN}
   >
@@ -562,13 +577,13 @@ e.g.:
 
 ```jsx
 <SyncReducerProvider
-  name='someNamedReducer1'
+  id='someNamedReducer1'
   reducer={reduce1}
   initialState={initialState1}
 >
   <SomeComponentA />
   <SyncReducerProvider
-    name='someNamedReducerN'
+    id='someNamedReducerN'
     reducer={reduceN}
     initialState={initialStateN}
   >

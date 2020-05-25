@@ -8,7 +8,7 @@
 `"react-named-reducer": "2.0.1"`  
 
 * to:  
-`"react-reducer-provider": "3.5.0"`  
+`"react-reducer-provider": "4.0.0"`  
 
 2 . Change imports:
 
@@ -96,7 +96,7 @@ function reduce(prevState, action) {
 function SomeNamedReducer({ children }) {
   return (
     <SyncReducerProvider
-      name="someNamedReducer"
+      id="someNamedReducer"
       reducer={reduce}
       initialState={initialState}
     >

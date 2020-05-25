@@ -131,32 +131,33 @@ Examples can be seen at: [`MockingReducerProvider.test.jsx`](../tests/js/Mocking
 2 . Enclosed component with a `SyncReducerProvider` or `AsyncReducerProvider`:
 
 * add the required properties:
-  * `name`: name of the context used by the component to be test.
+  * `id`: identifier of the context used by the component to be test.
   * `initialState`: the state required by the test.
   * `reducer`: the reducer required by the test.
 
 ```jsx
   it('test description', () => {
-    const component = mount(<SyncReducerProvider
-      name='theContextName'
-      initialState={{
-        field1: value1,
-        fieldN: valueN,
-      }}
-      reducer={(prevState, action) => {
-        switch (action) {
-          case 'ACTION1':
-            return {
-              field1: valueA,
-              fieldN: valueB,
-            }
-          default:
-            return prevState
-        }
-      }}
-    >
-      <ComponentToBeTest />
-    </SyncReducerProvider>
+    const component = mount(
+      <SyncReducerProvider
+        id='theContextName'
+        initialState={{
+          field1: value1,
+          fieldN: valueN,
+        }}
+        reducer={(prevState, action) => {
+          switch (action) {
+            case 'ACTION1':
+              return {
+                field1: valueA,
+                fieldN: valueB,
+              }
+            default:
+              return prevState
+          }
+        }}
+      >
+        <ComponentToBeTest />
+      </SyncReducerProvider>
     )
 ```
 

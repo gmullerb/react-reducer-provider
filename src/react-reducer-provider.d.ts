@@ -10,7 +10,7 @@ import {
 type ProviderName = string | number | symbol
 
 declare interface ProviderProps<STATE> {
-  name?: ProviderName;
+  id?: ProviderName;
   initialState: STATE;
   children: ReactNode;
 }
@@ -89,13 +89,13 @@ declare interface ProviderValue<
 }
 
 declare function useReducer<STATE, ACTION, DISPATCH extends Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
-  name?: ProviderName
+  id?: ProviderName
 ): ProviderValue<STATE, ACTION, DISPATCH>
 
-declare function useReducerState<STATE>(name?: ProviderName): STATE
+declare function useReducerState<STATE>(id?: ProviderName): STATE
 
 declare function useReducerDispatcher<ACTION, DISPATCH extends Async | Sync = Sync<void>>(
-  name?: ProviderName
+  id?: ProviderName
 ): Dispatcher<ACTION, DISPATCH>
 
 // Helpers

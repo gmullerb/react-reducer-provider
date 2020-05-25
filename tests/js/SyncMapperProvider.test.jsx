@@ -24,7 +24,7 @@ describe('SyncMapperProvider tests', () => {
     const testInitialState = 'A'
     const provider = mount(
       <SyncMapperProvider
-        name={456}
+        id={456}
         mapper={testMap}
         initialState={testInitialState}
       >
@@ -33,7 +33,7 @@ describe('SyncMapperProvider tests', () => {
     )
 
     expect(provider).toHaveText('Child')
-    expect(provider).toHaveProp('name', 456)
+    expect(provider).toHaveProp('id', 456)
     expect(provider).toHaveProp('mapper', testMap)
     expect(provider).toHaveProp('initialState', testInitialState)
   })
@@ -58,7 +58,7 @@ describe('SyncMapperProvider tests', () => {
     }
     const provider = mount(
       <SyncMapperProvider
-        name={457}
+        id={457}
         mapper={testMap}
         initialState={testInitialState}
       >
@@ -94,7 +94,7 @@ describe('SyncMapperProvider tests', () => {
     }
     const provider = mount(
       <SyncMapperProvider
-        name={458}
+        id={458}
         mapper={testMap}
         initialState={testInitialState}
       >
@@ -138,7 +138,7 @@ describe('SyncMapperProvider tests', () => {
     }
     const provider = mount(
       <SyncMapperProvider
-        name={495}
+        id={495}
         mapper={testMapArgs}
         initialState={testInitialState}
       >

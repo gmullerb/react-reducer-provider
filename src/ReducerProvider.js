@@ -8,5 +8,5 @@ export const createReducerProvider = function (props, createDispatcher) {
   const stateRef = React.useRef(props.initialState)
   const wrappedDispatcher = React.useRef(createDispatcher(stateRef, reRenderTrigger))
 
-  return createProvider(props.children, [ state, wrappedDispatcher.current ], props.name)
+  return createProvider(props.children, [ state, wrappedDispatcher.current ], props.id)
 }

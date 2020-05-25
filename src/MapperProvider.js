@@ -7,5 +7,5 @@ export const createMapperProvider = function (props, createDispatcher) {
   const [ state, reRenderTrigger ] = React.useState(props.initialState)
   const wrappedDispatcher = React.useRef(createDispatcher(reRenderTrigger))
 
-  return createProvider(props.children, [ state, wrappedDispatcher.current ], props.name)
+  return createProvider(props.children, [ state, wrappedDispatcher.current ], props.id)
 }

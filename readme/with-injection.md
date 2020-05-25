@@ -6,7 +6,7 @@
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "3.5.0",
+    "react-reducer-provider": "4.0.0",
     ..
 ```
 
@@ -37,7 +37,7 @@ function reduce(prevState, action) {
 function SomeReducerProvider({ children }) {
   return (
     <SyncReducerProvider
-      name='someNamedReducer'
+      id='someNamedReducer'
       reducer={reduce}
       initialState={initialState}
     >
@@ -134,8 +134,8 @@ export default function SomeContainer() {
 }
 ```
 
-> This example can be checked on line at [gmullerb-react-reducer-provider-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-zm44k?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider-with-injection](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-zm44k?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> This example can be checked on line at [gmullerb-react-reducer-provider-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-2co8d?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-with-injection](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-2co8d?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > [with Flow typings](with-injection-and-flow-typings.md).  
 > [with Typescript typings](with-injection-and-ts-typings.md).  
 
