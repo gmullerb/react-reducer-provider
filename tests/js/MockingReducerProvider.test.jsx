@@ -1,8 +1,9 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 import * as React from 'react'
+import { mount, shallow } from 'enzyme'
+
 import * as ReducerProviderModule from '../../cjs/react-reducer-provider'
 
-import { mount, shallow } from 'enzyme'
 
 describe('Mocking tests', () => {
   it('should work when mocking and testing a custom hook', () => {

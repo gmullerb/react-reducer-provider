@@ -1,5 +1,6 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 import * as React from 'react'
+
 import { captureProvider } from './Providers'
 
 export function useReducerDispatcher(id) {

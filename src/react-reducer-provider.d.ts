@@ -7,10 +7,10 @@ import {
 // Provider Component
 /////////////////////
 
-type ProviderName = string | number | symbol
+type Id = string | number | symbol
 
 declare interface ProviderProps<STATE> {
-  id?: ProviderName;
+  id?: Id;
   initialState: STATE;
   children: ReactNode;
 }
@@ -89,14 +89,113 @@ declare interface ProviderValue<
 }
 
 declare function useReducer<STATE, ACTION, DISPATCH extends Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
-  id?: ProviderName
+  id?: Id
 ): ProviderValue<STATE, ACTION, DISPATCH>
 
-declare function useReducerState<STATE>(id?: ProviderName): STATE
+declare function useReducerState<STATE>(id?: Id): STATE
 
 declare function useReducerDispatcher<ACTION, DISPATCH extends Async | Sync = Sync<void>>(
-  id?: ProviderName
+  id?: Id
 ): Dispatcher<ACTION, DISPATCH>
+
+// Tagged Provider Component
+////////////////////////////
+
+declare interface TaggedProviderProps {
+  id?: Id;
+  children: ReactNode;
+}
+
+// Tagged Reducer Component Definition
+//////////////////////////////////////
+
+declare interface TaggedReducerProps<REDUCER> extends TaggedProviderProps {
+  reducers: REDUCER[];
+}
+
+declare interface SyncTaggedReducer {
+  /**
+   * Tag
+   */
+  0: Id;
+  /**
+   * Reducer
+   */
+  1: SyncReducer<any, any>;
+  /**
+   * Initial state
+   */
+  2: any;
+}
+
+declare interface SyncTaggedReducerProps extends TaggedReducerProps<SyncTaggedReducer> {}
+
+declare function SyncTaggedReducerProvider(
+  props: Readonly<SyncTaggedReducerProps>
+): ReactElement<SyncTaggedReducerProps>
+
+declare interface AsyncTaggedReducer {
+  /**
+   * Tag
+   */
+  0: Id;
+  /**
+   * Reducer
+   */
+  1: AsyncReducer<any, any>;
+  /**
+   * Initial state
+   */
+  2: any;
+}
+
+declare interface AsyncTaggedReducerProps extends TaggedReducerProps<AsyncTaggedReducer> {}
+
+declare function AsyncTaggedReducerProvider(
+  props: Readonly<AsyncTaggedReducerProps>
+): ReactElement<AsyncTaggedReducerProps>
+
+// Tagged Consumption
+/////////////////////
+
+declare interface TaggedStates<ANY_ID extends Id, ANY_STATE> extends Map<ANY_ID, ANY_STATE> {}
+
+declare interface TaggedDispatchers<
+    ANY_ID extends Id,
+    ANY_DISPATCHER extends Dispatcher<any, any> = Dispatcher<any, any>
+> extends Map<ANY_ID, ANY_DISPATCHER> {}
+
+declare interface TaggedProviderValue<
+    ANY_ID extends Id,
+    ANY_STATE,
+    ANY_DISPATCHER extends Dispatcher<any, any> = Dispatcher<any, any>
+  > extends Array<any> {
+  readonly 0: TaggedStates<ANY_ID, ANY_STATE>;
+  readonly 1: TaggedDispatchers<ANY_ID, ANY_DISPATCHER>;
+}
+
+declare interface AnyAsyncDispatcher<ACTION = any, DISPATCH extends Async = Async<void>> {
+  (value: ACTION, ...args: ReadonlyArray<any>): DISPATCH
+}
+
+declare function useTaggedAny<ANY_ID extends Id, ANY_STATE, ANY_DISPATCHER extends Dispatcher<any, any> = Dispatcher<any, any>>(
+  id?: Id
+): TaggedProviderValue<ANY_ID, ANY_STATE, ANY_DISPATCHER>
+
+declare function useTaggedAnyState<ANY_ID extends Id, ANY_STATE>(id?: Id): TaggedStates<ANY_ID, ANY_STATE>
+
+declare function useTaggedAnyDispatcher<
+    ANY_ID extends Id,
+    ANY_DISPATCHER extends Dispatcher<any, any> = Dispatcher<any, any>
+>(id?: Id): TaggedDispatchers<ANY_ID, ANY_DISPATCHER>
+
+declare function useTaggedReducer<STATE, ACTION, DISPATCH extends Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
+  tag: Id, id?: Id
+): ProviderValue<STATE, ACTION, DISPATCH>
+
+declare function useTaggedReducerState<STATE>(tag: Id, id?: Id): STATE
+
+declare function useTaggedReducerDispatcher<ACTION, DISPATCH extends Async | Sync = Sync<void>>(tag: Id, id?: Id): Dispatcher<ACTION, DISPATCH>
 
 // Helpers
 //////////
@@ -129,13 +228,27 @@ export {
   useReducer as useMapper,
   useReducerState as useMapperState,
   useReducerDispatcher as useMapperDispatcher,
+  // Tagged
+  /////////
+  TaggedProviderProps,
+  TaggedReducerProps,
+  SyncTaggedReducer,
+  SyncTaggedReducerProps,
+  SyncTaggedReducerProvider,
+  AsyncTaggedReducer,
+  AsyncTaggedReducerProps,
+  AsyncTaggedReducerProvider,
+  TaggedStates,
+  TaggedDispatchers,
+  TaggedProviderValue,
+  useTaggedAny,
+  useTaggedAnyState,
+  useTaggedAnyDispatcher,
+  useTaggedReducer,
+  useTaggedReducerState,
+  useTaggedReducerDispatcher,
   // Helpers
   //////////
-  Action,
-  // Deprecated
-  /////////////
-  /**
-   * @deprecated since version 3.4.0, use 'ProviderValue' instead.
-   */
-  ProviderValue as ReducerProviderValue
+  AnyAsyncDispatcher,
+  Action
 }

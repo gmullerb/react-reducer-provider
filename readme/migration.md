@@ -5,10 +5,10 @@
 `package.json`:
 
 * from:  
-`"react-named-reducer": "2.0.1"`  
+`"react-named-reducer": "2.0.1"`
 
 * to:  
-`"react-reducer-provider": "4.0.0"`  
+`"react-reducer-provider": "4.1.0"`
 
 2 . Change imports:
 

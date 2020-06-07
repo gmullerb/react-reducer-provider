@@ -28,12 +28,7 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 1 . `initialState`: inception state for the component.  
 2 . `id ?: string | number | symbol`: constitutes the identifier of the `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` or `AsyncMapperProvider`, which is useful when using more than 1 provider.
 
-* **developer must keep track of names and numbers to avoid overriding**.
-* Internally, `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` and `AsyncMapperProvider` share the pool of names, numbers and symbols, i.e. when developing don't use the same `id` for any of them.
-  * `id` is used internally by a `Map`, so using numbers or symbols should be "faster" than strings.
-    * Numbers are Excellent when using `const enum`.
-  * Using symbols guarantees that there will be never be collisions.
-    * Perfect for custom libraries.
+* [**Use `id` the "right" way**](keep-track-id.md).
 
 [`AsyncReducerProvider`](../src/AsyncReducerProvider.js) & [`SyncReducerProvider`](../src/SyncReducerProvider.js) have the following property:
 
@@ -103,7 +98,7 @@ or
 
 ## Consumption
 
-Reducer or Mapper will never be accessible directly from `children` elements, they will be **able to access the State and Dispatcher**.
+Reducer or Mapper will never be accessible directly from `children` elements, they will be **able to access the State and/or Dispatcher**.
 
 There are different ways of doing this:
 
@@ -121,7 +116,7 @@ or
 
 > When using `useReducer`/`useMapper`, `useReducerDispatcher`/`useMapperDispatcher` and/or `useReducerState`/`useMapperState`,  Be Aware that they use [`React.useContext`](https://reactjs.org/docs/hooks-reference.html#usecontext) and quote: 'A component calling useContext will always re-render when the context value changes', in this case when `state` changes, therefore when using `useReducerDispatcher`/`useMapperDispatcher` although it not depends "directly" on `state` the component will be re-render when `state` changes. Final words, use `SyncMapperProvider` and/or `AsyncMapperProvider`,`SyncReducerProvider` and/or `AsyncReducerProvider` everywhere is required and use `useReducer`/`useMapper`, `useReducerDispatcher`/`useMapperDispatcher` and/or `useReducerState`/`useMapperState` wisely (small scopes, as close to where is required with small amount of children). If children re-render is too expensive then `React.useMemo`:
 
-```js
+```jsx
 const FunComponent1 = () => {
   const dispatch = useReducerDispatcher('testNamedReducer10')
   return React.useMemo(() => (
@@ -195,7 +190,7 @@ export default function SomeComponent1() {
 
 *returns*:
 
-* the `dispatcher` of the respective Reducer Provider.
+* the `dispatcher` of the respective Reducer/Mapper Provider.
 
 ```jsx
 import { useReducerDispatcher } from 'react-reducer-provider'
@@ -219,7 +214,7 @@ export default function SomeComponent2() {
 
 *returns*:
 
-* the `state` of the respective Reducer Provider.
+* the `state` of the respective Reducer/Mapper Provider.
 
 ```jsx
 import { useReducerState } from 'react-reducer-provider'
@@ -544,86 +539,6 @@ or
 [![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-m1fph?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
-## Nesting
-
-`SyncReducerProvider` and/or `AsyncReducerProvider` can be nested in layers, in order to have several nested Reducer/State.
-
-```jsx
-<SyncReducerProvider
-  id='someNamedReducer1'
-  reducer={reduce1}
-  initialState={initialState1}
->
-  {someChildren}
-  <SyncReducerProvider
-    id='someNamedReducerN'
-    reducer={reduceN}
-    initialState={initialStateN}
-  >
-    {moreChildren}
-  </SyncReducerProvider>
-</SyncReducerProvider>
-```
-
-* `someChildren` can access the State and the Dispatcher of the `'someNamedReducer1'`.
-
-![`Single Reducer Provider`](single-reducer-provider.svg "Single Reducer Provider")
-
-* `moreChildren` can access the State and the Dispatcher of the `'someNamedReducer1'` plus the State and the Dispatcher of the `'someNamedReducerN'`.
-
-![Nested Reducer Providers](nested-named-reducer.svg "Nested Reducer Providers")
-
-e.g.:
-
-```jsx
-<SyncReducerProvider
-  id='someNamedReducer1'
-  reducer={reduce1}
-  initialState={initialState1}
->
-  <SomeComponentA />
-  <SyncReducerProvider
-    id='someNamedReducerN'
-    reducer={reduceN}
-    initialState={initialStateN}
-  >
-    <SomeComponentB />
-  </SyncReducerProvider>
-</SyncReducerProvider>
-```
-
-```jsx
-export default function SomeComponentA() {
-  const [ state, dispatch ] = useReducer('someNamedReducer1')
-  return (
-    <button onClick={() => dispatch('ACTIONA')}>
-      Go up (from {state})!
-    </button>
-  )
-}
-```
-
-```jsx
-export default function SomeComponentB() {
-  const [ outerState, outerDispatch ] = useReducer('someNamedReducer1')
-  const [ innerState, innerDispatch ] = useReducer('someNamedReducerN')
-  return (
-    <div>
-      <button onClick={() => outerDispatch('ACTIONA')}>
-        Outer Go up (from {outerState})!
-      </button>
-      <button onClick={() => innerDispatch('ACTIONB')}>
-        Inner Go up (from {innerState})!
-      </button>
-    </div>
-  )
-}
-```
-
-> Naming allows to identified each reducer provider.  
-> Names must exists and match, if not, an Error `Uncaught [TypeError: Cannot read property 'context' of undefined]` may be throw since your are trying to access a provider that doesn't exist.  
-> Although nesting can be rejected due to violation of single source of truth, In React is good to keep changes near to related components, i.e. a `SyncReducerProvider` or `AsyncReducerProvider` near to related components is better, why? because having a 1 Single Root `SyncReducerProvider` or `AsyncReducerProvider` will trigger changes to "all" components, even not related ones.  
-> Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 __________________
 
 ## Prerequisites
@@ -634,6 +549,10 @@ __________________
 
 ## More Documentation
 
+* [Nesting](readme/nesting.md).
+* [Combining/Blending Reducers](readme/blending.md).
+  * [`AsyncTaggedReducerProvider`,`SyncTaggedReducerProvider`](readme/blending.md#definition).
+  * [`useTaggedAny`,`useTaggedAnyState`,`useTaggedAnyDispatcher`,`useTaggedReducer`, `useTaggedReducerState`&`useTaggedReducerDispatcher`](readme/blending.md#consumption).
 * [Typings](typings.md).
 * [With Injection](with-injection.md).
   * [with Flow typings](with-injection-and-flow-typings.md).

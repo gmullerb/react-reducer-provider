@@ -7,7 +7,7 @@ module.exports = function (config) {
     files: [ 'testEntryPoint.js' ],
     exclude: [ '**/*.test.jsx' ],
     frameworks: [ 'jasmine' ],
-    browsers: [ 'ChromeHeadlessNoSandBox', 'ChromeHeadlessNoSandBox', 'jsdom', 'jsdom' ], // Running more than once
+    browsers: process.env.SINGLE_TEST === '1' ? [ 'jsdom' ] : [ 'ChromeHeadlessNoSandBox', 'ChromeHeadlessNoSandBox', 'jsdom', 'jsdom' ], // Running more than once
     customLaunchers: {
       ChromeHeadlessNoSandBox: {
         base: 'ChromeHeadless',

@@ -1,5 +1,6 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 import * as React from 'react'
+import { mount } from 'enzyme'
 
 import {
   SyncMapperProvider,
@@ -8,7 +9,6 @@ import {
   useMapperState
 } from '../../src/react-reducer-provider'
 
-import { mount } from 'enzyme'
 
 function testMap(action) {
   switch (action) {

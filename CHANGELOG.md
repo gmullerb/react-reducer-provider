@@ -1,5 +1,11 @@
 # React Reducer Provider Change Log
 
+## 4.1.0 - August 2020
+
+* Adds Tagged State/Action/Reducer in order to allow easy and simple blending (react-redux is too complex).
+* Removes deprecated `ReducerProviderValue`.
+* Updates Documentation files.
+
 ## 4.0.0 - May 2020
 
 * Breaking change: Now the `name` can be a number or Symbol, then `id` looks more semantically correct, so `name` is changed to `id`.

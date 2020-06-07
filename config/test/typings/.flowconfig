@@ -1,6 +1,6 @@
 [include]
 ../../../src/*.js.flow
-../../../tests/typings/flow/typingTest.jsx
+../../../tests/typings/flow/*.jsx
 
 [untyped]
 ../../../src/*.js

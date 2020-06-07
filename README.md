@@ -4,10 +4,11 @@
 
 <h1 align="center">Asynchronous/Synchronous React Reducer/Mapper Provider with Hooks</h1>
 
-<p align="center">Flux/Redux made easy and beyond</p>
+<p align="center">Flux/Redux made easy, simple and beyond</p>
 
 [![react-reducer-provider](https://badgen.net/badge/npm%20pack/react-reducer-provider/blue)](https://www.npmjs.com/package/react-reducer-provider)
 [![ ](https://badgen.net/npm/v/react-reducer-provider)](https://www.npmjs.com/package/react-reducer-provider)
+[![ ](https://badgen.net/bundlephobia/minzip/react-reducer-provider)](https://bundlephobia.com/result?p=react-reducer-provider)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)
 [![ ](https://gitlab.com/gmullerb/react-reducer-provider/badges/master/coverage.svg)](https://gitlab.com/gmullerb/react-reducer-provider/pipelines)
 [![Github repo](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/gmullerb/react-reducer-provider)
@@ -24,7 +25,7 @@ __________________
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "4.0.0",
+    "react-reducer-provider": "4.1.0",
     ..
 ```
 
@@ -167,25 +168,43 @@ With the introduction of React Hooks, in some way using Flux **library**[1] was 
 * [Reducer/Mapper/Dispatcher can have **more parameters/arguments** than traditional reducer which have only (state, action)](readme/reference.md#extraparameters).
 * [Dispatcher **returns the new State or a Promise of the new State**](readme/reference.md#dispatcher).
 * [Each Reducer/Mapper Provider can have a **different names, numbers or symbols which allows for easy identification and nesting**](readme/reference.md#nesting).
-* It is ready for Tree Shaking optimization, so you get only what you need from the `react-reducer-provider` in the final app bundle.
+* Provides and Easy way of combining reducers. through Tags. [2].
+* Smaller than other packages with same functionality [3].
+* It is ready for Tree Shaking optimization, so you get only what you need from the `react-reducer-provider` in the final app bundle [3].
 * It provides [its own **type definitions for Typescript and Flow**](readme/typings.md).
 * Full Tested (not only focus in coverage, but also in cases).
 
+> [1] Not the Flux architecture.  
+> [2] react-redux makes it too complicated.  
+> [3] Check and Compare with other solutions at [bundlephobia.com](https://bundlephobia.com/result?p=react-reducer-provider@4.1.0).  
+> `react-reducer-provider` is the evolution of [react-named-reducer](https://www.npmjs.com/package/react-named-reducer) (which is a derivation of [react-reducer-context](https://www.npmjs.com/package/react-reducer-context)).
+__________________
+
+**You define**:
+
 ![Reducers](readme/reducer.svg "Reducers")
+
+**or**
+
 
 ![Mappers](readme/mapper.svg "Mappers")
 
+__________________
+
+**and then you use them through a**:
+
 ![Dispatcher](readme/dispatcher.svg "Dispatcher")
 
-> [1] Not the Flux architecture.  
-> `react-reducer-provider` is the evolution of [react-named-reducer](https://www.npmjs.com/package/react-named-reducer) (which is a derivation of [react-reducer-context](https://www.npmjs.com/package/react-reducer-context)).
 __________________
 
 ## Documentation
 
 * [`AsyncReducerProvider`,`SyncReducerProvider`,`AsyncMapperProvider`&`SyncMapperProvider`](readme/reference.md#definition).
 * [`useReducer`,`useReducerState`,`useReducerDispatcher`,`useMapper`,`useMapperState`&`useMapperDispatcher`](readme/reference.md#consumption).
-* [Nesting](readme/reference.md#nesting).
+* [Nesting Provider](readme/nesting.md).
+* [Combining/Blending Reducers](readme/blending.md).
+  * [`AsyncTaggedReducerProvider`,`SyncTaggedReducerProvider`](readme/blending.md#definition).
+  * [`useTaggedAny`,`useTaggedAnyState`,`useTaggedAnyDispatcher`,`useTaggedReducer`, `useTaggedReducerState`&`useTaggedReducerDispatcher`](readme/blending.md#consumption).
 * [Typings](readme/typings.md).
 * [Prerequisites](readme/reference.md#prerequisites).
 * Extras:
@@ -218,8 +237,8 @@ __________________
 ## Remember
 
 * Use code style verification tools => Encourages Best Practices, Efficiency, Readability and Learnability.
-* Start testing early => Encourages Reliability and Maintainability.
 * Code Review everything => Encourages Functional suitability, Performance Efficiency and Teamwork.
+* If viable, Start testing early => Encourages Reliability and Maintainability.
 
 ## Additional words
 

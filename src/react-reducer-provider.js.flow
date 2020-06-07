@@ -8,10 +8,10 @@ import type {
 // Provider Component
 /////////////////////
 
-type ProviderName = string | number | Symbol
+type Id = string | number | Symbol
 
 interface ProviderProps<STATE> {
-  id?: ProviderName;
+  id?: Id;
   initialState: STATE;
   children: Node;
 }
@@ -86,33 +86,100 @@ export type ProviderValue<
   DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
 > = [STATE, Dispatcher<ACTION, DISPATCH>]
 
-/**
- * @deprecated since version 3.4.0, use 'ProviderValue' instead.
- */
-export type ReducerProviderValue<STATE, ACTION, DISPATCH = Sync<void>> = ProviderValue<STATE, ACTION, DISPATCH>
-
 declare export function useReducer<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
-  id?: ProviderName
+  id?: Id
 ): ProviderValue<STATE, ACTION, DISPATCH>
 
-declare export function useReducerState<STATE>(id?: ProviderName): STATE
+declare export function useReducerState<STATE>(id?: Id): STATE
 
 declare export function useReducerDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
-  id?: ProviderName
+  id?: Id
 ): Dispatcher<ACTION, DISPATCH>
 
 declare export function useMapper<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
-  id?: ProviderName
+  id?: Id
 ): ProviderValue<STATE, ACTION, DISPATCH>
 
-declare export function useMapperState<STATE>(id?: ProviderName): STATE
+declare export function useMapperState<STATE>(id?: Id): STATE
 
 declare export function useMapperDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
-  id?: ProviderName
+  id?: Id
+): Dispatcher<ACTION, DISPATCH>
+
+// Tagged Provider Component
+////////////////////////////
+
+export interface TaggedProviderProps {
+  id?: Id;
+  children: Node;
+}
+
+// Tagged Reducer Component Definition
+//////////////////////////////////////
+
+export interface TaggedReducerProps<REDUCER> extends TaggedProviderProps {
+  reducers: REDUCER[];
+}
+
+export type SyncTaggedReducer = [ Id, SyncReducer<any, any>, any ]
+
+export interface SyncTaggedReducerProps extends TaggedReducerProps<SyncTaggedReducer> {}
+
+declare export function SyncTaggedReducerProvider(
+  props: $ReadOnly<SyncTaggedReducerProps>
+): Element<typeof SyncTaggedReducerProvider>
+
+export type AsyncTaggedReducer = [ Id, AsyncReducer<any, any>, any ]
+
+export interface AsyncTaggedReducerProps extends TaggedReducerProps<AsyncTaggedReducer> {}
+
+declare export function AsyncTaggedReducerProvider(
+  props: $ReadOnly<AsyncTaggedReducerProps>
+): Element<typeof AsyncTaggedReducerProvider>
+
+// Tagged Consumption
+/////////////////////
+
+export interface TaggedStates<ANY_ID: Id, ANY_STATE> extends Map<ANY_ID, ANY_STATE> {}
+
+export interface TaggedDispatchers<
+    ANY_ID: Id,
+    ANY_DISPATCHER: Dispatcher<any, any> = Dispatcher<any, any>
+> extends Map<ANY_ID, ANY_DISPATCHER> {}
+
+export type TaggedProviderValue<
+  ANY_ID: Id,
+  ANY_STATE,
+  ANY_DISPATCHER: Dispatcher<any, any> = Dispatcher<any, any>
+> = [ TaggedStates<ANY_ID, ANY_STATE>, TaggedDispatchers<ANY_ID, ANY_DISPATCHER>]
+
+declare export function useTaggedAny<ANY_ID: Id, ANY_STATE, ANY_DISPATCHER: Dispatcher<any, any> = Dispatcher<any, any>>(
+  id?: Id
+): TaggedProviderValue<ANY_ID, ANY_STATE, ANY_DISPATCHER>
+
+declare export function useTaggedAnyState<ANY_ID: Id, ANY_STATE>(id?: Id): TaggedStates<ANY_ID, ANY_STATE>
+
+declare export function useTaggedAnyDispatcher<
+    ANY_ID: Id,
+    ANY_DISPATCHER: Dispatcher<any, any> = Dispatcher<any, any>
+>(id?: Id): TaggedDispatchers<ANY_ID, ANY_DISPATCHER>
+
+declare export function useTaggedReducer<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
+  tag: Id, id?: Id
+): ProviderValue<STATE, ACTION, DISPATCH>
+
+declare export function useTaggedReducerState<STATE>(tag: Id, id?: Id): STATE
+
+declare export function useTaggedReducerDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
+  tag: Id, id?: Id
 ): Dispatcher<ACTION, DISPATCH>
 
 // Helpers
 //////////
+
+export interface AnyAsyncDispatcher<ACTION = any, DISPATCH: Async<> = Async<void>> {
+  (value: ACTION, ...args: $ReadOnlyArray<any>): DISPATCH
+}
 
 export interface Action<TYPE, DATA = typeof undefined> {
   type: TYPE;

@@ -24,8 +24,10 @@
 * An asynchronous example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-async-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-v4syt?module=%2Fsrc%2FSomeReducerProvider.tsx):  
 [![Edit gmullerb-react-reducer-provider-async-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-v4syt?module=%2Fsrc%2FSomeReducerProvider.tsx)  
 
-* This example can be checked on line at [gmullerb-react-reducer-provider-with-actions-creators codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-actions-creators-dc8li?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+* An example with action creators can be checked on line at [gmullerb-react-reducer-provider-with-actions-creators codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-actions-creators-dc8li?module=%2Fsrc%2FSomeReducerProvider.jsx):  
 [![Edit gmullerb-react-reducer-provider-with-actions-creators](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-actions-creators-dc8li?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 
-* This example can be checked on line at [gmullerb-react-reducer-provider-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-2co8d?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+* An example with injection of state and/or dispatcher to components can be checked on line at [gmullerb-react-reducer-provider-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-2co8d?module=%2Fsrc%2FSomeReducerProvider.jsx):  
 [![Edit gmullerb-react-reducer-provider-with-injection](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-2co8d?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+
+* [Base code for a Web project in React and Typescript using react-reducer-provider](https://github.com/gmullerb/basecode-react-ts).

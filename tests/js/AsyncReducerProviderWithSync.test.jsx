@@ -1,5 +1,7 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 import * as React from 'react'
+import { act } from 'react-dom/test-utils'
+import { mount } from 'enzyme'
 
 import {
   AsyncReducerProvider,
@@ -7,9 +9,6 @@ import {
   useReducerDispatcher,
   useReducerState
 } from '../../src/react-reducer-provider'
-
-import { act } from 'react-dom/test-utils'
-import { mount } from 'enzyme'
 
 function testReduce(prevState, action) {
   switch (action) {
