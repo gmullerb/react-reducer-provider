@@ -114,6 +114,8 @@ export interface TaggedProviderProps {
   children: Node;
 }
 
+export type TaggedProcessor<PROCESSOR> = [ Id, PROCESSOR, any ]
+
 // Tagged Reducer Component Definition
 //////////////////////////////////////
 
@@ -121,21 +123,36 @@ export interface TaggedReducerProps<REDUCER> extends TaggedProviderProps {
   reducers: REDUCER[];
 }
 
-export type SyncTaggedReducer = [ Id, SyncReducer<any, any>, any ]
+export type SyncTaggedReducer = TaggedProcessor<SyncReducer<any, any>>
 
 export interface SyncTaggedReducerProps extends TaggedReducerProps<SyncTaggedReducer> {}
 
-declare export function SyncTaggedReducerProvider(
-  props: $ReadOnly<SyncTaggedReducerProps>
-): Element<typeof SyncTaggedReducerProvider>
+declare export function SyncTaggedReducerProvider(props: $ReadOnly<SyncTaggedReducerProps>): Element<typeof SyncTaggedReducerProvider>
 
-export type AsyncTaggedReducer = [ Id, AsyncReducer<any, any>, any ]
+export type AsyncTaggedReducer = TaggedProcessor<AsyncReducer<any, any>>
 
 export interface AsyncTaggedReducerProps extends TaggedReducerProps<AsyncTaggedReducer> {}
 
-declare export function AsyncTaggedReducerProvider(
-  props: $ReadOnly<AsyncTaggedReducerProps>
-): Element<typeof AsyncTaggedReducerProvider>
+declare export function AsyncTaggedReducerProvider(props: $ReadOnly<AsyncTaggedReducerProps>): Element<typeof AsyncTaggedReducerProvider>
+
+// Tagged Mapper Component Definition
+//////////////////////////////////////
+
+export interface TaggedMapperProps<MAPPER> extends TaggedProviderProps {
+  mappers: MAPPER[];
+}
+
+export type SyncTaggedMapper = TaggedProcessor<SyncMapper<any, any>>
+
+export interface SyncTaggedMapperProps extends TaggedMapperProps<SyncTaggedMapper> {}
+
+declare export function SyncTaggedMapperProvider(props: $ReadOnly<SyncTaggedMapperProps>): Element<typeof SyncTaggedMapperProvider>
+
+export type AsyncTaggedMapper = TaggedProcessor<AsyncMapper<any, any>>
+
+export interface AsyncTaggedMapperProps extends TaggedMapperProps<AsyncTaggedMapper> {}
+
+declare export function AsyncTaggedMapperProvider(props: $ReadOnly<AsyncTaggedMapperProps>): Element<typeof AsyncTaggedMapperProvider>
 
 // Tagged Consumption
 /////////////////////
@@ -171,6 +188,16 @@ declare export function useTaggedReducer<STATE, ACTION, DISPATCH: Async<void | S
 declare export function useTaggedReducerState<STATE>(tag: Id, id?: Id): STATE
 
 declare export function useTaggedReducerDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
+  tag: Id, id?: Id
+): Dispatcher<ACTION, DISPATCH>
+
+declare export function useTaggedMapper<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
+  tag: Id, id?: Id
+): ProviderValue<STATE, ACTION, DISPATCH>
+
+declare export function useTaggedMapperState<STATE>(tag: Id, id?: Id): STATE
+
+declare export function useTaggedMapperDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
   tag: Id, id?: Id
 ): Dispatcher<ACTION, DISPATCH>
 

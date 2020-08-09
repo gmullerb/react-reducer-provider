@@ -1,12 +1,9 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 import { createTaggedReducerProvider } from './TaggedReducerProvider'
+import { rebuildTagged } from './TaggedBuilder'
 
 export function AsyncTaggedReducerProvider(props) {
-  return createTaggedReducerProvider(props, (statesRef, setStates, tag, reducer) => async (action, ...args) => {
-    const stateForTag = await reducer(statesRef.current.get(tag), action, ...args)
-    statesRef.current.set(tag, stateForTag)
-    statesRef.current = new Map(statesRef.current)
-    setStates(statesRef.current)
-    return stateForTag
-  })
+  return createTaggedReducerProvider(props, (statesRef, setStates, tag, reducer) => async (action, ...args) =>
+    rebuildTagged(statesRef, setStates, tag, await reducer(statesRef.current.get(tag), action, ...args))
+  )
 }

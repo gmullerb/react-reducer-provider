@@ -1,5 +1,10 @@
 # React Reducer Provider Change Log
 
+## 4.2.0 - August 2020
+
+* Adds Tagged State/Action/Mapper: SyncTaggedMapperProvider & AsyncTaggedMapperProvider.
+* Updates Documentation files.
+
 ## 4.1.0 - August 2020
 
 * Adds Tagged State/Action/Reducer in order to allow easy and simple blending (react-redux is too complex).

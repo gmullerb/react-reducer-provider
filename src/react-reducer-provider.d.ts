@@ -106,6 +106,21 @@ declare interface TaggedProviderProps {
   children: ReactNode;
 }
 
+declare interface TaggedProcessor<PROCESSOR> {
+  /**
+   * Tag
+   */
+  0: Id;
+  /**
+   * Reducer/Mapper
+   */
+  1: PROCESSOR;
+  /**
+   * Initial state
+   */
+  2: any;
+}
+
 // Tagged Reducer Component Definition
 //////////////////////////////////////
 
@@ -113,47 +128,36 @@ declare interface TaggedReducerProps<REDUCER> extends TaggedProviderProps {
   reducers: REDUCER[];
 }
 
-declare interface SyncTaggedReducer {
-  /**
-   * Tag
-   */
-  0: Id;
-  /**
-   * Reducer
-   */
-  1: SyncReducer<any, any>;
-  /**
-   * Initial state
-   */
-  2: any;
-}
+declare interface SyncTaggedReducer extends TaggedProcessor<SyncReducer<any, any>> {}
 
 declare interface SyncTaggedReducerProps extends TaggedReducerProps<SyncTaggedReducer> {}
 
-declare function SyncTaggedReducerProvider(
-  props: Readonly<SyncTaggedReducerProps>
-): ReactElement<SyncTaggedReducerProps>
+declare function SyncTaggedReducerProvider(props: Readonly<SyncTaggedReducerProps>): ReactElement<SyncTaggedReducerProps>
 
-declare interface AsyncTaggedReducer {
-  /**
-   * Tag
-   */
-  0: Id;
-  /**
-   * Reducer
-   */
-  1: AsyncReducer<any, any>;
-  /**
-   * Initial state
-   */
-  2: any;
-}
+declare interface AsyncTaggedReducer extends TaggedProcessor<AsyncReducer<any, any>> {}
 
 declare interface AsyncTaggedReducerProps extends TaggedReducerProps<AsyncTaggedReducer> {}
 
-declare function AsyncTaggedReducerProvider(
-  props: Readonly<AsyncTaggedReducerProps>
-): ReactElement<AsyncTaggedReducerProps>
+declare function AsyncTaggedReducerProvider(props: Readonly<AsyncTaggedReducerProps>): ReactElement<AsyncTaggedReducerProps>
+
+// Tagged Mapper Component Definition
+//////////////////////////////////////
+
+declare interface TaggedMapperProps<MAPPER> extends TaggedProviderProps {
+  mappers: MAPPER[];
+}
+
+declare interface SyncTaggedMapper extends TaggedProcessor<SyncMapper<any, any>> {}
+
+declare interface SyncTaggedMapperProps extends TaggedMapperProps<SyncTaggedMapper> {}
+
+declare function SyncTaggedMapperProvider(props: Readonly<SyncTaggedMapperProps>): ReactElement<SyncTaggedMapperProps>
+
+declare interface AsyncTaggedMapper extends TaggedProcessor<AsyncMapper<any, any>> {}
+
+declare interface AsyncTaggedMapperProps extends TaggedMapperProps<AsyncTaggedMapper> {}
+
+declare function AsyncTaggedMapperProvider(props: Readonly<AsyncTaggedMapperProps>): ReactElement<AsyncTaggedMapperProps>
 
 // Tagged Consumption
 /////////////////////
@@ -231,6 +235,7 @@ export {
   // Tagged
   /////////
   TaggedProviderProps,
+  TaggedProcessor,
   TaggedReducerProps,
   SyncTaggedReducer,
   SyncTaggedReducerProps,
@@ -238,6 +243,13 @@ export {
   AsyncTaggedReducer,
   AsyncTaggedReducerProps,
   AsyncTaggedReducerProvider,
+  TaggedMapperProps,
+  SyncTaggedMapper,
+  SyncTaggedMapperProps,
+  SyncTaggedMapperProvider,
+  AsyncTaggedMapper,
+  AsyncTaggedMapperProps,
+  AsyncTaggedMapperProvider,
   TaggedStates,
   TaggedDispatchers,
   TaggedProviderValue,
@@ -247,6 +259,9 @@ export {
   useTaggedReducer,
   useTaggedReducerState,
   useTaggedReducerDispatcher,
+  useTaggedReducer as useTaggedMapper,
+  useTaggedReducerState as useTaggedMapperState,
+  useTaggedReducerDispatcher as useTaggedMapperDispatcher,
   // Helpers
   //////////
   AnyAsyncDispatcher,

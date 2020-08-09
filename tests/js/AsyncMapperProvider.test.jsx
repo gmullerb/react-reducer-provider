@@ -15,7 +15,7 @@ async function testMap(action) {
     case 'ACTION1':
       return await delay(5, { value: '1' })
     default:
-      return '0'
+      return await delay(5, { value: '0' })
   }
 }
 
@@ -119,7 +119,7 @@ describe('AsyncMapperProvider tests', () => {
         case 'ACTION1':
           return await delay(5, { value: extra })
         default:
-          return '0'
+          return await delay(5, { value: '0' })
       }
     }
     const FunComponent1 = () => {

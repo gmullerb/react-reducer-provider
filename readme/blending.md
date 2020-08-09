@@ -18,7 +18,6 @@ Each `SyncTaggedReducerProvider` or `AsyncTaggedReducerProvider` allows for a se
 ![`SyncTaggedReducerProvider` & `AsyncTaggedReducerProvider`](tagged-reducer-provider.svg "SyncTaggedReducerProvider & AsyncTaggedReducerProvider")
 
 Similarly, `SyncTaggedMapperProvider` and `AsyncTaggedMapperProvider` have the following stream:  
-> :exclamation: **`SyncTaggedMapperProvider` and `AsyncTaggedMapperProvider` not yet implemented, will be available for next version**.
 
 ![`SyncTaggedMapperProvider` & `AsyncTaggedMapperProvider`](tagged-mapper-provider.svg "SyncTaggedMapperProvider & AsyncTaggedMapperProvider")
 
@@ -483,7 +482,8 @@ __________________
   * [with Flow typings](with-actions-creators-and-flow-typings.md).
   * [with Typescript typings](with-actions-creators-and-ts-typings.md).
 * [Testing](testing.md).
-* [Migration from `react-named-reducer` to `react-reducer-provider`](migration.md).
+* [Examples from tests](../tests/js).
+* [Typings' examples from tests](../tests/typings).
 * [Extending/Developing](developing.md).
 
 ## Main documentation

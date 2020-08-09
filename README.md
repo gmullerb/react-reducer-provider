@@ -25,7 +25,7 @@ __________________
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "4.1.0",
+    "react-reducer-provider": "4.2.0",
     ..
 ```
 
@@ -176,7 +176,7 @@ With the introduction of React Hooks, in some way using Flux **library**[1] was 
 
 > [1] Not the Flux architecture.  
 > [2] react-redux makes it too complicated.  
-> [3] Check and Compare with other solutions at [bundlephobia.com](https://bundlephobia.com/result?p=react-reducer-provider@4.1.0).  
+> [3] Check and Compare with other solutions at [bundlephobia.com](https://bundlephobia.com/result?p=react-reducer-provider).  
 > `react-reducer-provider` is the evolution of [react-named-reducer](https://www.npmjs.com/package/react-named-reducer) (which is a derivation of [react-reducer-context](https://www.npmjs.com/package/react-reducer-context)).
 __________________
 
@@ -215,7 +215,9 @@ __________________
     * [with Flow typings](readme/with-actions-creators-and-flow-typings.md).
     * [with Typescript typings](readme/with-actions-creators-and-ts-typings.md).
   * [Testing](readme/testing.md).
+  * [Examples from tests](tests/js).
   * [Online examples](readme/online.md).
+  * [Typings' examples from tests](tests/typings).
   * [Migration from `react-named-reducer` to `react-reducer-provider`](readme/migration.md).
   * [Extending/Developing](readme/developing.md).
 

@@ -5,6 +5,8 @@ import { SyncMapperProvider } from './SyncMapperProvider'
 import { SyncReducerProvider } from './SyncReducerProvider'
 import { SyncTaggedReducerProvider } from './SyncTaggedReducerProvider'
 import { AsyncTaggedReducerProvider } from './AsyncTaggedReducerProvider'
+import { SyncTaggedMapperProvider } from './SyncTaggedMapperProvider'
+import { AsyncTaggedMapperProvider } from './AsyncTaggedMapperProvider'
 import { useReducer } from './useReducer'
 import { useReducerDispatcher } from './useReducerDispatcher'
 import { useReducerState } from './useReducerState'
@@ -19,6 +21,8 @@ export {
   SyncMapperProvider,
   SyncTaggedReducerProvider,
   AsyncTaggedReducerProvider,
+  SyncTaggedMapperProvider,
+  AsyncTaggedMapperProvider,
   useReducer,
   useReducerDispatcher,
   useReducerState,
@@ -31,4 +35,7 @@ export {
   useTaggedReducer,
   useTaggedReducerState,
   useTaggedReducerDispatcher,
+  useTaggedReducer as useTaggedMapper,
+  useTaggedReducerState as useTaggedMapperState,
+  useTaggedReducerDispatcher as useTaggedMapperDispatcher,
 }
