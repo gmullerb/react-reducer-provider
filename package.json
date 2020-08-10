@@ -1,7 +1,7 @@
 {
   "name": "react-reducer-provider",
   "description": "Asynchronous/Synchronous React Reducer/Mapper Provider with Hooks",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
   "main": "cjs/react-reducer-provider.js",
@@ -86,7 +86,7 @@
     "flow-typed"
   ],
   "peerDependencies": {
-    "react": "^16.8.0"
+    "react": ">=16.8.0"
   },
   "scripts": {
     "lint.common": "echo ==== Lint Common ==== && lintspaces --newline --indentation \"spaces\"  ./lib/**/*.* ./readme/**/*.* ./tests/**/*.* ./docs/**/*.* ./*.json ./*.yml ./*.md ./*.sh ./*.txt ./*.properties ./*.gradle ./.gitignore ./.npmignore",
@@ -106,7 +106,7 @@
     "test.single": "echo ==== Test ==== && SINGLE_TEST=1 karma start config/test/karma.conf.js --colors",
     "build.cjs": "echo ==== Build CommonJS Module ==== && rollup --config ./config/main/rollup.config.js",
     "prepack": "npm run build.cjs && echo ==== Build Package ====",
-    "check": "npm run lint.common && npm run lint.config && npm run lint.main && npm run lint.flow && npm run lint.ts && npm run transpile.ts && npm run transpile.flow && npm run lint.test && npm run test.ts && npm run test.flow && npm run test && mkdir -p build && cd build && npm pack ../",
+    "check": "npm install && npm run lint.common && npm run lint.config && npm run lint.main && npm run lint.flow && npm run lint.ts && npm run transpile.ts && npm run transpile.flow && npm run lint.test && npm run test.ts && npm run test.flow && npm run test && mkdir -p build && cd build && npm pack ../",
     "check.all": "npm run check && npm audit",
     "prepublishOnly": "npm run check"
   },
@@ -131,7 +131,7 @@
     "eslint-plugin-flowtype": "~4.3.0",
     "eslint-plugin-unused-imports": "^0.1.3",
     "eslint-plugin-react": "~7.14.3",
-    "eslint-plugin-regex": "^1.1.0",
+    "eslint-plugin-regex": "^1.2.0",
     "flow-bin": "~0.107.0",
     "husky": "^4.2.5",
     "istanbul-instrumenter-loader": "^3.0.1",
@@ -153,7 +153,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "rollup": "^2.8.2",
-    "rollup-plugin-cleanup": "^1.0.1",
+    "rollup-plugin-cleanup": "^3.1.1",
     "typescript": "^3.8.3",
     "webpack": "~4.39.3"
   },

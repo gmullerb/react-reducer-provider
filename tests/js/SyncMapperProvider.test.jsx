@@ -1,4 +1,5 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
+// Licensed under the MIT License (MIT), see LICENSE.txt
 import * as React from 'react'
 import { mount } from 'enzyme'
 
@@ -38,7 +39,7 @@ describe('SyncMapperProvider tests', () => {
     expect(provider).toHaveProp('initialState', testInitialState)
   })
 
-  it('should reduce with useMapperDispatcher and get state', () => {
+  it('should map with useMapperDispatcher and get state', () => {
     const testInitialState = 'A'
     const FunComponent1 = () => {
       const dispatch = useMapperDispatcher(457)
@@ -74,7 +75,7 @@ describe('SyncMapperProvider tests', () => {
     expect(provider).toHaveText('ClickChild1')
   })
 
-  it('should reduce with useMapper and get state', () => {
+  it('should map with useMapper and get state', () => {
     const testInitialState = 'A'
     const FunComponent1 = () => {
       const [ state, dispatch ] = useMapper(458)
@@ -110,7 +111,7 @@ describe('SyncMapperProvider tests', () => {
     expect(provider).toHaveText('Click1Child1')
   })
 
-  it('should reduce with useMapper and get state with extra args', () => {
+  it('should map with useMapper and get state with extra args', () => {
     const testInitialState = 'A'
     function testMapArgs(action, extra) {
       switch (action) {

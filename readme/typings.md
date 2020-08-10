@@ -26,12 +26,12 @@ Both provide the following types:
 * For Consumption:
   * `Dispatcher<ACTION, DISPATCH>`: defines the function that receives the action that triggers the change of the state.
   * `ProviderValue<STATE, ACTION, DISPATCH>`: defines the structure of the value return by `useReducer`/`useMapper`.
-  * `useReducer<STATE, ACTION, DISPATCH>: ProviderValue<STATE, ACTION, DISPATCH>`.
-  * `useReducerState<STATE>(id?: string): STATE`.
-  * `useReducerDispatcher<ACTION, DISPATCH>(id?: string): Dispatcher<ACTION, DISPATCH>`.
-  * `useMapper<STATE, ACTION, DISPATCH>: ProviderValue<STATE, ACTION, DISPATCH>`.
-  * `useMapperState<STATE>(id?: string): STATE`.
-  * `useMapperDispatcher<ACTION, DISPATCH>(id?: string): Dispatcher<ACTION, DISPATCH>`.
+  * `useReducer<STATE, ACTION, DISPATCH>(id?: Id): ProviderValue<STATE, ACTION, DISPATCH>`.
+  * `useReducerState<STATE>(id?: Id): STATE`.
+  * `useReducerDispatcher<ACTION, DISPATCH>(id?: Id): Dispatcher<ACTION, DISPATCH>`.
+  * `useMapper<STATE, ACTION, DISPATCH>(id?: Id): ProviderValue<STATE, ACTION, DISPATCH>`.
+  * `useMapperState<STATE>(id?: Id): STATE`.
+  * `useMapperDispatcher<ACTION, DISPATCH>(id?: Id): Dispatcher<ACTION, DISPATCH>`.
 
 `STATE`: State type, defined by the developer.  
 `ACTION`: Action type, defined by the developer.  
@@ -558,6 +558,162 @@ or with additional parameters:
   )
 ```
 
+## HOC
+
+Only for HOC there is a difference approach for Typescript and Flow (due to some Flow limitations).
+
+Typescript:
+
+```ts
+inject<INJECTED_PROP extends object, PROPS extends object = object>(
+  ComponentClass: React.ComponentClass<PROPS>, injectedPropName: keyof INJECTED_PROP, id?: Id
+): React.ComponentClass<PROPS>.
+```
+
+`INJECTED_PROP` (Required): An object containing only 1 field with the desired name for the prop to be injected.
+`PROPS`: Properties of the Component to be exported.
+
+Flow:
+
+```js
+inject<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+```
+
+`INJECTED_PROP` (Required): An object containing only 1 field with the desired name for the prop to be injected.
+`PROPS` (Required): Properties of the "inner" Component.
+
+`injectReducer`\`injectMapper`:
+
+Typescript:
+
+```tsx
+
+    interface SomeReducerMainHoc0Props { someProp: string }
+    interface SomeReducerMainHoc1Props { reducer: ProviderValue<TestState, string> }
+    interface SomeReducerMainHocProps extends SomeReducerMainHoc0Props, SomeReducerMainHoc1Props { }
+    interface SomeReducerMainHocState { someState: number }
+
+    class SomeReducerMainHoc extends React.Component<SomeReducerMainHocProps, SomeReducerMainHocState> {
+      render() {
+        const [ state, dispatch ]: ProviderValue<TheState, string> = this.props.reducer
+        return (
+          <button onClick={() => dispatch('ACTION1')}>
+            Child{state.lastAction}
+          </button>
+        )
+      }
+    }
+    const SomeReducerMainHoc0 = injectReducer<SomeReducerMainHoc1Props, SomeReducerMainHoc0Props>(SomeReducerMainHoc, 'reducer', 'someNamedReducer')
+```
+
+Flow:
+
+```jsx
+    interface SomeReducerMainHocProps { reducer: ProviderValue<TheState, string>, someProp: string }
+    interface SomeReducerMainHocState { someState: number }
+
+    class SomeReducerMainHoc extends React.Component<SomeReducerMainHocProps, SomeReducerMainHocState> {
+      render() {
+        const [ state, dispatch ]: ProviderValue<TheState, string> = this.props.reducer
+        return (
+          <button onClick={() => dispatch('ACTION1')}>
+            Child{state.lastAction}
+          </button>
+        )
+      }
+    }
+    const SomeReducerMainHoc0 = injectReducer<{ reducer: * }, SomeReducerMainHocProps>(SomeReducerMainHoc, 'reducer', 'someNamedReducer')
+```
+
+`injectReducerState`\`injectMapperState`:
+
+Typescript:
+
+```tsx
+    interface SomeReducerStateHoc0Props { someProp: string }
+    interface SomeReducerStateHoc1Props { state: TestState }
+    interface SomeReducerStateHocProps extends SomeReducerStateHoc0Props, SomeReducerStateHoc1Props { }
+    interface SomeReducerStateHocState { someState: number }
+
+    class SomeReducerStateHoc extends React.Component<SomeReducerStateHocProps, SomeReducerStateHocState> {
+      render() {
+        const theState: TheState = this.props.state
+        return (
+          <button>
+            Child{theState.lastAction}
+          </button>
+        )
+      }
+    }
+    const SomeReducerStateHoc0 = injectReducerState<SomeReducerStateHoc1Props, SomeReducerStateHoc0Props>(SomeReducerStateHoc, 'state', 'someNamedReducer')
+```
+
+Flow:
+
+```jsx
+    interface SomeReducerStateHocProps { state: TheState, someProp: string }
+    interface SomeReducerStateHocState { someState: number }
+
+    class SomeReducerStateHoc extends React.Component<SomeReducerStateHocProps, SomeReducerStateHocState> {
+      render() {
+        const theState: TheState = this.props.state
+        return (
+          <button>
+            Child{theState.lastAction}
+          </button>
+        )
+      }
+    }
+    const SomeReducerStateHoc0 = injectReducerState<{ state: * }, SomeReducerStateHocProps>(SomeReducerStateHoc, 'state', 'someNamedReducer')
+```
+
+`injectReducerDispatcher`\`injectMapperDispatcher`:
+
+Typescript:
+
+```tsx
+    interface SomeReducerDispatcherHoc0Props { someProp: string }
+    interface SomeReducerDispatcherHoc1Props { dispatcher: Dispatcher<string> }
+    interface SomeReducerDispatcherHocProps extends SomeReducerDispatcherHoc0Props, SomeReducerDispatcherHoc1Props { }
+    interface SomeReducerDispatcherHocDispatcher { someDispatcher: number }
+
+    class SomeReducerDispatcherHoc extends React.Component<SomeReducerDispatcherHocProps, SomeReducerDispatcherHocDispatcher> {
+      render() {
+        const theDispatcher: Dispatcher<string> = this.props.dispatcher
+        return (
+          <button onClick={(): void => theDispatcher('ACTION1')}>
+            Children
+          </button>
+        )
+      }
+    }
+    const SomeReducerDispatcherHoc0 = injectReducerDispatcher<SomeReducerDispatcherHoc1Props, SomeReducerDispatcherHoc0Props>(SomeReducerDispatcherHoc, 'dispatcher', 'someNamedReducer')
+```
+
+Flow:
+
+```jsx
+    interface SomeReducerDispatcherHocProps { dispatcher: Dispatcher<string>, someProp: string }
+    interface SomeReducerDispatcherHocDispatcher { someDispatcher: number }
+
+    class SomeReducerDispatcherHoc extends React.Component<SomeReducerDispatcherHocProps, SomeReducerDispatcherHocDispatcher> {
+      render() {
+        const theDispatcher: Dispatcher<string> = this.props.dispatcher
+        return (
+          <button onClick={(): void => theDispatcher('ACTION1')}>
+            Children
+          </button>
+        )
+      }
+    }
+    const SomeReducerDispatcherHoc0 = injectReducerDispatcher<{ dispatcher: * }, SomeReducerDispatcherHocProps>(SomeReducerDispatcherHoc, 'dispatcher', 'someNamedReducer')
+```
+
+* An example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-forked-sdz65?module=%2Fsrc%2FSomeReducerProvider.tsx):  
+[![Edit gmullerb-react-reducer-provider-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-forked-sdz65?module=%2Fsrc%2FSomeReducerProvider.tsx)  
+
 ## Helper types
 
 Additionally a Helper type is available: `Action<TYPE, DATA>`, useful for defining more complex types of actions:
@@ -592,8 +748,8 @@ function reduce(prevState: AppState, action: AppAction): AppState {
 
 ## Additional Examples
 
-* A more "complete" example with Typescript can be seen at: [`typingTest.tsx`](../tests/typings/ts/typingTest.tsx).
-* A more "complete" example with Flow can be seen at: [`typingTest.jsx`](../tests/typings/flow/typingTest.jsx).
+* A more "complete" example with Typescript can be seen at [`typing ts test folder`](../tests/typings/ts).
+* A more "complete" example with Flow can be seen at [`typing flow test folder`](../tests/typings/flow).
 
 > An example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-4zi7k?module=%2Fsrc%2FSomeReducerProvider.tsx):  
 [![Edit gmullerb-react-reducer-provider-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-4zi7k?module=%2Fsrc%2FSomeReducerProvider.tsx)  

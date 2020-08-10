@@ -8,7 +8,7 @@
 `"react-named-reducer": "2.0.1"`
 
 * to:  
-`"react-reducer-provider": "4.2.0"`
+`"react-reducer-provider": "4.3.0"`
 
 2 . Change imports:
 

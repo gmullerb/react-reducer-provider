@@ -24,11 +24,8 @@
       "error",
       "single"
     ],
-    "react/prefer-es6-class": [
-      "error",
-      "never"
-    ],
     "react/no-multi-comp": "off",
+    "react/display-name": "off",
     "semi": [
       "error",
       "never"

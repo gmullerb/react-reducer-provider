@@ -98,6 +98,10 @@ declare function useReducerDispatcher<ACTION, DISPATCH extends Async | Sync = Sy
   id?: Id
 ): Dispatcher<ACTION, DISPATCH>
 
+declare function injectAny<INJECTED_PROP extends object, PROPS extends object = object>(
+  ComponentClass: React.ComponentClass<PROPS>, injectedPropName: keyof INJECTED_PROP, id?: Id
+): React.ComponentClass<PROPS>
+
 // Tagged Provider Component
 ////////////////////////////
 
@@ -201,6 +205,10 @@ declare function useTaggedReducerState<STATE>(tag: Id, id?: Id): STATE
 
 declare function useTaggedReducerDispatcher<ACTION, DISPATCH extends Async | Sync = Sync<void>>(tag: Id, id?: Id): Dispatcher<ACTION, DISPATCH>
 
+declare function injectTagged<INJECTED_PROP extends object, PROPS extends object = object>(
+  ComponentClass: React.ComponentClass<PROPS>, injectedPropName: keyof INJECTED_PROP, tag: Id, id?: Id
+): React.ComponentClass<PROPS>
+
 // Helpers
 //////////
 
@@ -232,6 +240,12 @@ export {
   useReducer as useMapper,
   useReducerState as useMapperState,
   useReducerDispatcher as useMapperDispatcher,
+  injectAny as injectReducer,
+  injectAny as injectReducerState,
+  injectAny as injectReducerDispatcher,
+  injectAny as injectMapper,
+  injectAny as injectMapperState,
+  injectAny as injectMapperDispatcher,
   // Tagged
   /////////
   TaggedProviderProps,
@@ -262,6 +276,15 @@ export {
   useTaggedReducer as useTaggedMapper,
   useTaggedReducerState as useTaggedMapperState,
   useTaggedReducerDispatcher as useTaggedMapperDispatcher,
+  injectAny as injectTaggedAny,
+  injectAny as injectTaggedAnyState,
+  injectAny as injectTaggedAnyDispatcher,
+  injectTagged as injectTaggedReducer,
+  injectTagged as injectTaggedReducerState,
+  injectTagged as injectTaggedReducerDispatcher,
+  injectTagged as injectTaggedMapper,
+  injectTagged as injectTaggedMapperState,
+  injectTagged as injectTaggedMapperDispatcher,
   // Helpers
   //////////
   AnyAsyncDispatcher,

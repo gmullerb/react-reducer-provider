@@ -2,7 +2,8 @@
   <img src="https://assets.gitlab-static.net/uploads/-/system/project/avatar/18113862/react-reducer-provider.png" alt=" "/>
 </p>
 
-<h1 align="center">Asynchronous/Synchronous React Reducer/Mapper Provider with Hooks</h1>
+<h1 align="center">Asynchronous/Synchronous React Reducer/Mapper Provider</h1>
+<h2 align="center">with Hooks and HOC</h2>
 
 <p align="center">Flux/Redux made easy, simple and beyond</p>
 
@@ -24,8 +25,8 @@ __________________
 ```json
   ..
   "dependencies": {
-    "react": "^16.8.0"
-    "react-reducer-provider": "4.2.0",
+    "react": "16.8.0"
+    "react-reducer-provider": "4.3.0",
     ..
 ```
 
@@ -149,6 +150,8 @@ export default function SomeContainer() {
 
 > This `SyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-qf356?module=%2Fsrc%2FSomeReducerProvider.jsx):  
 [![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-qf356?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> This `SyncReducerProvider`with HOC example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-5fngu?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-5fngu?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > An `AsyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-m1fph?module=%2Fsrc%2FSomeReducerProvider.jsx):  
 [![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-m1fph?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > An `SyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-c7hyq?module=%2Fsrc%2FSomeMapperProvider.jsx):  
@@ -164,10 +167,10 @@ __________________
 With the introduction of React Hooks, in some way using Flux **library**[1] was deprecated, `react-reducer-provider` looks to **give a quick and easy alternative using hooks to implement Flux with reducers**.
 
 * Provides Reducers, but also **Mappers**.
-* It allows to use [**Asynchronous** Reducer/Mapper/Dispatcher](readme/reference.md#asyncreducerprovider).
-* [Reducer/Mapper/Dispatcher can have **more parameters/arguments** than traditional reducer which have only (state, action)](readme/reference.md#extraparameters).
-* [Dispatcher **returns the new State or a Promise of the new State**](readme/reference.md#dispatcher).
-* [Each Reducer/Mapper Provider can have a **different names, numbers or symbols which allows for easy identification and nesting**](readme/reference.md#nesting).
+* It allows to use [**Asynchronous** Reducer/Mapper/Dispatcher](readme/reference-definition.md#asyncreducerprovider).
+* [Reducer/Mapper/Dispatcher can have **more parameters/arguments** than traditional reducer which have only (state, action)](readme/reference-definition.md#extraparameters).
+* [Dispatcher **returns the new State or a Promise of the new State**](readme/reference-definition.md#dispatcher).
+* [Each Reducer/Mapper Provider can have a **different names, numbers or symbols which allows for easy identification and nesting**](readme/nesting.md).
 * Provides and Easy way of combining reducers. through Tags. [2].
 * Smaller than other packages with same functionality [3].
 * It is ready for Tree Shaking optimization, so you get only what you need from the `react-reducer-provider` in the final app bundle [3].
@@ -197,16 +200,24 @@ __________________
 
 __________________
 
+## Prerequisites
+
+* [React Hooks](https://reactjs.org/docs/hooks-overview.html) => [`"react": ">=16.8.0"`](https://www.npmjs.com/package/react).
+
+__________________
+
 ## Documentation
 
-* [`AsyncReducerProvider`,`SyncReducerProvider`,`AsyncMapperProvider`&`SyncMapperProvider`](readme/reference.md#definition).
-* [`useReducer`,`useReducerState`,`useReducerDispatcher`,`useMapper`,`useMapperState`&`useMapperDispatcher`](readme/reference.md#consumption).
-* [Nesting Provider](readme/nesting.md).
-* [Combining/Blending Reducers](readme/blending.md).
-  * [`AsyncTaggedReducerProvider`,`SyncTaggedReducerProvider`](readme/blending.md#definition).
-  * [`useTaggedAny`,`useTaggedAnyState`,`useTaggedAnyDispatcher`,`useTaggedReducer`, `useTaggedReducerState`&`useTaggedReducerDispatcher`](readme/blending.md#consumption).
+* [`AsyncReducerProvider` | `SyncReducerProvider` | `AsyncMapperProvider` | `SyncMapperProvider`](readme/reference-defintion.md).
+* [`useReducer` | `useReducerState` | `useReducerDispatcher` | `useMapper` | `useMapperState` | `useMapperDispatcher`](readme/reference-consumption-hooks.md).
+* [`injectReducer` | `injectReducerState` | `injectReducerDispatcher` | `injectMapper` | `injectMapperState` | `injectMapperDispatcher`](readme/reference-consumption-hoc.md).
+* [Singleton](readme/singleton.md).
+* [Nesting Providers](readme/nesting.md).
+* Combining/Blending - Tagged Reducers/Mappers.
+  * [`AsyncTaggedReducerProvider` | `SyncTaggedReducerProvider` | `AsyncTaggedMapperProvider` | `SyncTaggedMapperProvider`](readme/blending-definition.md).
+  * [`useTaggedAny` | `useTaggedAnyState` | `useTaggedAnyDispatcher` | `useTaggedReducer` | `useTaggedReducerState` | `useTaggedReducerDispatcher` | `useTaggedMapper` | `useTaggedMapperState` | `useTaggedMapperDispatcher`](readme/blending-consumption-hooks.md).
+  * [`injectTaggedAny` | `injectTaggedAnyState` | `injectTaggedAnyDispatcher` | `injectTaggedReducer` | `injectTaggedReducerState` | `injectTaggedReducerDispatcher` | `injectTaggedMapper` | `injectMapperReducerState` | `injectMapperdReducerDispatcher`](readme/blending-consumption-hoc.md).
 * [Typings](readme/typings.md).
-* [Prerequisites](readme/reference.md#prerequisites).
 * Extras:
   * [With Injection](readme/with-injection.md).
     * [with Flow typings](readme/with-injection-and-flow-typings.md).

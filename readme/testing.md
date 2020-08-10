@@ -163,6 +163,36 @@ Examples can be seen at: [`MockingReducerProvider.test.jsx`](../tests/js/Mocking
 
 Examples can be seen at: [`SingletonReducerProvider.test.jsx`](../tests/js/SingletonReducerProvider.test.jsx), [`SyncReducerProvider.test.jsx`](../tests/js/SyncReducerProvider.test.jsx) and [`AsyncReducerProviderWithAsync.test.jsx`](../tests/js/AsyncReducerProviderWithAsync.test.jsx).
 
+## Asynchronous testing
+
+When a Component make an asynchronous call to the reducer (or some React hook) inside an `useEffect` then use `act` for testing, e.g.
+
+```jsx
+import { useReducer } from 'react-reducer-provider'
+
+export function SomeComponent() {
+  const [ state, dispatch ] = useReducer()
+  React.useEffect(() => {
+    asyncCall().then(() => dispatch('Some'))
+  }, [])
+  ..
+```
+
+```jsx
+import { act } from 'react-dom/test-utils'
+
+it('should render SomeComponent', async () => {
+  await act(async () => {
+    const main = mount(
+      <AsyncReducerProvider reducer={() => {/*..*/} } initialState={someValue}>
+          <SomeComponent/>
+      </AsyncReducerProvider>
+    )
+    expect(main.contains(/* .. */)).toBe(true)
+  })
+})
+```
+
 ## Main documentation
 
 [Back](../README.md)

@@ -1,4 +1,4 @@
-# `AsyncReducerProvider` | `SyncReducerProvider` | `useReducer` | `useReducerState` | `useReducerDispatcher` | `AsyncMapperProvider` | `SyncMapperProvider` | `useMapper` | `useMapperState` | `useMapperDispatcher`
+# `AsyncReducerProvider` | `SyncReducerProvider` | `AsyncMapperProvider` | `SyncMapperProvider`
 
 ## Definition
 
@@ -96,148 +96,6 @@ or
 
 > [1] Internally are implemented only using [`useState` hook](https://reactjs.org/docs/hooks-reference.html#usestate) and [`useRef` hook](https://reactjs.org/docs/hooks-reference.html#useref).
 
-## Consumption
-
-Reducer or Mapper will never be accessible directly from `children` elements, they will be **able to access the State and/or Dispatcher**.
-
-There are different ways of doing this:
-
-* **`useReducer`**, which give access both State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* **`useReducerDispatcher`**, which give access only the [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* **`useReducerState`**, which give access only the State.
-
-or
-
-* **`useMapper`**, which give access both State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* **`useMapperDispatcher`**, which give access only the [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* **`useMapperState`**, which give access only the State.
-
-![Consumption](use-provider.svg "Consumption")
-
-> When using `useReducer`/`useMapper`, `useReducerDispatcher`/`useMapperDispatcher` and/or `useReducerState`/`useMapperState`,  Be Aware that they use [`React.useContext`](https://reactjs.org/docs/hooks-reference.html#usecontext) and quote: 'A component calling useContext will always re-render when the context value changes', in this case when `state` changes, therefore when using `useReducerDispatcher`/`useMapperDispatcher` although it not depends "directly" on `state` the component will be re-render when `state` changes. Final words, use `SyncMapperProvider` and/or `AsyncMapperProvider`,`SyncReducerProvider` and/or `AsyncReducerProvider` everywhere is required and use `useReducer`/`useMapper`, `useReducerDispatcher`/`useMapperDispatcher` and/or `useReducerState`/`useMapperState` wisely (small scopes, as close to where is required with small amount of children). If children re-render is too expensive then `React.useMemo`:
-
-```jsx
-const FunComponent1 = () => {
-  const dispatch = useReducerDispatcher('testNamedReducer10')
-  return React.useMemo(() => (
-    <RelatedChildComponent
-      onClick={dispatch}
-    />
-  ), [dispatch])
-}
-```
-
-(check test case 'should get the same dispatcher references after state changes' at [SyncReducerProvider.test.jsx](../tests/js/SyncReducerProvider.test.jsx) or [AsyncReducerProviderWithAsync.test.jsx](../tests/js/AsyncReducerProviderWithAsync.test.jsx))
-
-### Dispatcher
-
-[`Dispatcher`](../src/react-reducer-provider.d.ts) returns the new State or a Promise of the new State:
-
-![Dispatcher](dispatcherNoArgs.svg "Dispatcher")
-
-Synchronous dispatcher:
-
-```js
-const newState = dispatch(action)
-```
-
-Asynchronous dispatcher:
-
-```js
-dispatch(action).then(newState => console.info(newState))
-```
-
-If new State is not required, then return value can be ignored:
-
-```js
-dispatch(action)
-```
-
-> Returned value is useful when using `useReducerDispatcher` or `useMapperDispatcher`.
-> By default, when using typings return value is ignored, i.e is `void` or `Promise<void>`.
-> Examples can be seen at: [`SyncReducerProvider.test.jsx`](../tests/js/SyncReducerProvider.test.jsx) and [`AsyncReducerProviderWithAsync.test.jsx`](../tests/js/AsyncReducerProviderWithAsync.test.jsx).
-> Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
-
-### `useReducer`/`useMapper`
-
-*parameters*:
-
-* `id ?: string | number | symbol`: constitutes the identifier (name, number or symbol) of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
-
-*returns*:
-
-* a tuple containing the `state` as first element, and the `dispatcher` as second element.
-
-```jsx
-import { useReducer } from 'react-reducer-provider'
-import React from 'react'
-
-export default function SomeComponent1() {
-  const [ state, dispatch ] = useReducer('someNamedReducer')
-  return (
-    <button onClick={() => dispatch('ACTION1')}>
-      Go up (from {state})!
-    </button>
-  )
-}
-```
-
-### `useReducerDispatcher`/`useMapperDispatcher`
-
-*parameters*:
-
-* `id ?: string | number | symbol`: constitutes the identifier (name, number or symbol) of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
-
-*returns*:
-
-* the `dispatcher` of the respective Reducer/Mapper Provider.
-
-```jsx
-import { useReducerDispatcher } from 'react-reducer-provider'
-import React from 'react'
-
-export default function SomeComponent2() {
-  const dispatch = useReducerDispatcher('someNamedReducer')
-  return (
-    <button onClick={() => dispatch('ACTION2')}>
-      Go down!
-    </button>
-  )
-}
-```
-
-### `useReducerState`/`useMapperState`
-
-*parameters*:
-
-* `id ?: string | number | symbol`: constitutes the identifier (name, number or symbol) of the `SyncReducerProvider`, `AsyncReducerProvider`,`SyncMapperProvider` or `AsyncMapperProvider` being accessed.
-
-*returns*:
-
-* the `state` of the respective Reducer/Mapper Provider.
-
-```jsx
-import { useReducerState } from 'react-reducer-provider'
-import React from 'react'
-
-export default function SomeComponentN() {
-  const currentState = useReducerState('someNamedReducer')
-  return (
-    <div>
-      Current:{currentState}
-    </div>
-  )
-}
-```
-
-### Error
-
-When the associated Reducer Provider can not be found, i.e. the `id` trying to be used by any `react-reducer-provider` hook is not defined, the the following error may appear:
-
-`TypeError: Cannot read property '_context' of undefined`
-
-Check the `id` of the defined Reducer Providers, and use a valid one.
-
 ## Synchronous Reducer/Mapper => `SyncReducerProvider`/`SyncMapperProvider`
 
 ### `SyncReducerProvider`
@@ -305,22 +163,8 @@ Check the `id` of the defined Reducer Providers, and use a valid one.
 
 ### `Dispatcher`
 
-* when accessing the Reducer Provider, the `dispatcher` will be also a synchronous function:
+when accessing the Mapper/Reducer Provider, the `dispatcher` will be also a synchronous function:
 
-    `function dispatch<ACTION>(action: ACTION): void`
-
-    e.g.:
-
-```jsx
-  export default function SomeComponent2() {
-    const dispatch = useReducerDispatcher('someNamedReducer')
-    return (
-      <button onClick={() => dispatch('ACTION2')}>
-        Go down!
-      </button>
-    )
-  }
-```
 
 > An `SyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-qf356?module=%2Fsrc%2FSomeReducerProvider.jsx):  
 [![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-qf356?module=%2Fsrc%2FSomeReducerProvider.jsx)  
@@ -393,21 +237,14 @@ Check the `id` of the defined Reducer Providers, and use a valid one.
 
 ### Dispatcher
 
-* when accessing the Reducer Provider, the `dispatcher` will be also a **asynchronous** function:
+* when accessing the Reducer/Mapper Provider, the `dispatcher` will be also a **asynchronous** function:
 
     `async function dispatch<ACTION>(action: ACTION): Promise<void>`
 
     e.g.:
 
 ```jsx
-  export default function SomeComponent2() {
-    const dispatch = useReducerDispatcher('someNamedReducer')
-    return (
-      <button onClick={(async () => dispatch('ACTION2').then(someProcess())}>
-        Go down!
-      </button>
-    )
-  }
+  dispatch('ACTION2').then(someProcess())
 ```
 
 > When the `dispatch` is resolved is an indication that the state was change, but not of any required re-rendering being done.  
@@ -418,21 +255,51 @@ Check the `id` of the defined Reducer Providers, and use a valid one.
 > Although `AsyncReducerProvider` can be used for synchronous reducer/dispatcher (check [AsyncReducerProviderWithSync.test.jsx](tests/js/AsyncReducerProviderWithSync.test.jsx)), It is not is purpose and implementation is suitable for asynchronous processes, long story short, for synchronous processes, use `SyncReducerProvider`.  
 > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
+## Dispatcher
+
+[`Dispatcher`](../src/react-reducer-provider.d.ts) returns the new State or a Promise of the new State:
+
+![Dispatcher](dispatcherNoArgs.svg "Dispatcher")
+
+Synchronous dispatcher:
+
+```js
+const newState = dispatch(action)
+```
+
+Asynchronous dispatcher:
+
+```js
+dispatch(action).then(newState => console.info(newState))
+```
+
+If new State is not required, then return value can be ignored:
+
+```js
+dispatch(action)
+```
+
+> Returned value is useful when using `useReducerDispatcher`, `useMapperDispatcher`, `injectReducerDispatcher`, `injectMapperDispatcher`.
+> By default, when using typings return value is ignored, i.e is `void` or `Promise<void>`.
+> Examples can be seen at: [`SyncReducerProvider.test.jsx`](../tests/js/SyncReducerProvider.test.jsx) and [`AsyncReducerProviderWithAsync.test.jsx`](../tests/js/AsyncReducerProviderWithAsync.test.jsx).
+> Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
+
 ## Extra parameters
 
 Dispatcher can send **any number of additional arguments**:
 
 ![Dispatcher](dispatcher.svg "Dispatcher")
 
-```jsx
-  export default function SomeComponent2() {
-    const dispatch = useReducerDispatcher('someNamedReducer)
-    return (
-      <button onClick={(async () => dispatch('ACTION2', arg1, arg2, argN).then(someProcess())}>
-        Go down!
-      </button>
-    )
-  }
+Synchronous:
+
+```js
+  dispatch('ACTION2', arg1, arg2, argN)
+```
+
+Asynchronous:
+
+```js
+  dispatch('ACTION2', arg1, arg2, argN).then(someProcess())
 ```
 
 Then, respectively:
@@ -475,84 +342,24 @@ Then, respectively:
 [![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-gpst9?module=%2Fsrc%2FSomeReducerProvider.jsx)  
 > This makes "obsolete" the [Action](typings.md#helpertypes), but at the end can be matter of preference.
 
-## Singleton Reducer/Mapper Provider
+## Reducer/Mapper Consumption
 
-If no `id` (name, number or symbol) is provided a "unique"[1] Reducer will be created.
+### [Function Components - Hooks](reference-consumption-hooks.md)
 
-> [1] This is a convention, i.e. is up to the developer not to created more Reducer Provider. Worth mentioning that unidentified and identified Reducer Providers can be combined.
-
-```jsx
-function SomeReducerProvider({ children }) {
-  return (
-    <SyncReducerProvider
-      reducer={reduce}
-      initialState={initialState}
-    >
-      {children}
-    </SyncReducerProvider>
-  )
-}
-
-export default SomeReducerProvider
-```
-
-When accessing the provider, the `id` is not required:
-
-```jsx
-  export default function SomeComponent1() {
-    const [ state, dispatch ] = useReducer()
-    return (
-      <button onClick={() => dispatch('ACTION1')}>
-        Go up (from {state})!
-      </button>
-    )
-  }
-```
-
-or
-
-```jsx
-  export default function SomeComponent2() {
-    const dispatch = useReducerDispatcher()
-    return (
-      <button onClick={() => dispatch('ACTION2')}>
-        Go down!
-      </button>
-    )
-  }
-```
-
-or
-
-```jsx
-  export default function SomeComponentN() {
-    const currentState = useReducerState()
-    return (
-      <div>
-        Current:{currentState}
-      </div>
-    )
-  }
-```
-
-> An asynchronous example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-m1fph?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-m1fph?module=%2Fsrc%2FSomeReducerProvider.jsx)  
-> > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
-
-__________________
-
-## Prerequisites
-
-* [React Hooks](https://reactjs.org/docs/hooks-overview.html) => [`"react": "^16.8.0"`](https://www.npmjs.com/package/react).
+### [Class Components - HOC](reference-consumption-hoc.md)
 
 __________________
 
 ## More Documentation
 
-* [Nesting](readme/nesting.md).
-* [Combining/Blending Reducers](readme/blending.md).
-  * [`AsyncTaggedReducerProvider`,`SyncTaggedReducerProvider`](readme/blending.md#definition).
-  * [`useTaggedAny`,`useTaggedAnyState`,`useTaggedAnyDispatcher`,`useTaggedReducer`, `useTaggedReducerState`&`useTaggedReducerDispatcher`](readme/blending.md#consumption).
+* [`useReducer` | `useReducerState` | `useReducerDispatcher` | `useMapper` | `useMapperState` | `useMapperDispatcher`](reference-consumption-hooks.md).
+* [`injectReducer` | `injectReducerState` | `injectReducerDispatcher` | `injectMapper` | `injectMapperState` | `injectMapperDispatcher`](reference-consumption-hoc.md).
+* [Singleton](singleton.md).
+* [Nesting](nesting.md).
+* Combining/Blending - Tagged Reducers/Mappers.
+  * [`AsyncTaggedReducerProvider` | `SyncTaggedReducerProvider` | `AsyncTaggedMapperProvider` | `SyncTaggedMapperProvider`](blending-definition.md).
+  * [`useTaggedAny` | `useTaggedAnyState` | `useTaggedAnyDispatcher` | `useTaggedReducer` | `useTaggedReducerState` | `useTaggedReducerDispatcher` | `useTaggedMapper` | `useTaggedMapperState` | `useTaggedMapperDispatcher`](blending-consumption-hooks.md).
+  * [`injectTaggedAny` | `injectTaggedAnyState` | `injectTaggedAnyDispatcher` | `injectTaggedReducer` | `injectTaggedReducerState` | `injectTaggedReducerDispatcher` | `injectTaggedMapper` | `injectMapperReducerState` | `injectMapperdReducerDispatcher`](blending-consumption-hoc.md).
 * [Typings](typings.md).
 * [With Injection](with-injection.md).
   * [with Flow typings](with-injection-and-flow-typings.md).

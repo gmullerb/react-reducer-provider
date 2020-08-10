@@ -1,4 +1,5 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
+// Licensed under the MIT License (MIT), see LICENSE.txt
 import { createTaggedReducerProvider } from './TaggedReducerProvider'
 import { rebuildTagged } from './TaggedBuilder'
 

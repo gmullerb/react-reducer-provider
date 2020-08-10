@@ -1,4 +1,6 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
+// Licensed under the MIT License (MIT), see LICENSE.txt
+// Some test may seen "over-typed", this is intentionally only for testing.
 import {
   Async,
   Dispatcher,

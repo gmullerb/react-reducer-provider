@@ -2,7 +2,8 @@
 
 import type {
   Element,
-  Node
+  Node,
+  AbstractComponent
 } from 'react'
 
 // Provider Component
@@ -106,6 +107,30 @@ declare export function useMapperDispatcher<ACTION, DISPATCH: Async<> | Sync<> =
   id?: Id
 ): Dispatcher<ACTION, DISPATCH>
 
+declare export function injectReducer<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectReducerState<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectReducerDispatcher<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectMapper<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectMapperState<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectMapperDispatcher<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
 // Tagged Provider Component
 ////////////////////////////
 
@@ -200,6 +225,42 @@ declare export function useTaggedMapperState<STATE>(tag: Id, id?: Id): STATE
 declare export function useTaggedMapperDispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>>(
   tag: Id, id?: Id
 ): Dispatcher<ACTION, DISPATCH>
+
+declare export function injectTaggedAny<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectTaggedAnyState<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectTaggedAnyDispatcher<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectTaggedReducer<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, tag: Id, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectTaggedReducerState<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, tag: Id, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectTaggedReducerDispatcher<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, tag: Id, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectTaggedMapper<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, tag: Id, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectTaggedMapperState<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, tag: Id, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+declare export function injectTaggedMapperDispatcher<INJECTED_PROP: {}, PROPS: {}>(
+  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, tag: Id, id?: Id
+): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
 
 // Helpers
 //////////

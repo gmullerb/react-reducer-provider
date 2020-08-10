@@ -9,6 +9,7 @@
     "import/no-namespace": "off",
     "max-lines": "off",
     "max-statements": "off",
+    "max-classes-per-file": "off",
     "react/jsx-first-prop-new-line": "off"
   }
 }

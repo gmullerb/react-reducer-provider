@@ -1,5 +1,11 @@
 # React Reducer Provider Change Log
 
+## 4.3.0 - August 2020
+
+* Adds `inject` to allow Class Component to use react-reducer-provider (this was possible in the original `react-reducer-context`, but was discarded to favor Function Components, Now allowed again in order to be more flexible and to be used in other projects and legacy projects).
+* Fixes peerDependencies.
+* Updates Documentation files.
+
 ## 4.2.0 - August 2020
 
 * Adds Tagged State/Action/Mapper: SyncTaggedMapperProvider & AsyncTaggedMapperProvider.

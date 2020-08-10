@@ -1,4 +1,5 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
+// Licensed under the MIT License (MIT), see LICENSE.txt
 import * as React from 'react'
 import { act } from 'react-dom/test-utils'
 import { mount } from 'enzyme'

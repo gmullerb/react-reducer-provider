@@ -1,4 +1,5 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
+// Licensed under the MIT License (MIT), see LICENSE.txt
 import * as React from 'react'
 import delay from 'delay'
 import { mount } from 'enzyme'
@@ -38,7 +39,7 @@ describe('AsyncMapperProvider tests', () => {
     expect(provider).toHaveProp('initialState', testInitialState)
   })
 
-  it('should reduce with useMapperDispatcher and get state', async () => {
+  it('should map with useMapperDispatcher and get state', async () => {
     const testInitialState = 'A'
     const FunComponent1 = () => {
       const dispatch = useMapperDispatcher(557)
@@ -75,7 +76,7 @@ describe('AsyncMapperProvider tests', () => {
     expect(provider).toHaveText('ClickChild1')
   })
 
-  it('should reduce with useMapper and get state', async () => {
+  it('should map with useMapper and get state', async () => {
     const testInitialState = 'A'
     const FunComponent1 = () => {
       const [ state, dispatch ] = useMapper(558)
@@ -112,7 +113,7 @@ describe('AsyncMapperProvider tests', () => {
     expect(provider).toHaveText('Click1Child1')
   })
 
-  it('should reduce with useMapper and get state with extra args', async () => {
+  it('should map with useMapper and get state with extra args', async () => {
     const testInitialState = 'A'
     async function testMapArgs(action, extra) {
       switch (action) {

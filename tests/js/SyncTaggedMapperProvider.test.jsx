@@ -1,4 +1,5 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
+// Licensed under the MIT License (MIT), see LICENSE.txt
 import * as React from 'react'
 import { mount } from 'enzyme'
 
@@ -53,7 +54,7 @@ describe('SyncTaggedMapperProvider tests', () => {
     expect(mappers[1]).toEqual(jasmine.arrayContaining([ 'TagN', testMapN, testInitialStateN ]))
   })
 
-  it('should reduce with useTaggedMapperDispatcher and get state with useTaggedMapperState', () => {
+  it('should map with useTaggedMapperDispatcher and get state with useTaggedMapperState', () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
     const FunComponent11 = () => {
@@ -115,7 +116,7 @@ describe('SyncTaggedMapperProvider tests', () => {
     expect(provider).toHaveText('Click1Child1AClickNChildN1')
   })
 
-  it('should reduce with useTaggedMapper and get state', () => {
+  it('should map with useTaggedMapper and get state', () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
     const FunComponent11 = () => {
@@ -177,7 +178,7 @@ describe('SyncTaggedMapperProvider tests', () => {
     expect(provider).toHaveText('Click1Child1AClickNChildN1')
   })
 
-  it('should reduce with useTaggedMapper and get state with extra args', () => {
+  it('should map with useTaggedMapper and get state with extra args', () => {
     function testMapArgs(action, extra) {
       switch (action) {
         case 'ACTION1':

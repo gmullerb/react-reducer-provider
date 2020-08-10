@@ -1,4 +1,5 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
+// Licensed under the MIT License (MIT), see LICENSE.txt
 import * as React from 'react'
 import delay from 'delay'
 import { mount } from 'enzyme'
@@ -54,7 +55,7 @@ describe('AsyncTaggedMapperProvider tests', () => {
     expect(mappers[1]).toEqual(jasmine.arrayContaining([ 'TagN', testMapN, testInitialStateN ]))
   })
 
-  it('should reduce with useTaggedMapperDispatcher and get state with useTaggedMapperState', async () => {
+  it('should map with useTaggedMapperDispatcher and get state with useTaggedMapperState', async () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
     const FunComponent11 = () => {
@@ -118,7 +119,7 @@ describe('AsyncTaggedMapperProvider tests', () => {
     expect(provider).toHaveText('Click1Child1AClickNChildN1')
   })
 
-  it('should reduce with useTaggedMapper and get state', async () => {
+  it('should map with useTaggedMapper and get state', async () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
     const FunComponent11 = () => {
@@ -182,7 +183,7 @@ describe('AsyncTaggedMapperProvider tests', () => {
     expect(provider).toHaveText('Click1Child1AClickNChildN1')
   })
 
-  it('should reduce with useTaggedMapper and get state with extra args', async () => {
+  it('should map with useTaggedMapper and get state with extra args', async () => {
     async function testMapArgs(action, extra) {
       switch (action) {
         case 'ACTION1':
