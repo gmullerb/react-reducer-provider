@@ -13,7 +13,7 @@ type Id = string | number | Symbol
 
 interface ProviderProps<STATE> {
   id?: Id;
-  initialState: STATE;
+  initialState: (() => STATE) | STATE;
   children: Node;
 }
 

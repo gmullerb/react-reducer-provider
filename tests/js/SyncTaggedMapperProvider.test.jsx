@@ -178,6 +178,68 @@ describe('SyncTaggedMapperProvider tests', () => {
     expect(provider).toHaveText('Click1Child1AClickNChildN1')
   })
 
+  it('should map with useTaggedMapper, get state and init function', () => {
+    const testInitialState1 = 'X'
+    const testInitialStateN = 0
+    const FunComponent11 = () => {
+      const [ , dispatch ] = useTaggedMapper('Tag1', 3497)
+      return (
+        <button id='F1' onClick={() => dispatch('ACTION1')}>
+          Click1
+        </button>
+      )
+    }
+    const FunComponent12 = () => {
+      const [ state ] = useTaggedMapper('Tag1', 3497)
+      return (
+        <div>
+          Child1{state}
+        </div>
+      )
+    }
+    const FunComponentN1 = () => {
+      const [ , dispatch ] = useTaggedMapper('TagN', 3497)
+      return (
+        <button id= 'FN' onClick={() => dispatch('ACTION1')}>
+          ClickN
+        </button>
+      )
+    }
+    const FunComponentN2 = () => {
+      const [ state ] = useTaggedMapper('TagN', 3497)
+      return (
+        <div>
+          ChildN{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <SyncTaggedMapperProvider
+        id={3497}
+        mappers={[
+          [ 'Tag1', testMap1, () => testInitialState1 ],
+          [ 'TagN', testMapN, () => testInitialStateN ]
+        ]}
+      >
+        <FunComponent11 />
+        <FunComponent12 />
+        <FunComponentN1 />
+        <FunComponentN2 />
+      </SyncTaggedMapperProvider>
+    )
+    expect(provider).toHaveText('Click1Child1XClickNChildN0')
+
+    provider.find('#F1').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('Click1Child1AClickNChildN0')
+
+    provider.find('#FN').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('Click1Child1AClickNChildN1')
+  })
+
   it('should map with useTaggedMapper and get state with extra args', () => {
     function testMapArgs(action, extra) {
       switch (action) {

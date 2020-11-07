@@ -75,6 +75,42 @@ describe('SyncMapperProvider tests', () => {
     expect(provider).toHaveText('ClickChild1')
   })
 
+  it('should map with useMapperDispatcher, get state and init function', () => {
+    const testInitialState = 'A'
+    const FunComponent1 = () => {
+      const dispatch = useMapperDispatcher(3560)
+      return (
+        <button onClick={() => dispatch('ACTION1')}>
+          Click
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useMapperState(3560)
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <SyncMapperProvider
+        id={3560}
+        mapper={testMap}
+        initialState={() => testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </SyncMapperProvider>
+    )
+    expect(provider).toHaveText('ClickChildA')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ClickChild1')
+  })
+
   it('should map with useMapper and get state', () => {
     const testInitialState = 'A'
     const FunComponent1 = () => {

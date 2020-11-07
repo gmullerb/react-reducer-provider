@@ -25,7 +25,7 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 
 *properties*:
 
-1 . `initialState`: inception state for the component.  
+1 . `initialState`: inception state for the component or a function to create initial state.  
 2 . `id ?: string | number | symbol`: constitutes the identifier of the `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` or `AsyncMapperProvider`, which is useful when using more than 1 provider.
 
 * [**Use `id` the "right" way**](keep-track-id.md).
@@ -56,7 +56,7 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 <AsyncReducerProvider
   id={12345}
   reducer={asyncReduce}
-  initialState={initialState}
+  initialState={() => initialState}
 >
   {children}
 </AsyncReducerProvider>
@@ -88,7 +88,7 @@ or
 <SyncMapperProvider
   id='someNamedMapper'
   mapper={syncMap}
-  initialState={initialState}
+  initialState={() => initialState}
 >
   {children}
 </SyncMapperProvider>

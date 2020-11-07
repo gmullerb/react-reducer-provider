@@ -51,7 +51,7 @@ Similarly, `SyncTaggedMapperProvider` and `AsyncTaggedMapperProvider` have the f
   }
 ```
 
-* `initialState`: inception state for the component.
+* `initialState`: inception state for the component or a function to create initial state.
 
 Provider definition:
 
@@ -72,7 +72,7 @@ Provider definition:
 ```jsx
 <AsyncTaggedReducerProvider
   reducers={[
-    ['Tag1', asyncReducer1, initialState1],
+    ['Tag1', asyncReducer1, () => initialState1],
     ['TagN', asyncReducerN, initialStateN]
   ]}
 >
@@ -124,7 +124,7 @@ or
   id='someNamedMapper'
   mappers={[
     ['Tag1', syncMapper1, initialState1],
-    ['TagN', syncMapperN, initialStateN]
+    ['TagN', syncMapperN, () => initialStateN]
   ]}
 >
   {children}

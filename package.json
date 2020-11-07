@@ -1,7 +1,7 @@
 {
   "name": "react-reducer-provider",
-  "description": "Asynchronous/Synchronous React Reducer/Mapper Provider with Hooks",
-  "version": "4.3.0",
+  "description": "Asynchronous/Synchronous React Centralized Reducer/Mapper with Hooks and HOC",
+  "version": "4.4.0",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
   "main": "cjs/react-reducer-provider.js",
@@ -138,7 +138,7 @@
     "jsdom": "^16.2.2",
     "jasmine-core": "^3.4.0",
     "jasmine-enzyme": "~7.1.1",
-    "karma": "^4.3.0",
+    "karma": "^5.2.3",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage-istanbul-reporter": "~2.1.0",
     "karma-jsdom-launcher": "^8.0.2",

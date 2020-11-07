@@ -76,6 +76,50 @@ function TestAsyncReducerProvider({ children }: {children: ReactNode}): ReactEle
   )
 }
 
+function TestSyncReducerProviderWithInitFunction({ children }: {children: ReactNode}): ReactElement {
+  function reduce(prevState: TestState, action: string): TestState {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <SyncReducerProvider
+      id='testNamedReducer'
+      reducer={reduce}
+      initialState={() => initialState}
+    >
+      {children}
+    </SyncReducerProvider>
+  )
+}
+
+function TestAsyncReducerProviderWithInitFunction({ children }: {children: ReactNode}): ReactElement {
+  async function reduce(prevState: TestState, action: string): Promise<TestState> {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: await Promise.resolve(1)
+        }
+      default:
+        return prevState
+    }
+  }
+  return (
+    <AsyncReducerProvider
+      id='testNamedReducer'
+      reducer={reduce}
+      initialState={() => initialState}
+    >
+      {children}
+    </AsyncReducerProvider>
+  )
+}
+
 function TestSyncReducerProviderChild(): ReactElement {
   function reduce(prevState: TestState, action: string): TestState {
     switch (action) {

@@ -76,6 +76,41 @@ describe('SyncReducerProvider tests', () => {
     expect(provider).toHaveText('ClickChild1')
   })
 
+  it('should reduce with useReducerDispatcher, get state and init function', () => {
+    const testInitialState = '0'
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducer2f')
+      return (
+        <button onClick={() => dispatch('ACTION1')}>
+          Click
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useReducerState('testNamedReducer2f')
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <SyncReducerProvider
+        id='testNamedReducer2f'
+        reducer={testReduce}
+        initialState={() => testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </SyncReducerProvider>
+    )
+    expect(provider).toHaveText('ClickChild0')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ClickChild1')
+  })
 
   it('should reduce with useReducer', () => {
     function testReduce(prevState, action) {

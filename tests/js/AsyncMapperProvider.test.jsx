@@ -76,6 +76,43 @@ describe('AsyncMapperProvider tests', () => {
     expect(provider).toHaveText('ClickChild1')
   })
 
+  it('should map with useMapperDispatcher, get state and init function', async () => {
+    const testInitialState = 'A'
+    const FunComponent1 = () => {
+      const dispatch = useMapperDispatcher(1557)
+      return (
+        <button onClick={() => dispatch('ACTION1')}>
+          Click
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useMapperState(1557)
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <AsyncMapperProvider
+        id={1557}
+        mapper={testMap}
+        initialState={() => testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </AsyncMapperProvider>
+    )
+    expect(provider).toHaveText('ClickChildA')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    await delay(10)
+    expect(provider).toHaveText('ClickChild1')
+  })
+
   it('should map with useMapper and get state', async () => {
     const testInitialState = 'A'
     const FunComponent1 = () => {

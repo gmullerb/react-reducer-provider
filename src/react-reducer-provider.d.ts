@@ -11,7 +11,7 @@ type Id = string | number | symbol
 
 declare interface ProviderProps<STATE> {
   id?: Id;
-  initialState: STATE;
+  initialState: STATE | (() => STATE);
   children: ReactNode;
 }
 

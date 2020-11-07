@@ -123,6 +123,72 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
     expect(provider).toHaveText('Click1Child1AClickNChildN1')
   })
 
+  it('should reduce with useTaggedAny and init function', async () => {
+    const testInitialState1 = 'X'
+    const testInitialStateN = 0
+    const FunComponent11 = () => {
+      const [ , dispatchers ] = useTaggedAny('someTaggedReducerS0f')
+      const dispatch = dispatchers.get('Tag1')
+      return (
+        <button id='F1' onClick={() => dispatch('ACTION1')}>
+          Click1
+        </button>
+      )
+    }
+    const FunComponent12 = () => {
+      const [ states ] = useTaggedAny('someTaggedReducerS0f')
+      const state = states.get('Tag1')
+      return (
+        <div>
+          Child1{state}
+        </div>
+      )
+    }
+    const FunComponentN1 = () => {
+      const [ , dispatchers ] = useTaggedAny('someTaggedReducerS0f')
+      return (
+        <button id= 'FN' onClick={() => dispatchers.get('TagN')('ACTION1')}>
+          ClickN
+        </button>
+      )
+    }
+    const FunComponentN2 = () => {
+      const [ states ] = useTaggedAny('someTaggedReducerS0f')
+      return (
+        <div>
+          ChildN{states.get('TagN')}
+        </div>
+      )
+    }
+    const provider = mount(
+      <AsyncTaggedReducerProvider
+        id='someTaggedReducerS0f'
+        reducers={[
+          [ 'Tag1', testReduce1, () => testInitialState1 ],
+          [ 'TagN', testReduceN, () => testInitialStateN ]
+        ]}
+      >
+        <FunComponent11 />
+        <FunComponent12 />
+        <FunComponentN1 />
+        <FunComponentN2 />
+      </AsyncTaggedReducerProvider>
+    )
+    expect(provider).toHaveText('Click1Child1XClickNChildN0')
+
+    provider.find('#F1').simulate('click')
+    provider.update()
+    await delay(10)
+
+    expect(provider).toHaveText('Click1Child1AClickNChildN0')
+
+    provider.find('#FN').simulate('click')
+    provider.update()
+    await delay(10)
+
+    expect(provider).toHaveText('Click1Child1AClickNChildN1')
+  })
+
   it('should reduce with useTaggedAnyDispatcher and get state with useTaggedAnyState', async () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0

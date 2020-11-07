@@ -2,10 +2,11 @@
   <img src="https://assets.gitlab-static.net/uploads/-/system/project/avatar/18113862/react-reducer-provider.png" alt=" "/>
 </p>
 
-<h1 align="center">Asynchronous/Synchronous React Reducer/Mapper Provider</h1>
+<h1 align="center">Asynchronous/Synchronous React Centralized Reducer/Mapper</h1>
 <h2 align="center">with Hooks and HOC</h2>
 
 <p align="center">Flux/Redux made easy, simple and beyond</p>
+<p align="center">Your centralized storage</p>
 
 [![react-reducer-provider](https://badgen.net/badge/npm%20pack/react-reducer-provider/blue)](https://www.npmjs.com/package/react-reducer-provider)
 [![ ](https://badgen.net/npm/v/react-reducer-provider)](https://www.npmjs.com/package/react-reducer-provider)
@@ -26,7 +27,7 @@ __________________
   ..
   "dependencies": {
     "react": "16.8.0"
-    "react-reducer-provider": "4.3.0",
+    "react-reducer-provider": "4.4.0",
     ..
 ```
 
@@ -208,7 +209,7 @@ __________________
 
 ## Documentation
 
-* [`AsyncReducerProvider` | `SyncReducerProvider` | `AsyncMapperProvider` | `SyncMapperProvider`](readme/reference-defintion.md).
+* [`AsyncReducerProvider` | `SyncReducerProvider` | `AsyncMapperProvider` | `SyncMapperProvider`](readme/reference-definition.md).
 * [`useReducer` | `useReducerState` | `useReducerDispatcher` | `useMapper` | `useMapperState` | `useMapperDispatcher`](readme/reference-consumption-hooks.md).
 * [`injectReducer` | `injectReducerState` | `injectReducerDispatcher` | `injectMapper` | `injectMapperState` | `injectMapperDispatcher`](readme/reference-consumption-hoc.md).
 * [Singleton](readme/singleton.md).
