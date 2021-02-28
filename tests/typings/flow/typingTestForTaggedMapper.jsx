@@ -5,8 +5,6 @@ import {
   SyncTaggedMapperProvider,
   AsyncTaggedMapperProvider,
   useTaggedAny,
-  useTaggedAnyState,
-  useTaggedAnyDispatcher,
   useTaggedMapper,
   useTaggedMapperState,
   useTaggedMapperDispatcher
@@ -22,14 +20,11 @@ import type {
   Async,
   Dispatcher,
   AnyAsyncDispatcher,
-  ProviderValue,
+  TaggedProviderValue,
+  TaggedProviderGetter,
   SyncTaggedMapper,
   SyncTaggedMapperProps,
-  AsyncTaggedMapperProps,
-  TaggedStates,
-  TaggedDispatchers,
-  TaggedProviderValue
-
+  AsyncTaggedMapperProps
 } from '../../../src/react-reducer-provider'
 
 interface TestState1 {
@@ -47,6 +42,12 @@ interface TestStateN {
 const testInitialStateN: TestStateN = {
   lastAction: 0
 }
+
+interface TestFunctionAsState {
+  (): number;
+}
+
+interface SyncTaggedProviderGetter extends TaggedProviderGetter<'Tag1' | 'TagN', TestState1 | TestStateN> {}
 
 function TestSyncTaggedMapperProvider({ children }: {children: Element<any>}): Node {
   function testMapper1(action: string) {
@@ -77,6 +78,78 @@ function TestSyncTaggedMapperProvider({ children }: {children: Element<any>}): N
   const mappers: SyncTaggedMapper[] = [
     ['Tag1', testMapper1, testInitialState1],
     ['TagN', testMapperN, testInitialStateN]
+  ]
+  return (
+    <SyncTaggedMapperProvider
+      id='someTaggedMapperS0'
+      mappers={mappers}
+    >
+      {children}
+    </SyncTaggedMapperProvider>
+  )
+}
+
+function TestSyncTaggedMapperProviderWithEmptyInitialState({ children }: {children: Element<any>}): Node {
+  function testMapper1(action: string) {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 'A'
+        }
+      default:
+        return {
+          lastAction: 'B'
+        }
+    }
+  }
+
+  function testMapperN(action: string) {
+    switch (action) {
+      case 'ACTION1':
+        return {
+          lastAction: 1
+        }
+      default:
+        return {
+          lastAction: -1
+        }
+    }
+  }
+  const mappers: SyncTaggedMapper[] = [
+    ['Tag1', testMapper1],
+    ['TagN', testMapperN]
+  ]
+  return (
+    <SyncTaggedMapperProvider
+      id='someTaggedMapperS0'
+      mappers={mappers}
+    >
+      {children}
+    </SyncTaggedMapperProvider>
+  )
+}
+
+function TestSyncTaggedMapperProviderWithFunctionAsState({ children }: {children: Element<any>}): Node {
+  function testMapper1(action: string) {
+    switch (action) {
+      case 'ACTION1':
+        return (x: number, y: number) => x + y
+      default:
+        return (x: number, y: number) => x - y
+    }
+  }
+
+  function testMapperN(action: string) {
+    switch (action) {
+      case 'ACTION1':
+        return (x: number, y: number) => x - y
+      default:
+        return (x: number, y: number) => x + y
+    }
+  }
+  const mappers: SyncTaggedMapper[] = [
+    ['Tag1', testMapper1, (x: number, y: number) => x + y],
+    ['TagN', testMapperN, (x: number, y: number) => x - y]
   ]
   return (
     <SyncTaggedMapperProvider
@@ -312,30 +385,28 @@ function TestAsyncTaggedMapperComponent(props: AsyncTaggedMapperProps): Node {
 }
 
 function TestUseTaggedAny(): Node {
-  const [ states, dispatchers ]: TaggedProviderValue<'Tag1' | 'TagN', TestState1 | TestStateN> = useTaggedAny<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedMapper')
+  const providers: SyncTaggedProviderGetter = useTaggedAny<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedMapper')
   return (
-    <button onClick={(): void => ((dispatchers.get('Tag1'): any): Dispatcher<any, any>)('ACTION1')}>
-      Child{((states.get('Tag1'): any): TestState1).lastAction}
+    <button onClick={(): void => ((providers.get('Tag1').dispatch: any): Dispatcher<any, any>)('ACTION1')}>
+      Child{((providers.get('TagN').state: any): TestState1).lastAction}
     </button>
   )
 }
 
 function TestUseTaggedAnyStateDispatcher(): Node {
-  const states: TaggedStates<'Tag1' | 'TagN', TestState1 | TestStateN> = useTaggedAnyState<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedMapper')
-  const dispatchers: TaggedDispatchers<'Tag1' | 'TagN'> = useTaggedAnyDispatcher<'Tag1' | 'TagN'>('testNamedMapper')
+  const providers: SyncTaggedProviderGetter = useTaggedAny<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedMapper')
   return (
-    <button onClick={(): void => ((dispatchers.get('Tag1'): any): Dispatcher<any, any>)('ACTION1')}>
-      Child{((states.get('Tag1'): any): TestState1).lastAction}
+    <button onClick={(): void => ((providers.get('Tag1')[1]: any): Dispatcher<any, any>)('ACTION1')}>
+      Child{((providers.get('Tag1')[0]: any): TestState1).lastAction}
     </button>
   )
 }
 
 function TestUseTaggedAnyStateDispatcherForAsync(): Node {
-  const states: TaggedStates<'Tag1' | 'TagN', TestState1 | TestStateN> = useTaggedAnyState<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedMapper')
-  const dispatchers: TaggedDispatchers<'Tag1' | 'TagN'> = useTaggedAnyDispatcher<'Tag1' | 'TagN', AnyAsyncDispatcher<>>('testNamedMapper')
+  const providers: SyncTaggedProviderGetter = useTaggedAny<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedMapper')
   return (
-    <button onClick={async (): Promise<void> => ((dispatchers.get('Tag1'): any): Dispatcher<any, any>)('ACTION1').then(() => {})}>
-      Child{((states.get('Tag1'): any): TestState1).lastAction}
+    <button onClick={async (): Promise<void> => ((providers.get('Tag1').dispatch: any): Dispatcher<any, any>)('ACTION1').then(() => {})}>
+      Child{((providers.get('Tag1')[0]: any): TestState1).lastAction}
     </button>
   )
 }
@@ -363,21 +434,31 @@ function TestUseTaggedMapperStateDispatcherForAsync(): Node {
 }
 
 function TestUseTaggedMapper(): Node {
-  const [ state, dispatch ]: ProviderValue<TestState1, 'ACTION', TestState1> = useTaggedMapper<TestState1, 'ACTION', TestState1>('Tag1','testNamedMapper')
+  const [ state, dispatch, provider ]: TaggedProviderValue<TestState1, 'ACTION', TestState1> = useTaggedMapper<TestState1, 'ACTION', TestState1>('Tag1','testNamedMapper')
   let result: string
   return (
     <button onClick={(): string => result = dispatch('ACTION').lastAction}>
-      Child{state.lastAction}
+      Child{state.lastAction}_{!!provider && provider.toString()}
+    </button>
+  )
+}
+
+function TestUseTaggedMapperWithFunctionAsState(): Node {
+  const [ state, dispatch, provider ]: TaggedProviderValue<TestFunctionAsState, 'ACTION', TestFunctionAsState> = useTaggedMapper<TestFunctionAsState, 'ACTION', TestFunctionAsState>('Tag1','testNamedMapper')
+  let result: Function
+  return (
+    <button onClick={(): Function => result = dispatch('ACTION')}>
+      Child{state()}_{!!provider && provider.toString()}
     </button>
   )
 }
 
 function TestUseTaggedMapperForAsync(): Node {
-  const [ state, dispatch ]: ProviderValue<TestState1, 'ACTION', Async<TestState1>> = useTaggedMapper<TestState1, 'ACTION', Async<TestState1>>('Tag1','testNamedMapper')
+  const { state, dispatch, tag }: TaggedProviderValue<TestState1, 'ACTION', Async<TestState1>> = useTaggedMapper<TestState1, 'ACTION', Async<TestState1>>('Tag1','testNamedMapper')
   let result: string
   return (
     <button onClick={async (): Promise<string> => result = await dispatch('ACTION').then(state => state.lastAction)}>
-      Child{state.lastAction}
+      Child{state.lastAction}_{!!tag && tag.toString()}
     </button>
   )
 }

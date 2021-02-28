@@ -1,4 +1,4 @@
-# React Reducer Provider with Actions Creators and Flow typings
+# React Reducer Provider with Actions Creators
 
 1 . Add **react-reducer-provider** (and prerequisite) to `package.json`:
 
@@ -6,7 +6,7 @@
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "4.4.0",
+    "react-reducer-provider": "5.0.0",
     ..
 ```
 
@@ -15,9 +15,9 @@
 `SomeReducer.js`:
 
 ```js
-const initialState: number = 0
+const initialState = 0
 
-function reduce(prevState: number, action: string): number {
+function reduce(prevState, action) {
   switch (action) {
     case 'ACTION1':
       return prevState + 1
@@ -43,12 +43,7 @@ import { initialState, reduce } from '../path/to/SomeReducer'
 import React from 'react'
 import { SyncReducerProvider } from 'react-reducer-provider'
 
-import type {
-  Element,
-  Node
-} from 'react'
-
-function SomeReducerProvider({ children }: {children: Element<any>}): Node {
+function SomeReducerProvider({ children }) {
   return (
     <SyncReducerProvider
       id='someNamedReducer'
@@ -72,19 +67,10 @@ export {
 
 ```js
 import { useReducer } from 'react-reducer-provider'
+import React from 'react'
 
-interface SomeActions {
-  goUp: () => void;
-  goDown: () => void;
-}
-
-interface UseActions {
-  state: number;
-  actions: SomeActions;
-}
-
-export default function useActions(): SomeActions {
-  const [ state, dispatch ] = useReducer<number, string>('someNamedReducer')
+export default function useActions() {
+  const [ state, dispatch ] = useReducer('someNamedReducer')
   return {
     state,
     actions: {
@@ -97,12 +83,6 @@ export default function useActions(): SomeActions {
     }
   }
 }
-
-export {
-  SomeActions,
-  UseActions,
-  useActions as default
-}
 ```
 
 > It may require the use of `useMemo` and `useCallback` to "improve" performance, check [`MockingReducerProvider.test.jsx`](../tests/js/MockingReducerProvider.test.jsx).
@@ -114,9 +94,7 @@ export {
 ```jsx
 import React from 'react'
 
-import type { Node } from 'react'
-
-export default function SomeComponent1({onClick}: {onClick: () => void}): Node {
+export default function SomeComponent1({onClick}) {
   return (
     <button onClick={onClick}>
       Go up!
@@ -130,9 +108,7 @@ export default function SomeComponent1({onClick}: {onClick: () => void}): Node {
 ```jsx
 import React from 'react'
 
-import type { Node } from 'react'
-
-export default function SomeComponent2({onClick}: {onClick: () => void}): Node {
+export default function SomeComponent2({onClick}) {
   return (
     <button onClick={onClick}>
       Go down!
@@ -146,9 +122,7 @@ export default function SomeComponent2({onClick}: {onClick: () => void}): Node {
 ```jsx
 import React from 'react'
 
-import type { Node } from 'react'
-
-export default function SomeComponentN({currentState}: {currentState: number}): Node {
+export default function SomeComponentN({currentState}) {
   return (
     <div>
       Current:{currentState}
@@ -165,15 +139,11 @@ export default function SomeComponentN({currentState}: {currentState: number}): 
 import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
-import someNamedReducer from '../path/to/SomeReducerProvider'
-import useActions from './path/to/SomeActions'
+import useActions from "./path/to/SomeActions"
 import React from 'react'
 
-import type { UseActions } from './path/to/SomeActions'
-import type { Node } from 'react'
-
-export default function SomeContainer(): Node {
-  const {state, actions}: UseActions = useActions()
+export default function SomeContainer() {
+  const {state, actions} = useActions();
   return (
     <div>
       <SomeComponent1 onClick={actions.goUp} />
@@ -191,9 +161,7 @@ import SomeContainer from './path/to/SomeContainer'
 import { SomeReducerProvider } from '../path/to/SomeReducerProvider'
 import React from 'react'
 
-import type { Node } from 'react'
-
-export default function SomeContainer(): Node {
+export default function SomeContainer() {
   return (
     <SomeReducerProvider>
       <SomeContainer />
@@ -201,6 +169,11 @@ export default function SomeContainer(): Node {
   )
 }
 ```
+
+> This example can be checked on line at [gmullerb-react-reducer-provider-with-actions-creators codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-actions-creators-dc8li?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-with-actions-creators](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-actions-creators-dc8li?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> [with Flow typings](with-actions-creators-and-flow-typings.md).  
+> [with Typescript typings](with-actions-creators-and-ts-typings.md).  
 
 ## Main documentation
 

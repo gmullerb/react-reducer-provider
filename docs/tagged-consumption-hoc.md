@@ -19,8 +19,6 @@ or
 or
 
 * injectTaggedAny, which give access any tagged State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* injectTaggedAnyState, which give access any tagged [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* injectTaggedAnyDispatcher, which give access only any tagged State.
 
 ![Consumption](inject-provider.svg "Consumption")
 
@@ -42,8 +40,20 @@ or
 
 *returns*:
 
-* Enhanced Component Class with the indicated property, which holds a tuple containing the `state` as first element, and the `dispatcher` as second element.
+* Enhanced Component Class with the indicated property, which holds a tuple containing:
 
+* `[0]`: the `state`.
+* `[1]`: the `dispatcher`.
+* `[2]`: the provider id.
+* `[3]`: respective provider tag.
+* `state`: the `state`.
+* `dispatch`: the `dispatcher`.
+* `provider`: the provider id.
+* `tag`: respective provider tag.
+
+> Trying to reassign `state`, `dispatch`, `provider`, `tag`, `[0]`, `[1]`, `[2]` or `[3]` will result in a`TypeError: Cannot assign to read only property '..' of object '[object Array]'` Exception.  
+> Trying to add new fields will result in a `TypeError: can't define property "..": Array is not extensible` Exception.  
+> For purpose of avoiding re-renders and/or improving performance **always use the elements of the tuple** as reference, never the tuple perse, keep in mind that the tuple that is returned may change but elements will only change when state changes. This is not an "issue" when using the elements of the tuple as reference or when using `inject*Dispatcher` or `inject*State`.
 Accessing Specific Tagged Reducer/Mapper:
 
 ```jsx
@@ -52,7 +62,26 @@ import React from 'react'
 
 class ClassComponentA11 extends React.Component {
   render() {
-    const [ state, dispatch ] = this.props.mapper
+    const [ state, dispatch, tag ] = this.props.mapper
+    return (
+      <button onClick={() => dispatch('ACTION1')}>
+        Click{state}
+      </button>
+    )
+  }
+}
+const ClassComponent11 = injectTaggedMapper(ClassComponentA11, 'mapper', 'Tag1', 497)
+```
+
+or
+
+```jsx
+import { injectTaggedMapper } from 'react-reducer-provider'
+import React from 'react'
+
+class ClassComponentA11 extends React.Component {
+  render() {
+    const { state, dispatch, tag } = this.props.mapper
     return (
       <button onClick={() => dispatch('ACTION1')}>
         Click{state}
@@ -71,7 +100,26 @@ import React from 'react'
 
 class ClassComponentA1 extends React.Component {
   render() {
-    const [ state, dispatch ] = this.props.mapper
+    const [ state, dispatch, tag ] = this.props.reducer
+    return (
+      <button onClick={() => dispatch('ACTION1')}>
+        Click{state}
+      </button>
+    )
+  }
+}
+const ClassComponent11 = injectTaggedReducer(ClassComponentA11, 'reducer', 'Tag1')
+```
+
+or
+
+```jsx
+import { injectTaggedMapper } from 'react-reducer-provider'
+import React from 'react'
+
+class ClassComponentA1 extends React.Component {
+  render() {
+    const { state, dispatch, tag } = this.props.mapper
     return (
       <button onClick={() => dispatch('ACTION1')}>
         Click{state}
@@ -94,7 +142,7 @@ const ClassComponent11 = injectTaggedMapper(ClassComponentA11, 'mapper', 'Tag1')
 
 *returns*:
 
-* Enhanced Component Class with the indicated property, which holds a tuple containing a Map of `states` as first element, and a Map of `dispatchers` as second element.
+* Enhanced Component Class with the indicated property, which holds a function `get` to obtain the any provider value.
 
 Accessing Specific Tagged Reducer/Mapper:
 
@@ -104,11 +152,10 @@ import React from 'react'
 
 class ClassComponentA1 extends React.Component {
   render() {
-      const [ states, dispatchers ] = this.props.reducers
-      const dispatch = dispatchers.get('Tag1')
+      const [ state, dispatch ] = this.props.reducers.get('Tag1')
       return (
         <button onClick={() => dispatch('ACTION1')}>
-          Go up (from {states.get('Tag1')})!
+          Go up (from {state})!
         </button>
       )
   }
@@ -124,11 +171,10 @@ import React from 'react'
 
 class ClassComponentA1 extends React.Component {
   render() {
-      const [ states, dispatchers ] = this.props.reducers
-      const dispatch = dispatchers.get('Tag1')
+      const { state, dispatch } = this.props.reducers.get('Tag1')
       return (
         <button onClick={() => dispatch('ACTION1')}>
-          Go up (from {states.get('Tag1')})!
+          Go up (from {state})!
         </button>
       )
   }
@@ -190,58 +236,6 @@ class ClassComponentA11 extends React.Component {
 const ClassComponent11 = injectTaggedReducerDispatcher(ClassComponentA11, 'dispatch', 'Tag1')
 ```
 
-### `injectTaggedAnyDispatcher`
-
-`injectTaggedAnyDispatcher(ComponentClass, injectedPropName, id)`
-
-*parameters*:
-
-* `ComponentClass: class`: Component class to be enhanced with `react-reducer-provider` properties.
-* `injectedPropName: string`: Desired name of the property to be injected (Be sure to avoid collision).
-* `id?: string | number | symbol`: constitutes the identifier of the `*TaggedProvider` being accessed.
-
-*returns*:
-
-* Enhanced Component Class with the indicated property, which holds a Map of `dispatchers`.
-
-Accessing Specific Tagged Reducer/Mapper:
-
-```jsx
-import { injectTaggedAnyState } from 'react-reducer-provider'
-import React from 'react'
-
-class ClassComponentA12 extends React.Component {
-  render() {
-    const state = this.props.states.get('Tag1')
-    return (
-      <div>
-        Child1{state}
-      </div>
-    )
-  }
-}
-const ClassComponent12 = injectTaggedAnyState(ClassComponentA12, 'states', 'someTaggedReducerS6')
-```
-
-Accessing Singleton Tagged Reducer/Mapper:
-
-```jsx
-import { injectTaggedAnyState } from 'react-reducer-provider'
-import React from 'react'
-
-class ClassComponentA12 extends React.Component {
-  render() {
-    const state = this.props.states.get('Tag1')
-    return (
-      <div>
-        Child1{state}
-      </div>
-    )
-  }
-}
-const ClassComponent12 = injectTaggedAnyState(ClassComponentA12, 'states')
-```
-
 ### `injectTaggedReducerState`/`injectTaggedMapperState`
 
 `injectTaggedReducerState(ComponentClass, injectedPropName, tag, id)`  
@@ -296,67 +290,15 @@ class ClassComponentAN2 extends React.Component {
 const ClassComponentN2 = injectTaggedReducerState(ClassComponentAN2, 'state', 'TagN')
 ```
 
-### `injectTaggedAnyState`
-
-`injectTaggedAnyState(ComponentClass, injectedPropName, id)`
-
-*parameters*:
-
-* `ComponentClass: class`: Component class to be enhanced with `react-reducer-provider` properties.
-* `injectedPropName: string`: Desired name of the property to be injected (Be sure to avoid collision).
-* `id?: string | number | symbol`: constitutes the identifier of the `*TaggedProvider` being accessed.
-
-*returns*:
-
-* Enhanced Component Class with the indicated property, which holds a Map of `states`.
-
-Accessing Specific Tagged Reducer/Mapper:
-
-```jsx
-import { injectTaggedAnyState } from 'react-reducer-provider'
-import React from 'react'
-
-class ClassComponentA12 extends React.Component {
-  render() {
-    const state = this.props.states.get('Tag1')
-    return (
-      <div>
-        Child1{state}
-      </div>
-    )
-  }
-}
-const ClassComponent12 = injectTaggedAnyState(ClassComponentA12, 'states', 'someTaggedReducerS7')
-```
-
-Accessing Singleton Tagged Reducer/Mapper:
-
-```jsx
-import { injectTaggedAnyState } from 'react-reducer-provider'
-import React from 'react'
-
-class ClassComponentA12 extends React.Component {
-  render() {
-    const state = this.props.states.get('Tag1')
-    return (
-      <div>
-        Child1{state}
-      </div>
-    )
-  }
-}
-const ClassComponent12 = injectTaggedAnyState(ClassComponentA12, 'states')
-```
-
 __________________
 
 ## More Documentation
 
-* [`AsyncTaggedReducerProvider` | `SyncTaggedReducerProvider` | `AsyncTaggedMapperProvider` | `SyncTaggedMapperProvider`](blending-definition.md).
-* [`useTaggedAny` | `useTaggedAnyState` | `useTaggedAnyDispatcher` | `useTaggedReducer` | `useTaggedReducerState` | `useTaggedReducerDispatcher` | `useTaggedMapper` | `useTaggedMapperState` | `useTaggedMapperDispatcher`](blending-consumption-hooks.md).
+* [`AsyncTaggedReducerProvider` · `SyncTaggedReducerProvider` · `AsyncTaggedMapperProvider` · `SyncTaggedMapperProvider`](tagged-definition.md).
+* [`useTaggedAny` · `useTaggedReducer` · `useTaggedReducerState` · `useTaggedReducerDispatcher` · `useTaggedMapper` · `useTaggedMapperState` · `useTaggedMapperDispatcher`](tagged-consumption-hooks.md).
 * [`AsyncReducerProvider`,`SyncReducerProvider`,`AsyncMapperProvider`&`SyncMapperProvider`](reference.md#definition).
 * [`useReducer`,`useReducerState`,`useReducerDispatcher`,`useMapper`,`useMapperState`&`useMapperDispatcher`](reference.md#consumption)
-* [`injectReducer` | `injectReducerState` | `injectReducerDispatcher` | `injectMapper` | `injectMapperState` | `injectMapperDispatcher`](reference-consumption-hoc.md).
+* [`injectReducer` · `injectReducerState` · `injectReducerDispatcher` · `injectMapper` · `injectMapperState` · `injectMapperDispatcher`](reference-consumption-hoc.md).
 * [Singleton](singleton.md).
 * [Nesting Providers](nesting.md).
 * [Typings](typings.md).

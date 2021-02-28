@@ -5,7 +5,6 @@ import { mount, shallow } from 'enzyme'
 
 import * as ReducerProviderModule from '../../cjs/react-reducer-provider'
 
-
 describe('Mocking tests', () => {
   it('should work when mocking and testing a custom hook', () => {
     const useCustom = (defaultAction) => {

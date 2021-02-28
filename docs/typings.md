@@ -4,7 +4,7 @@
 
 * Any can be used without an "special" [1] configuration.
   * Typings definitions are located together with source files:
-    * Flow: [`react-reducer-provider.js.flow`](../src/react-reducer-provider.js.flow).
+    * Flow: [`react-reducer-provider.js.flow`](../src/react-reducer-provider.js.flow) [2].
     * Typescript: [`react-reducer-provider.d.ts`](../src/react-reducer-provider.d.ts).
 
 Both provide the following types:
@@ -44,7 +44,8 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 * `Async<T>`.
 * `Sync<T>`, which is the default (`Sync<void>`), and there is no need to be specified.
 
-> [1] Only the usual Flow or Typescript configuration (e.g. no need for @types package).
+> [1] Only the usual Flow or Typescript configuration (e.g. no need for @types package).  
+> [2] I prefer Typescript over Flow, i.e. Flow is only tested here (in this project), so feel free to create an issue if something wrong is found.
 
 ## Synchronous Reducer/Mapper
 

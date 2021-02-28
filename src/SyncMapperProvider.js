@@ -1,11 +1,16 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 // Licensed under the MIT License (MIT), see LICENSE.txt
-import { createMapperProvider } from './MapperProvider'
+import * as React from 'react'
 
-export function SyncMapperProvider(props) {
-  return createMapperProvider(props, (reRenderTrigger) => (action, ...args) => {
-    const newState = props.mapper(action, ...args)
-    reRenderTrigger(newState)
-    return newState
-  })
+import { imbueStateProvider, nextState, setContextValue } from './imbueStateProvider'
+
+export class SyncMapperProvider extends React.Component {
+  constructor(props) {
+    super(props)
+    imbueStateProvider(this, props)
+  }
+
+  wd(action, ...args) {
+    return setContextValue(this, nextState(this, this.props.mapper, action, ...args))
+  }
 }

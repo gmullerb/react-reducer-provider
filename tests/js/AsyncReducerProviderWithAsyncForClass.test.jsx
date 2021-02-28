@@ -14,7 +14,7 @@ import {
 async function testReduce(prevState, action) {
   switch (action) {
     case 'ACTION1':
-      return await delay(5, { value: '1' })
+      return await delay(1, { value: '1' })
     default:
       return prevState
   }
@@ -136,7 +136,7 @@ describe('AsyncReducerProvider with Async reducer for Class components tests', (
 
   it('should get the new state when dispatching', async () => {
     async function testReduce(prevState, action) {
-      return await delay(5, { value: prevState + 1 })
+      return await delay(1, { value: prevState + 1 })
     }
     const testInitialState = 0
     let newState = null
@@ -753,7 +753,7 @@ describe('AsyncReducerProvider with Async reducer for Class components tests', (
     async function testReduce(prevState, action, extra1, extra2) {
       switch (action) {
         case 'ACTION1':
-          return await delay(5, { value: `${extra1}${extra2}` })
+          return await delay(1, { value: `${extra1}${extra2}` })
         default:
           return prevState
       }

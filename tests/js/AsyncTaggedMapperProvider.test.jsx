@@ -15,9 +15,9 @@ import {
 async function testMap1(action) {
   switch (action) {
     case 'ACTION1':
-      return await delay(5, { value: 'A' })
+      return await delay(1, { value: 'A' })
     default:
-      return await delay(5, { value: 'B' })
+      return await delay(1, { value: 'B' })
   }
 }
 
@@ -25,9 +25,9 @@ async function testMap1(action) {
 async function testMapN(action) {
   switch (action) {
     case 'ACTION1':
-      return await delay(5, { value: 1 })
+      return await delay(1, { value: 1 })
     default:
-      return await delay(5, { value: -1 })
+      return await delay(1, { value: -1 })
   }
 }
 
@@ -187,9 +187,9 @@ describe('AsyncTaggedMapperProvider tests', () => {
     async function testMapArgs(action, extra) {
       switch (action) {
         case 'ACTION1':
-          return await delay(5, { value: extra })
+          return await delay(1, { value: extra })
         default:
-          return await delay(5, { value: '0' })
+          return await delay(1, { value: '0' })
       }
     }
     const testInitialState1 = 'X'

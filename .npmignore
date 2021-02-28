@@ -4,7 +4,7 @@ build/
 config/
 dev_resources/
 gradle/
-readme/
+docs/
 # Files
 .eslintrc.json
 .gitlab-ci.yml

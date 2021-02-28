@@ -14,7 +14,7 @@ import {
 async function testReduce(prevState, action) {
   switch (action) {
     case 'ACTION1':
-      return await delay(5, { value: '1' })
+      return await delay(1, { value: '1' })
     default:
       return prevState
   }
@@ -151,7 +151,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
 
   it('should get the new state when dispatching', async () => {
     async function testReduce(prevState, action) {
-      return await delay(5, { value: prevState + 1 })
+      return await delay(1, { value: prevState + 1 })
     }
     const testInitialState = 0
     let newState = null
@@ -853,7 +853,7 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
     async function testReduce(prevState, action, extra1, extra2) {
       switch (action) {
         case 'ACTION1':
-          return await delay(5, { value: `${extra1}${extra2}` })
+          return await delay(1, { value: `${extra1}${extra2}` })
         default:
           return prevState
       }
@@ -891,5 +891,49 @@ describe('AsyncReducerProvider with Async reducer tests', () => {
 
     await delay(10)
     expect(provider).toHaveText('ClickChildWowGood')
+  })
+
+  it('should not re-render when same state', async () => {
+    const testInitialState = '0'
+    let redrawsDispatcher = 0
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducerAA1')
+      return (
+        <button onClick={() => dispatch('ACTION1')}>
+          Click
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useReducerState('testNamedReducerAA1')
+      redrawsDispatcher++
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <AsyncReducerProvider
+        id='testNamedReducerAA1'
+        reducer={testReduce}
+        initialState={testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </AsyncReducerProvider>
+    )
+    expect(provider).toHaveText('ClickChild0')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    await delay(10)
+    provider.find('button').simulate('click')
+    provider.update()
+
+    await delay(10)
+    expect(redrawsDispatcher).toBe(2)
+    expect(provider).toHaveText('ClickChild1')
   })
 })

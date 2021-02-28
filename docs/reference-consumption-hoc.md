@@ -1,4 +1,4 @@
-# `injectReducer` | `injectReducerState` | `injectReducerDispatcher` | `injectMapper` | `injectMapperState` | `injectMapperDispatcher`
+# `injectReducer` · `injectReducerState` · `injectReducerDispatcher` · `injectMapper` · `injectMapperState` · `injectMapperDispatcher`
 
 ## Consumption
 
@@ -35,7 +35,18 @@ or
 
 *returns*:
 
-* Enhanced Component Class with the indicated property, which holds a tuple containing the `state` as first element, and the `dispatcher` as second element.
+**Enhanced Component Class** with the indicated property, which holds a tuple containing:
+
+* `[0]`: the `state`.
+* `[1]`: the `dispatcher`.
+* `[2]`: the provider id.
+* `state`: the `state`.
+* `dispatch`: the `dispatcher`.
+* `provider`: the provider id.
+
+> Trying to reassign `state`, `dispatch`, `provider`, `[0]`, `[1]` or `[2]` will result in a`TypeError: Cannot assign to read only property '..' of object '[object Array]'` Exception.  
+> Trying to add new fields will result in a `TypeError: can't define property "..": Array is not extensible` Exception.  
+> For purpose of avoiding re-renders and/or improving performance **always use the elements of the tuple** as reference, never the tuple perse, keep in mind that the tuple that is returned may change but elements will only change when state changes. This is not an "issue" when using the elements of the tuple as reference or when using `use*Dispatcher` or `use*State`.
 
 ```jsx
 import { injectReducer } from 'react-reducer-provider'
@@ -44,6 +55,25 @@ import React from 'react'
 class SomeComponent1 extends React.Component {
   render() {
     const [ state, dispatch ] = this.props.reducer
+    return (
+      <button onClick={() => dispatch('ACTION1')}>
+        Child{state}
+      </button>
+    )
+  }
+}
+export default injectReducer(SomeComponent1, 'reducer', 'someNamedReducer')
+```
+
+or
+
+```jsx
+import { injectReducer } from 'react-reducer-provider'
+import React from 'react'
+
+class SomeComponent1 extends React.Component {
+  render() {
+    const { state, dispatch } = this.props.reducer
     return (
       <button onClick={() => dispatch('ACTION1')}>
         Child{state}
@@ -118,8 +148,8 @@ class ClassComponentA2 extends React.Component {
 const ClassComponent2 = injectMapperState(ClassComponentA2, 'state', 557)
 ```
 
-> Online example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-5fngu?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-5fngu?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> Online example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-2ht78?file=/src/SomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-2ht78?file=/src/SomeReducerProvider.jsx)  
 
 ### Error
 
@@ -183,14 +213,14 @@ __________________
 
 ## More Documentation
 
-* [`AsyncReducerProvider` | `SyncReducerProvider` | `AsyncMapperProvider` | `SyncMapperProvider`](reference-defintion.md).
-* [`useReducer` | `useReducerState` | `useReducerDispatcher` | `useMapper` | `useMapperState` | `useMapperDispatcher`](reference-consumption-hooks.md).
+* [`AsyncReducerProvider` · `SyncReducerProvider` · `AsyncMapperProvider` · `SyncMapperProvider`](reference-defintion.md).
+* [`useReducer` · `useReducerState` · `useReducerDispatcher` · `useMapper` · `useMapperState` · `useMapperDispatcher`](reference-consumption-hooks.md).
 * [Singleton](singleton.md).
 * [Nesting](nesting.md).
 * Combining/Blending - Tagged Reducers/Mappers.
-  * [`AsyncTaggedReducerProvider` | `SyncTaggedReducerProvider` | `AsyncTaggedMapperProvider` | `SyncTaggedMapperProvider`](blending-definition.md).
-  * [`useTaggedAny` | `useTaggedAnyState` | `useTaggedAnyDispatcher` | `useTaggedReducer` | `useTaggedReducerState` | `useTaggedReducerDispatcher` | `useTaggedMapper` | `useTaggedMapperState` | `useTaggedMapperDispatcher`](blending-consumption-hooks.md).
-  * [`injectTaggedAny` | `injectTaggedAnyState` | `injectTaggedAnyDispatcher` | `injectTaggedReducer` | `injectTaggedReducerState` | `injectTaggedReducerDispatcher` | `injectTaggedMapper` | `injectMapperReducerState` | `injectMapperdReducerDispatcher`](blending-consumption-hoc.md).
+  * [`AsyncTaggedReducerProvider` · `SyncTaggedReducerProvider` · `AsyncTaggedMapperProvider` · `SyncTaggedMapperProvider`](tagged-definition.md).
+  * [`useTaggedAny` · `useTaggedReducer` · `useTaggedReducerState` · `useTaggedReducerDispatcher` · `useTaggedMapper` · `useTaggedMapperState` · `useTaggedMapperDispatcher`](tagged-consumption-hooks.md).
+  * [`injectTaggedAny` · `injectTaggedReducer` · `injectTaggedReducerState` · `injectTaggedReducerDispatcher` · `injectTaggedMapper` · `injectTaggedMapperState` · `injectTaggedMapperDispatcher`](tagged-consumption-hoc.md).
 * [Typings](typings.md).
 * [With Injection](with-injection.md).
   * [with Flow typings](with-injection-and-flow-typings.md).
@@ -200,7 +230,7 @@ __________________
   * [with Typescript typings](with-actions-creators-and-ts-typings.md).
 * [Testing](testing.md).
 * [Examples from tests](../tests/js).
-* [Online examples](readme/online.md).
+* **[Online examples](online.md)**.
 * [Typings' examples from tests](../tests/typings).
 * [Extending/Developing](developing.md).
 

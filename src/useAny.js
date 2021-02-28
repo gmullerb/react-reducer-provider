@@ -4,8 +4,7 @@ import * as React from 'react'
 
 import { captureProvider } from './Providers'
 
-export function useReducer(id) {
+export function useAny(id) {
   // Must `useContext` since it provides React triggering mechanism,
-  // using `const ref = captureProvider(name); return [ref.state, ref.dispatcher]` won't work.
   return React.useContext(captureProvider(id))
 }

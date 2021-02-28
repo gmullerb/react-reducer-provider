@@ -1,11 +1,16 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 // Licensed under the MIT License (MIT), see LICENSE.txt
-import { createMapperProvider } from './MapperProvider'
+import * as React from 'react'
 
-export function AsyncMapperProvider(props) {
-  return createMapperProvider(props, (reRenderTrigger) => async (action, ...args) => {
-    const newState = await props.mapper(action, ...args)
-    reRenderTrigger(newState)
-    return newState
-  })
+import { imbueStateProvider, nextState, setContextValue } from './imbueStateProvider'
+
+export class AsyncMapperProvider extends React.Component {
+  constructor(props) {
+    super(props)
+    imbueStateProvider(this, props)
+  }
+
+  async wd(action, ...args) {
+    return setContextValue(this, await nextState(this, this.props.mapper, action, ...args))
+  }
 }

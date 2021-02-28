@@ -6,13 +6,10 @@ import { mount } from 'enzyme'
 import {
   SyncTaggedReducerProvider,
   useTaggedAny,
-  useTaggedAnyState,
-  useTaggedAnyDispatcher,
   useTaggedReducer,
   useTaggedReducerState,
   useTaggedReducerDispatcher
 } from '../../src/react-reducer-provider'
-
 
 function testReduce1(prevState, action) {
   switch (action) {
@@ -22,7 +19,6 @@ function testReduce1(prevState, action) {
       return prevState
   }
 }
-
 
 function testReduceN(prevState, action) {
   switch (action) {
@@ -62,8 +58,8 @@ describe('SyncTaggedReducerProvider tests', () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
     const FunComponent11 = () => {
-      const [ , dispatchers ] = useTaggedAny('someTaggedReducerS0')
-      const dispatch = dispatchers.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS0')
+      const dispatch = reducers.get('Tag1').dispatch
       return (
         <button id='F1' onClick={() => dispatch('ACTION1')}>
           Click1
@@ -71,8 +67,8 @@ describe('SyncTaggedReducerProvider tests', () => {
       )
     }
     const FunComponent12 = () => {
-      const [ states ] = useTaggedAny('someTaggedReducerS0')
-      const state = states.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS0')
+      const state = reducers.get('Tag1').state
       return (
         <div>
           Child1{state}
@@ -80,18 +76,18 @@ describe('SyncTaggedReducerProvider tests', () => {
       )
     }
     const FunComponentN1 = () => {
-      const [ , dispatchers ] = useTaggedAny('someTaggedReducerS0')
+      const reducers = useTaggedAny('someTaggedReducerS0')
       return (
-        <button id= 'FN' onClick={() => dispatchers.get('TagN')('ACTION1')}>
+        <button id= 'FN' onClick={() => reducers.get('TagN').dispatch('ACTION1')}>
           ClickN
         </button>
       )
     }
     const FunComponentN2 = () => {
-      const [ states ] = useTaggedAny('someTaggedReducerS0')
+      const reducers = useTaggedAny('someTaggedReducerS0')
       return (
         <div>
-          ChildN{states.get('TagN')}
+          ChildN{reducers.get('TagN').state}
         </div>
       )
     }
@@ -122,12 +118,12 @@ describe('SyncTaggedReducerProvider tests', () => {
     expect(provider).toHaveText('Click1Child1AClickNChildN1')
   })
 
-  it('should reduce with useTaggedAnyDispatcher and get state with useTaggedAnyState', () => {
+  it('should reduce with useTaggedAny and get state with useTaggedAny', () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
     const FunComponent11 = () => {
-      const dispatchers = useTaggedAnyDispatcher('someTaggedReducerS1')
-      const dispatch = dispatchers.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS1')
+      const dispatch = reducers.get('Tag1').dispatch
       return (
         <button id='F1' onClick={() => dispatch('ACTION1')}>
           Click1
@@ -135,8 +131,8 @@ describe('SyncTaggedReducerProvider tests', () => {
       )
     }
     const FunComponent12 = () => {
-      const states = useTaggedAnyState('someTaggedReducerS1')
-      const state = states.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS1')
+      const state = reducers.get('Tag1').state
       return (
         <div>
           Child1{state}
@@ -144,18 +140,18 @@ describe('SyncTaggedReducerProvider tests', () => {
       )
     }
     const FunComponentN1 = () => {
-      const dispatchers = useTaggedAnyDispatcher('someTaggedReducerS1')
+      const reducers = useTaggedAny('someTaggedReducerS1')
       return (
-        <button id= 'FN' onClick={() => dispatchers.get('TagN')('ACTION1')}>
+        <button id= 'FN' onClick={() => reducers.get('TagN').dispatch('ACTION1')}>
           ClickN
         </button>
       )
     }
     const FunComponentN2 = () => {
-      const states = useTaggedAnyState('someTaggedReducerS1')
+      const reducers = useTaggedAny('someTaggedReducerS1')
       return (
         <div>
-          ChildN{states.get('TagN')}
+          ChildN{reducers.get('TagN').state}
         </div>
       )
     }
@@ -310,6 +306,251 @@ describe('SyncTaggedReducerProvider tests', () => {
     expect(provider).toHaveText('Click1Child1AClickNChildN1')
   })
 
+  it('should use a new reducer function', () => {
+    const testInitialState1 = 'X'
+    const testInitialStateN = 0
+    function testReduce2(prevState, action) {
+      switch (action) {
+        case 'ACTION1':
+          return 100
+        default:
+          return prevState
+      }
+    }
+    const FunComponent11 = () => {
+      const [ , dispatch ] = useTaggedReducer('Tag1', 'someTaggedReducerS3a')
+      return (
+        <button id='F1' onClick={() => dispatch('ACTION1')}>
+          Click1
+        </button>
+      )
+    }
+    const FunComponent12 = () => {
+      const [ state ] = useTaggedReducer('Tag1', 'someTaggedReducerS3a')
+      return (
+        <div>
+          Child1{state}
+        </div>
+      )
+    }
+    const FunComponentN1 = () => {
+      const [ , dispatch ] = useTaggedReducer('TagN', 'someTaggedReducerS3a')
+      return (
+        <button id= 'FN' onClick={() => dispatch('ACTION1')}>
+          ClickN
+        </button>
+      )
+    }
+    const FunComponentN2 = () => {
+      const [ state ] = useTaggedReducer('TagN', 'someTaggedReducerS3a')
+      return (
+        <div>
+          ChildN{state}
+        </div>
+      )
+    }
+    const MainComponent = () => {
+      const [ reducer, setReducer ] = React.useState({ fun: testReduce1 })
+      return (
+        <>
+          <button id='outer' onClick={() => setReducer({ fun: testReduce2 })}>
+            ChangeReducer
+          </button>
+          <SyncTaggedReducerProvider
+            id='someTaggedReducerS3a'
+            reducers={[
+              [ 'Tag1', reducer.fun, testInitialState1 ],
+              [ 'TagN', testReduceN, testInitialStateN ]
+            ]}
+          >
+            <FunComponent11 />
+            <FunComponent12 />
+            <FunComponentN1 />
+            <FunComponentN2 />
+          </SyncTaggedReducerProvider>
+        </>
+      )
+    }
+    const provider = mount(<MainComponent />)
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1XClickNChildN0')
+
+    provider.find('#F1').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1AClickNChildN0')
+
+    provider.find('#FN').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1AClickNChildN1')
+
+    provider.find('#outer').simulate('click')
+    provider.update()
+    provider.find('#F1').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1100ClickNChildN1')
+  })
+
+  it('should default to last state when reducer is set to null', () => {
+    const testInitialState1 = 'X'
+    const testInitialStateN = 0
+    const FunComponent11 = () => {
+      const [ , dispatch ] = useTaggedReducer('Tag1', 'someTaggedReducerS3b')
+      return (
+        <button id='F1' onClick={() => dispatch('ACTION1')}>
+          Click1
+        </button>
+      )
+    }
+    const FunComponent12 = () => {
+      const [ state ] = useTaggedReducer('Tag1', 'someTaggedReducerS3b')
+      return (
+        <div>
+          Child1{state}
+        </div>
+      )
+    }
+    const FunComponentN1 = () => {
+      const [ , dispatch ] = useTaggedReducer('TagN', 'someTaggedReducerS3b')
+      return (
+        <button id= 'FN' onClick={() => dispatch('ACTION1')}>
+          ClickN
+        </button>
+      )
+    }
+    const FunComponentN2 = () => {
+      const [ state ] = useTaggedReducer('TagN', 'someTaggedReducerS3b')
+      return (
+        <div>
+          ChildN{state}
+        </div>
+      )
+    }
+    const MainComponent = () => {
+      const [ reducer, setReducer ] = React.useState({ fun: testReduce1 })
+      return (
+        <>
+          <button id='outer' onClick={() => setReducer({ fun: null })}>
+            ChangeReducer
+          </button>
+          <SyncTaggedReducerProvider
+            id='someTaggedReducerS3b'
+            reducers={[
+              [ 'Tag1', reducer.fun, testInitialState1 ],
+              [ 'TagN', testReduceN, testInitialStateN ]
+            ]}
+          >
+            <FunComponent11 />
+            <FunComponent12 />
+            <FunComponentN1 />
+            <FunComponentN2 />
+          </SyncTaggedReducerProvider>
+        </>
+      )
+    }
+    const provider = mount(<MainComponent />)
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1XClickNChildN0')
+
+    provider.find('#F1').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1AClickNChildN0')
+
+    provider.find('#FN').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1AClickNChildN1')
+
+    provider.find('#outer').simulate('click')
+    provider.update()
+    provider.find('#F1').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1AClickNChildN1')
+  })
+
+  it('should default to last states when definitions are set to null', () => {
+    const testInitialState1 = 'X'
+    const testInitialStateN = 0
+    const FunComponent11 = () => {
+      const [ , dispatch ] = useTaggedReducer('Tag1', 'someTaggedReducerS3c')
+      return (
+        <button id='F1' onClick={() => dispatch('ACTION1')}>
+          Click1
+        </button>
+      )
+    }
+    const FunComponent12 = () => {
+      const [ state ] = useTaggedReducer('Tag1', 'someTaggedReducerS3c')
+      return (
+        <div>
+          Child1{state}
+        </div>
+      )
+    }
+    const FunComponentN1 = () => {
+      const [ , dispatch ] = useTaggedReducer('TagN', 'someTaggedReducerS3c')
+      return (
+        <button id= 'FN' onClick={() => dispatch('ACTION1')}>
+          ClickN
+        </button>
+      )
+    }
+    const FunComponentN2 = () => {
+      const [ state ] = useTaggedReducer('TagN', 'someTaggedReducerS3c')
+      return (
+        <div>
+          ChildN{state}
+        </div>
+      )
+    }
+    const MainComponent = () => {
+      const [ reducers, setReducers ] = React.useState([
+        [ 'Tag1', testReduce1, testInitialState1 ],
+        [ 'TagN', testReduceN, testInitialStateN ]
+      ])
+      return (
+        <>
+          <button id='outer' onClick={() => setReducers(null)}>
+            ChangeReducer
+          </button>
+          <SyncTaggedReducerProvider
+            id='someTaggedReducerS3c'
+            reducers={reducers}
+          >
+            <FunComponent11 />
+            <FunComponent12 />
+            <FunComponentN1 />
+            <FunComponentN2 />
+          </SyncTaggedReducerProvider>
+        </>
+      )
+    }
+    const provider = mount(<MainComponent />)
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1XClickNChildN0')
+
+    provider.find('#F1').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1AClickNChildN0')
+
+    provider.find('#FN').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1AClickNChildN1')
+
+    provider.find('#outer').simulate('click')
+    provider.update()
+    provider.find('#F1').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('ChangeReducerClick1Child1AClickNChildN1')
+  })
+
   it('should get nested providers', () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
@@ -392,8 +633,8 @@ describe('SyncTaggedReducerProvider tests', () => {
     let newState1 = null
     let newStateN = null
     const FunComponent11 = () => {
-      const dispatchers = useTaggedAnyDispatcher('someTaggedReducerS6')
-      const dispatch = dispatchers.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS6')
+      const dispatch = reducers.get('Tag1').dispatch
       return (
         <button id='F1' onClick={() => newState1 = dispatch('ACTION1')}>
           Click1
@@ -401,8 +642,8 @@ describe('SyncTaggedReducerProvider tests', () => {
       )
     }
     const FunComponent12 = () => {
-      const states = useTaggedAnyState('someTaggedReducerS6')
-      const state = states.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS6')
+      const state = reducers.get('Tag1').state
       return (
         <div>
           Child1{state}
@@ -454,26 +695,26 @@ describe('SyncTaggedReducerProvider tests', () => {
   it('should reduce with useReducerDispatcher and get state with extra args', () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
-    function testReduce(prevState, action, extra) {
+    function testReduce(prevState, action, extra1, extra2) {
       switch (action) {
         case 'ACTION1':
-          return extra
+          return extra1 + extra2
         default:
           return prevState
       }
     }
     const FunComponent11 = () => {
-      const dispatchers = useTaggedAnyDispatcher('someTaggedReducerS7')
-      const dispatch = dispatchers.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS7')
+      const dispatch = reducers.get('Tag1').dispatch
       return (
-        <button id='F1' onClick={() => dispatch('ACTION1', 'A')}>
+        <button id='F1' onClick={() => dispatch('ACTION1', 'A', 'B')}>
           Click1
         </button>
       )
     }
     const FunComponent12 = () => {
-      const states = useTaggedAnyState('someTaggedReducerS7')
-      const state = states.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS7')
+      const state = reducers.get('Tag1').state
       return (
         <div>
           Child1{state}
@@ -483,7 +724,7 @@ describe('SyncTaggedReducerProvider tests', () => {
     const FunComponentN1 = () => {
       const dispatch = useTaggedReducerDispatcher('TagN', 'someTaggedReducerS7')
       return (
-        <button id= 'FN' onClick={() => dispatch('ACTION1', 1)}>
+        <button id= 'FN' onClick={() => dispatch('ACTION1', 1, 2)}>
           ClickN
         </button>
       )
@@ -515,12 +756,12 @@ describe('SyncTaggedReducerProvider tests', () => {
     provider.find('#F1').simulate('click')
     provider.update()
 
-    expect(provider).toHaveText('Click1Child1AClickNChildN0')
+    expect(provider).toHaveText('Click1Child1ABClickNChildN0')
 
     provider.find('#FN').simulate('click')
     provider.update()
 
-    expect(provider).toHaveText('Click1Child1AClickNChildN1')
+    expect(provider).toHaveText('Click1Child1ABClickNChildN3')
   })
 
   it('should get the same dispatcher references after state changes - Case 1', () => {
@@ -581,8 +822,8 @@ describe('SyncTaggedReducerProvider tests', () => {
       )
     }
     const FunComponent1 = () => {
-      const dispatchers = useTaggedAnyDispatcher('someTaggedReducerS8')
-      const dispatch = dispatchers.get('TagN')
+      const reducers = useTaggedAny('someTaggedReducerS8')
+      const dispatch = reducers.get('TagN').dispatch
       redrawsDispatcher++
       useReducerDispatcherSet.add(dispatch)
       return React.useMemo(() => (

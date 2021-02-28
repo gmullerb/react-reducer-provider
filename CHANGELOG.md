@@ -1,5 +1,46 @@
 # React Reducer Provider Change Log
 
+## 5.0.0 - April 2021
+
+* Breaking changes (Thinking more in JS way, and less in C++ or Java way): In order to remove recurrent call of `createDispatcher(stateRef, reRenderTrigger)` in `const wrappedDispatcher = React.useRef(createDispatcher(stateRef, reRenderTrigger))` for Providers components, and since `useRef` does not allow for a creation function ("yet"), the internal implementation for component is changed to class component, avoiding that recurrent call (big fan of hooks but using them wisely).
+  * It's only a breaking change, if you were using `*Provider` as a function and not as JSX, e.g. `<>{SyncReducerProvider(..)}</>` (some rare use case, but valid) instead of `<SyncReducerProvider..>..</SyncReducerProvider>`.
+  * Major breaking change if when consuming Tagged Providers using `useTaggedAnyState`, `useTaggedAnyDispatcher`, `injectTaggedAnyDispatcher` or `injectTaggedAnyState`.
+    * `useTaggedAnyState`, `useTaggedAnyDispatcher`, `injectTaggedAnyDispatcher` and `injectTaggedAnyState` are removed (although could be kept, but the performance will be poor compare to using `useTaggedAny` or `injectTaggedAny`).
+  * Also, how `useTaggedAny`/`injectTaggedAny` is used changed, now it returns a `get` to obtain the provider value.
+  * When moving to classes, what I named 'method imbuing' was use to avoid prototype chaining (it will increase performance, but it may minimal increase memory consumption if more than 1 StateProvider is used (, but we use `bind` in classes "everyday", which is pretty similar)).
+  * Not even 1 test was changed or remove, only new tests were added, i.e. A totally successful refactoring.
+  * Using classes the internal code complexity was reduce, increasing learnability and maintainability.
+* Optional initial state for reducer and mapper.
+  * Adds new tests.
+* Restores fields for consumption in order to be more flexible and avoid array destructuring if desired (avoiding array destructuring may increase performance if polyfill is required) and improves readability for some cases.
+  * Adds new tests.
+* Adds `provider` field to object/tuple accessed when consuming, with the id of the provider.
+* Adds `tag` field field to object/tuple accessed when consuming tagged.
+* Checks if the state is the same before computing new internal state, to avoid re-renderings.
+  * Adds new tests.
+* Adds `shouldComponentUpdate` to avoid any re-render when State Provider props changes, i.e. ignore props changed for render, not for processing, improving performance.
+* Internal implementation for tagging is now made with 1 Map instead of 2, improving performance.
+* Improves HOC performance.
+* Seals the reducer/mappers tuple, i.e. cannot be directly changed when consuming or extend, in order to promote best practices when developing and avoiding side-effects bugs.
+* Secures internal map for Tagged State providers, to avoid changing when consuming.
+* Updates async tests to run faster and avoid failures in ci.
+* Renames files:
+  * `useReducer.js` to `useAny.js`.
+  * `useReducerDispatcher.js` to `useAnyDispatcher.js`.
+  * `useReducerState.js` to `useAnyState.js`.
+  * `useTaggedReducer.js` to `useTaggedAny.js`.
+  * `useTaggedReducerDispatcher.js` to `useTaggedAnyDispatcher.js`.
+  * `useTaggedReducerState.js` to `useTaggedAnyState.js`.
+  * `ReducerProvider.js` to `imbueTaggedStateProvider.js`
+    * `MapperProvider.js` and gone.
+  * `TaggedReducerProvider.js` to `imbueTaggedStateProvider.js`.
+* Updates Documentation files.
+  * Adds documentation for Function as state.
+  * Adds documentation for Provider props changes.
+  * Adds documentation for Exceptions.
+  * Renames `blending-*.md` to `tagged-*.md`.
+  * Renames `readme` folder to `docs`.
+
 ## 4.4.0 - October 2020
 
 * Adds the capability to use a function to initialize state.

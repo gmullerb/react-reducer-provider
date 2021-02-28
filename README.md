@@ -1,20 +1,30 @@
 <p align="center">
-  <img src="https://assets.gitlab-static.net/uploads/-/system/project/avatar/18113862/react-reducer-provider.png" alt=" "/>
+  <a href="https://react-reducer-provider.github.io/"><img src="https://react-reducer-provider.github.io/docs/react-reducer-provider.png" alt=" "/></a>
 </p>
 
-<h1 align="center">Asynchronous/Synchronous React Centralized Reducer/Mapper</h1>
+<h1 align="center">Asynchronous/Synchronous React Centralized State</h1>
 <h2 align="center">with Hooks and HOC</h2>
 
+<p align="center">through Centralized Reducers/Mappers</p>
 <p align="center">Flux/Redux made easy, simple and beyond</p>
-<p align="center">Your centralized storage</p>
 
-[![react-reducer-provider](https://badgen.net/badge/npm%20pack/react-reducer-provider/blue)](https://www.npmjs.com/package/react-reducer-provider)
+[![react-reducer-provider](https://badgen.net/badge/homepage/react-reducer-provider/blue)](https://react-reducer-provider.github.io/)
+[![react-reducer-provider](https://badgen.net/badge/npmjs/react-reducer-provider/blue)](https://www.npmjs.com/package/react-reducer-provider)
 [![ ](https://badgen.net/npm/v/react-reducer-provider)](https://www.npmjs.com/package/react-reducer-provider)
 [![ ](https://badgen.net/bundlephobia/minzip/react-reducer-provider)](https://bundlephobia.com/result?p=react-reducer-provider)
-[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)
-[![ ](https://gitlab.com/gmullerb/react-reducer-provider/badges/master/coverage.svg)](https://gitlab.com/gmullerb/react-reducer-provider/pipelines)
+[![ ](https://badgen.net/bundlephobia/dependency-count/react-reducer-provider)](https://bundlephobia.com/result?p=react-reducer-provider)
+[![ ](https://badgen.net/bundlephobia/tree-shaking/react-reducer-provider)](https://bundlephobia.com/result?p=react-reducer-provider)
+[![ ](https://badgen.net/npm/types/react-reducer-provider)](https://react-reducer-provider.github.io/docs/typings.html)
+[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://react-reducer-provider.github.io/LICENSE.txt)
+[![ ](https://badgen.net/badge/test/passing/green)](https://gmullerb.gitlab.io/react-reducer-provider/tests/tests_report.html)
+[![ ](https://gitlab.com/gmullerb/react-reducer-provider/badges/master/coverage.svg)](https://gmullerb.gitlab.io/react-reducer-provider/coverage/index.html)
 [![Github repo](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/gmullerb/react-reducer-provider)
 [![Gitlab repo](https://badgen.net/badge/icon/gitlab?icon=gitlab&label)](https://gitlab.com/gmullerb/react-reducer-provider)
+
+__________________
+
+**`react-reducer-provider` provides a centralized state, managed asynchronously or synchronously through a reducer or mapper.**
+
 __________________
 
 ## Quick Start
@@ -23,19 +33,31 @@ __________________
 
 `package.json`:
 
+when using hooks:
+
 ```json
   ..
   "dependencies": {
-    "react": "16.8.0"
-    "react-reducer-provider": "4.4.0",
+    "react": ">=16.8.0"
+    "react-reducer-provider": "5.0.0",
+    ..
+```
+
+when using HOC:
+
+```json
+  ..
+  "dependencies": {
+    "react": ">=16.0.0"
+    "react-reducer-provider": "5.0.0",
     ..
 ```
 
 2 . Create the **`AsyncReducerProvider`**, **`SyncReducerProvider`**, **`AsyncMapperProvider`** or **`SyncMapperProvider`** component to manage state:
 
-A . Define the initial state.  
-B . Define the reducer or mapper function.  
-C . Define the Reducer or Mapper Provider.
+a . Define the initial state.  
+b . Define the reducer or mapper function.  
+c . Define the Reducer or Mapper Provider.
 
 **`SomeReducerProvider.jsx`**:
 
@@ -76,14 +98,14 @@ export default SomeReducerProvider
 * **`useReducerDispatcher`/`useMapperDispatcher`**.
 * **`useReducerState`/`useMapperState`**.
 
-`SomeComponent1.jsx`[1] => using `useReducer`:
+`SomeComponent1.jsx` => using `useReducer`:
 
 ```jsx
 import { useReducer } from 'react-reducer-provider'
 import React from 'react'
 
 export default function SomeComponent1() {
-  const [ state, dispatch ] = useReducer()
+  const { state, dispatch } = useReducer()
   return (
     <button onClick={() => dispatch('ACTION1', 2)}>
       Go up (from {state})!
@@ -92,7 +114,7 @@ export default function SomeComponent1() {
 }
 ```
 
-`SomeComponent2.jsx`[1] => using `useReducerDispatcher`:
+`SomeComponent2.jsx` => using `useReducerDispatcher`:
 
 ```jsx
 import { useReducerDispatcher } from 'react-reducer-provider'
@@ -111,7 +133,7 @@ export default function SomeComponent2() {
 }
 ```
 
-`SomeComponentN.jsx`[1] => using `useReducerState`:
+`SomeComponentN.jsx` => using `useReducerState`:
 
 ```jsx
 import { useReducerState } from 'react-reducer-provider'
@@ -149,18 +171,18 @@ export default function SomeContainer() {
 }
 ```
 
-> This `SyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-qf356?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-qf356?module=%2Fsrc%2FSomeReducerProvider.jsx)  
-> This `SyncReducerProvider`with HOC example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-5fngu?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-5fngu?module=%2Fsrc%2FSomeReducerProvider.jsx)  
-> An `AsyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-m1fph?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-m1fph?module=%2Fsrc%2FSomeReducerProvider.jsx)  
-> An `SyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-c7hyq?module=%2Fsrc%2FSomeMapperProvider.jsx):  
-[![Edit gmullerb-react-mapper-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-mapper-provider-c7hyq?module=%2Fsrc%2FSomeMapperProvider.jsx)  
-> An `AsyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-async-i9iyk?module=%2Fsrc%2FSomeMapperProvider.jsx):  
-[![Edit gmullerb-react-mapper-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-mapper-provider-async-i9iyk?module=%2Fsrc%2FSomeMapperProvider.jsx)  
-> Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts), [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts), [candy-react-router](https://www.npmjs.com/package/candy-react-router) and [test files](tests/js).  
-> [1] Injection can be used in order to improve design, but in favor of quick example this was surrender, look at [Injection](readme/with-injection.md) for injection example.
+> This `SyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-fmx0r?file=/src/SomeReducerProvider.jsx):
+[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-fmx0r?file=/src/SomeReducerProvider.jsx)  
+> This `SyncReducerProvider`with HOC example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-2ht78?file=/src/SomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-2ht78?file=/src/SomeReducerProvider.jsx)  
+> An `AsyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-forked-cyl3g?file=/src/SomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-forked-cyl3g?file=/src/SomeReducerProvider.jsx)  
+> An `SyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-forked-vkwk3?file=/src/SomeMapperProvider.jsx):  
+[![Edit gmullerb-react-mapper-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-mapper-provider-forked-vkwk3?file=/src/SomeMapperProvider.jsx)  
+> An `AsyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-async-forked-d2foz?file=/src/SomeMapperProvider.jsx):  
+[![Edit gmullerb-react-mapper-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-mapper-provider-async-forked-d2foz?file=/src/SomeMapperProvider.jsx)  
+> Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [test files](https://github.com/gmullerb/react-reducer-provider/blob/HEAD/tests/js).  
+
 __________________
 
 ## Goal
@@ -168,72 +190,78 @@ __________________
 With the introduction of React Hooks, in some way using Flux **library**[1] was deprecated, `react-reducer-provider` looks to **give a quick and easy alternative using hooks to implement Flux with reducers**.
 
 * Provides Reducers, but also **Mappers**.
-* It allows to use [**Asynchronous** Reducer/Mapper/Dispatcher](readme/reference-definition.md#asyncreducerprovider).
-* [Reducer/Mapper/Dispatcher can have **more parameters/arguments** than traditional reducer which have only (state, action)](readme/reference-definition.md#extraparameters).
-* [Dispatcher **returns the new State or a Promise of the new State**](readme/reference-definition.md#dispatcher).
-* [Each Reducer/Mapper Provider can have a **different names, numbers or symbols which allows for easy identification and nesting**](readme/nesting.md).
+* It allows to use [**Asynchronous** Reducer/Mapper/Dispatcher](https://react-reducer-provider.github.io/docs/reference-definition.html#asyncreducerprovider).
+* [Reducer/Mapper/Dispatcher can have **more parameters/arguments** than traditional reducer which have only (state, action)](https://react-reducer-provider.github.io/docs/reference-definition.html#extraparameters).
+* [Dispatcher **returns the new State or a Promise of the new State**](https://react-reducer-provider.github.io/docs/reference-definition.html#dispatcher).
+* [Each Reducer/Mapper Provider can have a **different names, numbers or symbols which allows for easy identification and nesting**](https://react-reducer-provider.github.io/docs/nesting.html).
 * Provides and Easy way of combining reducers. through Tags. [2].
-* Smaller than other packages with same functionality [3].
+* Smaller than other packages with same functionality, and no dependencies [3].
 * It is ready for Tree Shaking optimization, so you get only what you need from the `react-reducer-provider` in the final app bundle [3].
-* It provides [its own **type definitions for Typescript and Flow**](readme/typings.md).
-* Full Tested (not only focus in coverage, but also in cases).
+* It provides [its own **type definitions for Typescript and Flow**](https://react-reducer-provider.github.io/docs/typings.html).
+* Full Tested (not only focus in coverage, but also in cases: [tests](https://github.com/gmullerb/react-reducer-provider/blob/HEAD/tests/js), [results](https://gmullerb.gitlab.io/react-reducer-provider/tests/tests_report.html) and [coverage](https://gmullerb.gitlab.io/react-reducer-provider/coverage/index.html)).
 
 > [1] Not the Flux architecture.  
 > [2] react-redux makes it too complicated.  
 > [3] Check and Compare with other solutions at [bundlephobia.com](https://bundlephobia.com/result?p=react-reducer-provider).  
 > `react-reducer-provider` is the evolution of [react-named-reducer](https://www.npmjs.com/package/react-named-reducer) (which is a derivation of [react-reducer-context](https://www.npmjs.com/package/react-reducer-context)).
+
 __________________
 
 **You define**:
 
-![Reducers](readme/reducer.svg "Reducers")
+![Reducers](https://react-reducer-provider.github.io/docs/reducer.svg "Reducers")
 
 **or**
 
 
-![Mappers](readme/mapper.svg "Mappers")
+![Mappers](https://react-reducer-provider.github.io/docs/mapper.svg "Mappers")
 
 __________________
 
 **and then you use them through a**:
 
-![Dispatcher](readme/dispatcher.svg "Dispatcher")
+![Dispatcher](https://react-reducer-provider.github.io/docs/dispatcher.svg "Dispatcher")
 
 __________________
 
 ## Prerequisites
 
-* [React Hooks](https://reactjs.org/docs/hooks-overview.html) => [`"react": ">=16.8.0"`](https://www.npmjs.com/package/react).
+**At least [`"react": ">=16.0.0"`]** - [React Context](https://reactjs.org/docs/context.html) => when using HOC, i.e. [`injectReducer` · `injectReducerState` · `injectReducerDispatcher` · `injectMapper` · `injectMapperState` · `injectMapperDispatcher`](https://react-reducer-provider.github.io/docs/reference-consumption-hoc.html) or [`injectTaggedAny` · `injectTaggedReducer` · `injectTaggedReducerState` · `injectTaggedReducerDispatcher` · `injectTaggedMapper` · `injectTaggedMapperState` · `injectTaggedMapperDispatcher`](https://react-reducer-provider.github.io/docs/tagged-consumption-hoc.html).
+
+**[`"react": ">=16.8.0"`]** - [React Hooks](https://reactjs.org/docs/hooks-overview.html) => when using hooks, i.e. [`useReducer` · `useReducerState` · `useReducerDispatcher` · `useMapper` · `useMapperState` · `useMapperDispatcher`](https://react-reducer-provider.github.io/docs/reference-consumption-hooks.html) or [`useTaggedAny` · `useTaggedReducer` · `useTaggedReducerState` · `useTaggedReducerDispatcher` · `useTaggedMapper` · `useTaggedMapperState` · `useTaggedMapperDispatcher`](https://react-reducer-provider.github.io/docs/tagged-consumption-hooks.html).
+
+>`react-reducer-provider` only enforces `"react": ">=16.0.0"` in `package.json` is up to you to be set which version you need.
 
 __________________
 
 ## Documentation
 
-* [`AsyncReducerProvider` | `SyncReducerProvider` | `AsyncMapperProvider` | `SyncMapperProvider`](readme/reference-definition.md).
-* [`useReducer` | `useReducerState` | `useReducerDispatcher` | `useMapper` | `useMapperState` | `useMapperDispatcher`](readme/reference-consumption-hooks.md).
-* [`injectReducer` | `injectReducerState` | `injectReducerDispatcher` | `injectMapper` | `injectMapperState` | `injectMapperDispatcher`](readme/reference-consumption-hoc.md).
-* [Singleton](readme/singleton.md).
-* [Nesting Providers](readme/nesting.md).
+* [`AsyncReducerProvider` · `SyncReducerProvider` · `AsyncMapperProvider` · `SyncMapperProvider`](https://react-reducer-provider.github.io/docs/reference-definition.html).
+* [`useReducer` · `useReducerState` · `useReducerDispatcher` · `useMapper` · `useMapperState` · `useMapperDispatcher`](https://react-reducer-provider.github.io/docs/reference-consumption-hooks.html).
+* [`injectReducer` · `injectReducerState` · `injectReducerDispatcher` · `injectMapper` · `injectMapperState` · `injectMapperDispatcher`](https://react-reducer-provider.github.io/docs/reference-consumption-hoc.html).
+* [Singleton](https://react-reducer-provider.github.io/docs/singleton.html).
+* [Nesting Providers](https://react-reducer-provider.github.io/docs/nesting.html).
 * Combining/Blending - Tagged Reducers/Mappers.
-  * [`AsyncTaggedReducerProvider` | `SyncTaggedReducerProvider` | `AsyncTaggedMapperProvider` | `SyncTaggedMapperProvider`](readme/blending-definition.md).
-  * [`useTaggedAny` | `useTaggedAnyState` | `useTaggedAnyDispatcher` | `useTaggedReducer` | `useTaggedReducerState` | `useTaggedReducerDispatcher` | `useTaggedMapper` | `useTaggedMapperState` | `useTaggedMapperDispatcher`](readme/blending-consumption-hooks.md).
-  * [`injectTaggedAny` | `injectTaggedAnyState` | `injectTaggedAnyDispatcher` | `injectTaggedReducer` | `injectTaggedReducerState` | `injectTaggedReducerDispatcher` | `injectTaggedMapper` | `injectMapperReducerState` | `injectMapperdReducerDispatcher`](readme/blending-consumption-hoc.md).
-* [Typings](readme/typings.md).
+  * [`AsyncTaggedReducerProvider` · `SyncTaggedReducerProvider` · `AsyncTaggedMapperProvider` · `SyncTaggedMapperProvider`](https://react-reducer-provider.github.io/docs/tagged-definition.html).
+  * [`useTaggedAny` · `useTaggedReducer` · `useTaggedReducerState` · `useTaggedReducerDispatcher` · `useTaggedMapper` · `useTaggedMapperState` · `useTaggedMapperDispatcher`](https://react-reducer-provider.github.io/docs/tagged-consumption-hooks.html).
+  * [`injectTaggedAny` · `injectTaggedReducer` · `injectTaggedReducerState` · `injectTaggedReducerDispatcher` · `injectTaggedMapper` · `injectTaggedMapperState` · `injectTaggedMapperDispatcher`](https://react-reducer-provider.github.io/docs/tagged-consumption-hoc.html).
+* [Typings](https://react-reducer-provider.github.io/docs/typings.html).
 * Extras:
-  * [With Injection](readme/with-injection.md).
-    * [with Flow typings](readme/with-injection-and-flow-typings.md).
-    * [with Typescript typings](readme/with-injection-and-ts-typings.md).
-  * [With Actions Creators](readme/with-actions-creators.md).
-    * [with Flow typings](readme/with-actions-creators-and-flow-typings.md).
-    * [with Typescript typings](readme/with-actions-creators-and-ts-typings.md).
-  * [Testing](readme/testing.md).
-  * [Examples from tests](tests/js).
-  * [Online examples](readme/online.md).
-  * [Typings' examples from tests](tests/typings).
-  * [Migration from `react-named-reducer` to `react-reducer-provider`](readme/migration.md).
-  * [Extending/Developing](readme/developing.md).
+  * [With Injection](https://react-reducer-provider.github.io/docs/with-injection.html).
+    * [with Flow typings](https://react-reducer-provider.github.io/docs/with-injection-and-flow-typings.html).
+    * [with Typescript typings](https://react-reducer-provider.github.io/docs/with-injection-and-ts-typings.html).
+  * [With Actions Creators](https://react-reducer-provider.github.io/docs/with-actions-creators.html).
+    * [with Flow typings](https://react-reducer-provider.github.io/docs/with-actions-creators-and-flow-typings.html).
+    * [with Typescript typings](https://react-reducer-provider.github.io/docs/with-actions-creators-and-ts-typings.html).
+  * [Testing](https://react-reducer-provider.github.io/docs/testing.html).
+  * Examples:
+    * **[Online examples](https://react-reducer-provider.github.io/docs/online.html)**.
+    * [Examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/HEAD/tests/js).
+    * [Typings' examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/HEAD/tests/typings).
+  * [Migration](https://react-reducer-provider.github.io/docs/migration.html).
+  * [Extending/Developing](https://react-reducer-provider.github.io/docs/developing.html).
 
-* [`CHANGELOG.md`](CHANGELOG.md): add information of notable changes for each version here, chronologically ordered ([Keep a Changelog](http://keepachangelog.com)).
+* [`CHANGELOG`](https://react-reducer-provider.github.io/docs/CHANGELOG.html): add information of notable changes for each version here, chronologically ordered ([Keep a Changelog](http://keepachangelog.com)).
 
 ## Contributing
 
@@ -245,7 +273,8 @@ __________________
 
 ## License
 
-[MIT License](LICENSE.txt)
+[MIT License](https://react-reducer-provider.github.io/LICENSE.txt)
+
 __________________
 
 ## Remember

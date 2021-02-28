@@ -5,8 +5,6 @@ import {
   SyncTaggedReducerProvider,
   AsyncTaggedReducerProvider,
   useTaggedAny,
-  useTaggedAnyState,
-  useTaggedAnyDispatcher,
   useTaggedReducer,
   useTaggedReducerState,
   useTaggedReducerDispatcher
@@ -20,14 +18,13 @@ import type {
 } from 'react'
 import type {
   Async,
+  Sync,
   Dispatcher,
   AnyAsyncDispatcher,
-  ProviderValue,
   SyncTaggedReducer,
   SyncTaggedReducerProps,
   AsyncTaggedReducerProps,
-  TaggedStates,
-  TaggedDispatchers,
+  TaggedProviderGetter,
   TaggedProviderValue
 
 } from '../../../src/react-reducer-provider'
@@ -47,6 +44,11 @@ interface TestStateN {
 const testInitialStateN: TestStateN = {
   lastAction: 0
 }
+
+interface TestSyncTaggedProviderGetter extends TaggedProviderGetter<'Tag1' | 'TagN', TestState1 | TestStateN> {}
+
+interface TestAsyncTaggedProviderGetter extends TaggedProviderGetter<'Tag1' | 'TagN', TestState1 | TestStateN, string, Async<TestState1 | TestStateN>> {}
+
 
 function TestSyncTaggedReducerProvider({ children }: {children: Element<any>}): Node {
   function testReduce1(prevState: TestState1, action: string, moreData1: string, moreDataN: {}) {
@@ -288,30 +290,28 @@ function TestAsyncTaggedReducerComponent(props: AsyncTaggedReducerProps): Node {
 }
 
 function TestUseTaggedAny(): Node {
-  const [ states, dispatchers ]: TaggedProviderValue<'Tag1' | 'TagN', TestState1 | TestStateN> = useTaggedAny<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedReducer')
+  const providers: TestSyncTaggedProviderGetter = useTaggedAny<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedReducer')
   return (
-    <button onClick={(): void => ((dispatchers.get('Tag1'): any): Dispatcher<any, any>)('ACTION1', 'somevalue1', {})}>
-      Child{((states.get('Tag1'): any): TestState1).lastAction}
+    <button onClick={(): void => ((providers.get('Tag1').dispatch: any): Dispatcher<any, any>)('ACTION1', 'somevalue1', {})}>
+      Child{((providers.get('TagN').state: any): TestState1).lastAction}
     </button>
   )
 }
 
 function TestUseTaggedAnyStateDispatcher(): Node {
-  const states: TaggedStates<'Tag1' | 'TagN', TestState1 | TestStateN> = useTaggedAnyState<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedReducer')
-  const dispatchers: TaggedDispatchers<'Tag1' | 'TagN'> = useTaggedAnyDispatcher<'Tag1' | 'TagN'>('testNamedReducer')
+  const providers: TestSyncTaggedProviderGetter = useTaggedAny<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedReducer')
   return (
-    <button onClick={(): void => ((dispatchers.get('Tag1'): any): Dispatcher<any, any>)('ACTION1', 'somevalue1', {})}>
-      Child{((states.get('Tag1'): any): TestState1).lastAction}
+    <button onClick={(): void => ((providers.get('Tag1')[1]: any): Dispatcher<any, any>)('ACTION1', 'somevalue1', {})}>
+      Child{((providers.get('TagN')[0]: any): TestState1).lastAction}
     </button>
   )
 }
 
 function TestUseTaggedAnyStateDispatcherForAsync(): Node {
-  const states: TaggedStates<'Tag1' | 'TagN', TestState1 | TestStateN> = useTaggedAnyState<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedReducer')
-  const dispatchers: TaggedDispatchers<'Tag1' | 'TagN'> = useTaggedAnyDispatcher<'Tag1' | 'TagN', AnyAsyncDispatcher<>>('testNamedReducer')
+  const providers: TestAsyncTaggedProviderGetter = useTaggedAny<'Tag1' | 'TagN', TestState1 | TestStateN, string, Async<TestState1 | TestStateN>>('testNamedReducer')
   return (
-    <button onClick={async (): Promise<void> => ((dispatchers.get('Tag1'): any): Dispatcher<any, any>)('ACTION1', 'somevalue1', {}).then(() => {})}>
-      Child{((states.get('Tag1'): any): TestState1).lastAction}
+    <button onClick={async (): Promise<void> => ((providers.get('Tag1').dispatch: any): Dispatcher<any, any>)('ACTION1', 'somevalue1', {}).then(() => {})}>
+      Child{((providers.get('TagN')[0]: any): TestState1).lastAction}
     </button>
   )
 }
@@ -339,7 +339,7 @@ function TestUseTaggedReducerStateDispatcherForAsync(): Node {
 }
 
 function TestUseTaggedReducer(): Node {
-  const [ state, dispatch ]: ProviderValue<TestState1, 'ACTION', TestState1> = useTaggedReducer<TestState1, 'ACTION', TestState1>('Tag1','testNamedReducer')
+  const [ state, dispatch ]: TaggedProviderValue<TestState1, 'ACTION', TestState1> = useTaggedReducer<TestState1, 'ACTION', TestState1>('Tag1','testNamedReducer')
   let result: string
   return (
     <button onClick={(): string => result = dispatch('ACTION', 'somevalue1', {}).lastAction}>
@@ -349,7 +349,7 @@ function TestUseTaggedReducer(): Node {
 }
 
 function TestUseTaggedReducerForAsync(): Node {
-  const [ state, dispatch ]: ProviderValue<TestState1, 'ACTION', Async<TestState1>> = useTaggedReducer<TestState1, 'ACTION', Async<TestState1>>('Tag1','testNamedReducer')
+  const [ state, dispatch ]: TaggedProviderValue<TestState1, 'ACTION', Async<TestState1>> = useTaggedReducer<TestState1, 'ACTION', Async<TestState1>>('Tag1','testNamedReducer')
   let result: string
   return (
     <button onClick={async (): Promise<string> => result = await dispatch('ACTION', 'somevalue1', {}).then(state => state.lastAction)}>

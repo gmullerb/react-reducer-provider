@@ -10,12 +10,8 @@ const captureProvider = function (id = SINGLETON_ID) {
   return providers.get(id)
 }
 
-const createProvider = function (children, value, id = SINGLETON_ID) {
-  return React.createElement(
-    (providers.get(id) || providers.set(id, React.createContext(null)).get(id)).Provider,
-    { value },
-    children
-  )
+const createProvider = function (id = SINGLETON_ID) {
+  return (providers.get(id) || providers.set(id, React.createContext(null)).get(id)).Provider
 }
 
 export {

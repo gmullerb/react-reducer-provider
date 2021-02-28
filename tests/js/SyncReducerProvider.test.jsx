@@ -112,7 +112,7 @@ describe('SyncReducerProvider tests', () => {
     expect(provider).toHaveText('ClickChild1')
   })
 
-  it('should reduce with useReducer', () => {
+  it('should reduce with useReducer tuple', () => {
     function testReduce(prevState, action) {
       return prevState + 1
     }
@@ -143,6 +143,142 @@ describe('SyncReducerProvider tests', () => {
     provider.update()
 
     expect(provider).toHaveText('Child2')
+  })
+
+  it('should reduce with useReducer object', () => {
+    function testReduce(prevState, action) {
+      return prevState + 1
+    }
+    const testInitialState = 0
+    const FunComponent = () => {
+      const { state, dispatch } = useReducer('testNamedReducer1')
+      return (
+        <button onClick={() => dispatch('ACTION1')}>
+          Child{state}
+        </button>
+      )
+    }
+    const provider = mount(
+      <SyncReducerProvider
+        id='testNamedReducer1'
+        reducer={testReduce}
+        initialState={testInitialState}
+      >
+        <FunComponent />
+      </SyncReducerProvider>
+    )
+
+    expect(provider).toHaveText('Child0')
+
+    provider.find('button').simulate('click')
+    provider.update()
+    provider.find('button').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('Child2')
+  })
+
+  it('should use a new reducer function', () => {
+    function testReduce(prevState, action) {
+      return prevState + 1
+    }
+    function testReduce2(prevState, action) {
+      return prevState + 10
+    }
+    const testInitialState = 0
+    const FunComponent = () => {
+      const { state, dispatch } = useReducer('testNamedReducer1a')
+      return (
+        <button id='inner' onClick={() => dispatch('ACTION1')}>
+          Child{state}
+        </button>
+      )
+    }
+    const MainComponent = () => {
+      const [ reducer, setReducer ] = React.useState({ fun: testReduce })
+      return (
+        <>
+          <button id='outer' onClick={() => setReducer({ fun: testReduce2 })}>
+            Change Reducer
+          </button>
+          <SyncReducerProvider
+            id='testNamedReducer1a'
+            reducer={reducer.fun}
+            initialState={testInitialState}
+          >
+            <FunComponent />
+          </SyncReducerProvider>
+        </>
+      )
+    }
+    const provider = mount(<MainComponent />)
+
+    expect(provider).toHaveText('Change ReducerChild0')
+
+    provider.find('#inner').simulate('click')
+    provider.update()
+    provider.find('#inner').simulate('click')
+    provider.update()
+    expect(provider).toHaveText('Change ReducerChild2')
+
+    provider.find('#outer').simulate('click')
+    provider.update()
+    provider.find('#inner').simulate('click')
+    provider.update()
+    provider.find('#inner').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('Change ReducerChild22')
+  })
+
+  it('should default to last state when reducer is set to null', () => {
+    function testReduce(prevState, action) {
+      return prevState + 1
+    }
+    const testInitialState = 0
+    const FunComponent = () => {
+      const { state, dispatch } = useReducer('testNamedReducer1a')
+      return (
+        <button id='inner' onClick={() => dispatch('ACTION1')}>
+          Child{state}
+        </button>
+      )
+    }
+    const MainComponent = () => {
+      const [ reducer, setReducer ] = React.useState({ fun: testReduce })
+      return (
+        <>
+          <button id='outer' onClick={() => setReducer({ fun: null })}>
+            Change Reducer
+          </button>
+          <SyncReducerProvider
+            id='testNamedReducer1a'
+            reducer={reducer.fun}
+            initialState={testInitialState}
+          >
+            <FunComponent />
+          </SyncReducerProvider>
+        </>
+      )
+    }
+    const provider = mount(<MainComponent />)
+
+    expect(provider).toHaveText('Change ReducerChild0')
+
+    provider.find('#inner').simulate('click')
+    provider.update()
+    provider.find('#inner').simulate('click')
+    provider.update()
+    expect(provider).toHaveText('Change ReducerChild2')
+
+    provider.find('#outer').simulate('click')
+    provider.update()
+    provider.find('#inner').simulate('click')
+    provider.update()
+    provider.find('#inner').simulate('click')
+    provider.update()
+
+    expect(provider).toHaveText('Change ReducerChild2')
   })
 
   it('should get nested providers', () => {
@@ -1070,5 +1206,47 @@ describe('SyncReducerProvider tests', () => {
     provider.update()
 
     expect(provider).toHaveText('ClickChildWhat!')
+  })
+
+  it('should not re-render when same state', () => {
+    const testInitialState = '0'
+    let redrawsDispatcher = 0
+    const FunComponent1 = () => {
+      const dispatch = useReducerDispatcher('testNamedReducer2')
+      return (
+        <button onClick={() => dispatch('ACTION1')}>
+          Click
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useReducerState('testNamedReducer2')
+      redrawsDispatcher++
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <SyncReducerProvider
+        id='testNamedReducer2'
+        reducer={testReduce}
+        initialState={testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </SyncReducerProvider>
+    )
+    expect(provider).toHaveText('ClickChild0')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    expect(redrawsDispatcher).toBe(2)
+    expect(provider).toHaveText('ClickChild1')
   })
 })

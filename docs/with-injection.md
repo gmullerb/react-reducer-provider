@@ -6,23 +6,24 @@
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "4.4.0",
+    "react-reducer-provider": "5.0.0",
     ..
 ```
 
 2 . Create the Reducer Provider:
 
-**`SomeReducerProvider.tsx`**:
+* Define the State.
+* Define the Reducer.
 
-```tsx
-import React, {
-  ReactElement,
-  ReactNode } from 'react'
+**`SomeReducerProvider.jsx`**:
+
+```jsx
+import React from 'react'
 import { SyncReducerProvider } from 'react-reducer-provider'
 
-const initialState: number = 0
+const initialState = 0
 
-function reduce(prevState: number, action: string): number {
+function reduce(prevState, action) {
   switch (action) {
     case 'ACTION1':
       return prevState + 1
@@ -33,7 +34,7 @@ function reduce(prevState: number, action: string): number {
   }
 }
 
-function SomeReducerProvider({ children }: {children: ReactNode}): ReactElement {
+function SomeReducerProvider({ children }) {
   return (
     <SyncReducerProvider
       id='someNamedReducer'
@@ -52,13 +53,12 @@ export {
 
 3 . Define some Components:
 
-`SomeComponent1.tsx`:
+`SomeComponent1.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
-import { Dispatcher } from 'react-reducer-provider'
+```jsx
+import React from 'react'
 
-export default function SomeComponent1({dispatch}: {dispatch: Dispatcher<string>}): ReactElement {
+export default function SomeComponent1({dispatch}) {
   return (
     <button onClick={() => dispatch('ACTION1')}>
       Go up!
@@ -67,13 +67,12 @@ export default function SomeComponent1({dispatch}: {dispatch: Dispatcher<string>
 }
 ```
 
-`SomeComponent2.tsx`:
+`SomeComponent2.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
-import { Dispatcher } from 'react-reducer-provider'
+```jsx
+import React from 'react'
 
-export default function SomeComponent2({dispatch}: {dispatch: Dispatcher<string>}): ReactElement {
+export default function SomeComponent2({dispatch}) {
   return (
     <button onClick={() => dispatch('ACTION2')}>
       Go down!
@@ -82,12 +81,12 @@ export default function SomeComponent2({dispatch}: {dispatch: Dispatcher<string>
 }
 ```
 
-`SomeComponentN.tsx`:
+`SomeComponentN.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
+```jsx
+import React from 'react'
 
-export default function SomeComponentN({currentState}: {currentState: number}): ReactElement {
+export default function SomeComponentN({currentState}) {
   return (
     <div>
       Current:{currentState}
@@ -98,17 +97,17 @@ export default function SomeComponentN({currentState}: {currentState: number}): 
 
 4 . Create the bridge between the Reducer Provider and the Components:
 
-`SomeContainer.tsx`:
+`SomeContainer.jsx`:
 
-```tsx
+```jsx
 import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
-import React, { ReactElement } from 'react'
 import { useReducer } from 'react-reducer-provider'
+import React from 'react'
 
-export default function SomeContainer(): ReactElement {
-  const [ state, dispatch ] = useReducer<number, string>('someNamedReducer')
+export default function SomeContainer() {
+  const [ state, dispatch ] = useReducer('someNamedReducer')
   return (
     <div>
       <SomeComponent1 dispatch={dispatch}/>
@@ -124,9 +123,9 @@ export default function SomeContainer(): ReactElement {
 ```jsx
 import SomeContainer from './path/to/SomeContainer'
 import { SomeReducerProvider } from '../path/to/SomeReducerProvider'
-import React, { ReactElement } from 'react'
+import React from 'react'
 
-export default function SomeContainer(): ReactElement {
+export default function SomeContainer() {
   return (
     <SomeReducerProvider>
       <SomeContainer />
@@ -134,6 +133,11 @@ export default function SomeContainer(): ReactElement {
   )
 }
 ```
+
+> This example can be checked on line at [gmullerb-react-reducer-provider-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-2co8d?module=%2Fsrc%2FSomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-with-injection](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-2co8d?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> [with Flow typings](with-injection-and-flow-typings.md).  
+> [with Typescript typings](with-injection-and-ts-typings.md).  
 
 ## Main documentation
 

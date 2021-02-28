@@ -18,12 +18,15 @@
   "rules": {
     "no-console": "error",
     "no-invalid-this": "error",
-    "import/group-exports": "error",
+    "no-throw-literal": "off",
     "import/exports-last": "error",
     "quotes":  [
       "error",
-      "single"
+      "single", {
+        "avoidEscape": true
+      }
     ],
+    "max-len": ["error", { "code": 160, "ignoreComments": true } ],
     "react/no-multi-comp": "off",
     "react/display-name": "off",
     "semi": [

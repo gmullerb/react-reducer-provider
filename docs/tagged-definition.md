@@ -131,7 +131,20 @@ or
 </SyncTaggedMapperProvider>
 ```
 
-> [1] Internally are implemented only using [`useState` hook](https://reactjs.org/docs/hooks-reference.html#usestate) and [`useRef` hook](https://reactjs.org/docs/hooks-reference.html#useref).
+> [1] No check is made for asynchronous reducer/mapper, i.e. use `AsyncReducerProvider`/`AsyncMapperProvider` for asynchronous reducer/mapper to avoid *setting state to a `Promise`* (unless that is intentional).
+
+### Properties change
+
+Any change to the **initial Properties** for **mounted** State Providers will be ignored for rendering, in order to improve performance, but not for processing, i.e. props changes will not cause re-rendering, although the new reducers/mappers will be used for calculating new states.
+
+* `id` change is totally ignored.
+* new `reducers`/`mappers` will be used.
+  * `tag` change will be totally ignored.
+  * new initial state for each tag will be ignored.
+  * new `reducer`/`mapper` will be used.
+    * If `reducer`/`mapper` are set to `null` or `undefined`, then it will disabled the processor and return the last state achieved for every following dispatching until a new `reducer`/`mapper` is set again.
+
+> If unmounted, olds state will be lost when mounted again and a new fresh state will be used.
 
 ### Tagged Dispatcher
 
@@ -159,19 +172,50 @@ dispatch('Tag1', action, arg1, argN)
 
 > By default, when using typings return value is ignored, i.e is `void` or `Promise<void>`.
 
+### Exceptions
+
+If reducer or mapper may throw an exception then the code calling the dispatcher should handle this situations:
+
+synchronous reducer/mapper
+
+```js
+  try {
+    dispatch('Tag1', 'ACTION1')
+    ..
+  }
+  catch(error)
+  {
+    ..
+  }
+```
+
+asynchronous reducer/mapper
+
+```js
+  dispatch('Tag1', 'ACTION1')
+    .then(..)
+    .catch(error => ..)
+  }
+```
+
+> * Remember you design the reducer/mapper, so you must be aware if exceptions are possible.
+> * In case of exceptions is better to handle them inside reducer/mapper.
+
 ## Reducer/Mapper Consumption
 
-### [Function Components - Hooks](blending-consumption-hooks.md)
+### [Function Components - Hooks](tagged-consumption-hooks.md)
 
-### [Class Components - HOC](blending-consumption-hoc.md)
+### [Class Components - HOC](tagged-consumption-hoc.md)
 
 __________________
 
 ## More Documentation
 
+* [`useTaggedAny` · `useTaggedReducer` · `useTaggedReducerState` · `useTaggedReducerDispatcher` · `useTaggedMapper` · `useTaggedMapperState` · `useTaggedMapperDispatcher`](tagged-consumption-hooks.md).
+* [`injectTaggedAny` · `injectTaggedReducer` · `injectTaggedReducerState` · `injectTaggedReducerDispatcher` · `injectTaggedMapper` · `injectTaggedMapperState` · `injectTaggedMapperDispatcher`](tagged-consumption-hoc.md).
 * [`AsyncReducerProvider`,`SyncReducerProvider`,`AsyncMapperProvider`&`SyncMapperProvider`](reference.md#definition).
 * [`useReducer`,`useReducerState`,`useReducerDispatcher`,`useMapper`,`useMapperState`&`useMapperDispatcher`](reference.md#consumption)
-* [`injectReducer` | `injectReducerState` | `injectReducerDispatcher` | `injectMapper` | `injectMapperState` | `injectMapperDispatcher`](reference-consumption-hoc.md).
+* [`injectReducer` · `injectReducerState` · `injectReducerDispatcher` · `injectMapper` · `injectMapperState` · `injectMapperDispatcher`](reference-consumption-hoc.md).
 * [Singleton](singleton.md).
 * [Nesting Providers](nesting.md).
 * [Typings](typings.md).

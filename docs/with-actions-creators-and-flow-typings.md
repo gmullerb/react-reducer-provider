@@ -1,4 +1,4 @@
-# React Reducer Provider with Actions Creators and Typescript typings
+# React Reducer Provider with Actions Creators and Flow typings
 
 1 . Add **react-reducer-provider** (and prerequisite) to `package.json`:
 
@@ -6,15 +6,15 @@
   ..
   "dependencies": {
     "react": "^16.8.0"
-    "react-reducer-provider": "4.4.0",
+    "react-reducer-provider": "5.0.0",
     ..
 ```
 
 2 . Define the States, the Actions and the Reducer:
 
-`SomeReducer.ts`:
+`SomeReducer.js`:
 
-```ts
+```js
 const initialState: number = 0
 
 function reduce(prevState: number, action: string): number {
@@ -36,17 +36,19 @@ export {
 
 3 . Create the Reducer Provider:
 
-**`SomeReducerProvider.tsx`**:
+**`SomeReducerProvider.jsx`**:
 
-```tsx
+```jsx
 import { initialState, reduce } from '../path/to/SomeReducer'
-import React, {
-  ReactElement,
-  ReactNode,
-} from 'react'
+import React from 'react'
 import { SyncReducerProvider } from 'react-reducer-provider'
 
-function SomeReducerProvider({ children }: {children: ReactNode}): ReactElement {
+import type {
+  Element,
+  Node
+} from 'react'
+
+function SomeReducerProvider({ children }: {children: Element<any>}): Node {
   return (
     <SyncReducerProvider
       id='someNamedReducer'
@@ -59,15 +61,16 @@ function SomeReducerProvider({ children }: {children: ReactNode}): ReactElement 
 }
 
 export {
+  someNamedReducer as default,
   SomeReducerProvider
 }
 ```
 
 4 . Define the Actions Creators through a custom React Hook, which will represent the bridge between the Reducer Provider and the Components:
 
-`SomeActions.ts`:
+`SomeActions.js`:
 
-```ts
+```js
 import { useReducer } from 'react-reducer-provider'
 
 interface SomeActions {
@@ -80,7 +83,7 @@ interface UseActions {
   actions: SomeActions;
 }
 
-function useActions(): SomeActions {
+export default function useActions(): SomeActions {
   const [ state, dispatch ] = useReducer<number, string>('someNamedReducer')
   return {
     state,
@@ -106,12 +109,14 @@ export {
 
 5 . Define some Components:
 
-`SomeComponent1.tsx`:
+`SomeComponent1.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
+```jsx
+import React from 'react'
 
-export default function SomeComponent1({onClick}: {onClick: () => void}): ReactElement {
+import type { Node } from 'react'
+
+export default function SomeComponent1({onClick}: {onClick: () => void}): Node {
   return (
     <button onClick={onClick}>
       Go up!
@@ -120,12 +125,14 @@ export default function SomeComponent1({onClick}: {onClick: () => void}): ReactE
 }
 ```
 
-`SomeComponent2.tsx`:
+`SomeComponent2.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
+```jsx
+import React from 'react'
 
-export default function SomeComponent2({onClick}: {onClick: () => void}): ReactElement {
+import type { Node } from 'react'
+
+export default function SomeComponent2({onClick}: {onClick: () => void}): Node {
   return (
     <button onClick={onClick}>
       Go down!
@@ -134,12 +141,14 @@ export default function SomeComponent2({onClick}: {onClick: () => void}): ReactE
 }
 ```
 
-`SomeComponentN.tsx`:
+`SomeComponentN.jsx`:
 
-```tsx
-import React, { ReactElement } from 'react'
+```jsx
+import React from 'react'
 
-export default function SomeComponentN({currentState}: {currentState: number}): ReactElement {
+import type { Node } from 'react'
+
+export default function SomeComponentN({currentState}: {currentState: number}): Node {
   return (
     <div>
       Current:{currentState}
@@ -150,16 +159,20 @@ export default function SomeComponentN({currentState}: {currentState: number}): 
 
 6 . Use Actions Creators:
 
-`SomeContainer.tsx`:
+`SomeContainer.jsx`:
 
-```tsx
+```jsx
 import SomeComponent1 from './path/to/SomeComponent1'
 import SomeComponent2 from './path/to/SomeComponent2'
 import SomeComponentN from './path/to/SomeComponentN'
-import useActions, { UseActions } from './path/to/SomeActions'
-import React, { ReactElement } from 'react'
+import someNamedReducer from '../path/to/SomeReducerProvider'
+import useActions from './path/to/SomeActions'
+import React from 'react'
 
-export default function SomeContainer(): ReactElement {
+import type { UseActions } from './path/to/SomeActions'
+import type { Node } from 'react'
+
+export default function SomeContainer(): Node {
   const {state, actions}: UseActions = useActions()
   return (
     <div>
@@ -176,9 +189,11 @@ export default function SomeContainer(): ReactElement {
 ```jsx
 import SomeContainer from './path/to/SomeContainer'
 import { SomeReducerProvider } from '../path/to/SomeReducerProvider'
-import React, { ReactElement } from 'react'
+import React from 'react'
 
-export default function SomeContainer(): ReactElement {
+import type { Node } from 'react'
+
+export default function SomeContainer(): Node {
   return (
     <SomeReducerProvider>
       <SomeContainer />
