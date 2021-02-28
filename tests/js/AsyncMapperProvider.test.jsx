@@ -14,9 +14,9 @@ import {
 async function testMap(action) {
   switch (action) {
     case 'ACTION1':
-      return await delay(5, { value: '1' })
+      return await delay(1, { value: '1' })
     default:
-      return await delay(5, { value: '0' })
+      return await delay(1, { value: '0' })
   }
 }
 
@@ -155,9 +155,9 @@ describe('AsyncMapperProvider tests', () => {
     async function testMapArgs(action, extra) {
       switch (action) {
         case 'ACTION1':
-          return await delay(5, { value: extra })
+          return await delay(1, { value: extra })
         default:
-          return await delay(5, { value: '0' })
+          return await delay(1, { value: '0' })
       }
     }
     const FunComponent1 = () => {
@@ -193,5 +193,50 @@ describe('AsyncMapperProvider tests', () => {
 
     await delay(10)
     expect(provider).toHaveText('ClickSuperbChildSuperb')
+  })
+
+  it('should not re-render when same state', async () => {
+    const testInitialState = 'A'
+    let redrawsDispatcher = 0
+    const FunComponent1 = () => {
+      const dispatch = useMapperDispatcher(557)
+      return (
+        <button onClick={() => dispatch('ACTION1')}>
+          Click
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useMapperState(557)
+      redrawsDispatcher++
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <AsyncMapperProvider
+        id={557}
+        mapper={testMap}
+        initialState={testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </AsyncMapperProvider>
+    )
+    expect(provider).toHaveText('ClickChildA')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    await delay(10)
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    await delay(10)
+    expect(redrawsDispatcher).toBe(2)
+    expect(provider).toHaveText('ClickChild1')
   })
 })

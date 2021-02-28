@@ -1,10 +1,17 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 // Licensed under the MIT License (MIT), see LICENSE.txt
-import { createTaggedMapperProvider } from './TaggedMapperProvider'
-import { rebuildTagged } from './TaggedBuilder'
+import * as React from 'react'
 
-export function AsyncTaggedMapperProvider(props) {
-  return createTaggedMapperProvider(props, (statesRef, setStates, tag, mapper) => async (action, ...args) =>
-    rebuildTagged(statesRef, setStates, tag, await mapper(action, ...args))
-  )
+import { imbueTaggedStateProvider, nextStateForTagged, setTaggedContextValue } from './imbueTaggedStateProvider'
+
+export class AsyncTaggedMapperProvider extends React.Component {
+  constructor(props) {
+    super(props)
+    imbueTaggedStateProvider(this, props.id, props.mappers)
+  }
+
+  async wd(tag, index, action, ...args) {
+    const processor = this._ps.get(tag) // This is never null
+    return setTaggedContextValue(this, processor, await nextStateForTagged(processor, this.props.mappers, index, action, ...args))
+  }
 }

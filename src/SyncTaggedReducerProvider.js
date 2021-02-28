@@ -1,10 +1,17 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 // Licensed under the MIT License (MIT), see LICENSE.txt
-import { createTaggedReducerProvider } from './TaggedReducerProvider'
-import { rebuildTagged } from './TaggedBuilder'
+import * as React from 'react'
 
-export function SyncTaggedReducerProvider(props) {
-  return createTaggedReducerProvider(props, (statesRef, setStates, tag, reducer) => (action, ...args) =>
-    rebuildTagged(statesRef, setStates, tag, reducer(statesRef.current.get(tag), action, ...args))
-  )
+import { imbueTaggedStateProvider, nextStateForTagged, setTaggedContextValue } from './imbueTaggedStateProvider'
+
+export class SyncTaggedReducerProvider extends React.Component {
+  constructor(props) {
+    super(props)
+    imbueTaggedStateProvider(this, props.id, props.reducers)
+  }
+
+  wd(tag, index, action, ...args) {
+    const processor = this._ps.get(tag) // This is never null
+    return setTaggedContextValue(this, processor, nextStateForTagged(processor, this.props.reducers, index, processor.state, action, ...args))
+  }
 }

@@ -6,10 +6,6 @@ import { mount } from 'enzyme'
 import {
   SyncTaggedReducerProvider,
   injectTaggedAny,
-  injectTaggedAnyDispatcher,
-  injectTaggedAnyState,
-
-
   injectTaggedReducer,
   injectTaggedReducerState,
   injectTaggedReducerDispatcher
@@ -41,8 +37,7 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
     const testInitialStateN = 0
     class ClassComponentA11 extends React.Component {
       render() {
-        const [ , dispatchers ] = this.props.reducers
-        const dispatch = dispatchers.get('Tag1')
+        const dispatch = this.props.reducers.get('Tag1').dispatch
         return (
           <button id='F1' onClick={() => dispatch('ACTION1')}>
             Click1
@@ -53,8 +48,7 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
     const ClassComponent11 = injectTaggedAny(ClassComponentA11, 'reducers', 'someTaggedReducerS0')
     class ClassComponentA12 extends React.Component {
       render() {
-        const [ states ] = this.props.reducers
-        const state = states.get('Tag1')
+        const state = this.props.reducers.get('Tag1').state
         return (
           <div>
             Child1{state}
@@ -65,9 +59,8 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
     const ClassComponent12 = injectTaggedAny(ClassComponentA12, 'reducers', 'someTaggedReducerS0')
     class ClassComponentAN1 extends React.Component {
       render() {
-        const [ , dispatchers ] = this.props.reducers
         return (
-          <button id= 'FN' onClick={() => dispatchers.get('TagN')('ACTION1')}>
+          <button id= 'FN' onClick={() => this.props.reducers.get('TagN').dispatch('ACTION1')}>
             ClickN
           </button>
         )
@@ -76,10 +69,9 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
     const ClassComponentN1 = injectTaggedAny(ClassComponentAN1, 'reducers', 'someTaggedReducerS0')
     class ClassComponentAN2 extends React.Component {
       render() {
-        const [ states ] = this.props.reducers
         return (
           <div>
-            ChildN{states.get('TagN')}
+            ChildN{this.props.reducers.get('TagN').state}
           </div>
         )
       }
@@ -112,12 +104,12 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
     expect(provider).toHaveText('Click1Child1AClickNChildN1')
   })
 
-  it('should reduce with injectTaggedAnyDispatcher and get state with injectTaggedAnyState', () => {
+  it('should reduce with injectTaggedAny and get state with injectTaggedAny', () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
     class ClassComponentA11 extends React.Component {
       render() {
-        const dispatch = this.props.dispatchers.get('Tag1')
+        const dispatch = this.props.dispatchers.get('Tag1').dispatch
         return (
           <button id='F1' onClick={() => dispatch('ACTION1')}>
             Click1
@@ -125,10 +117,10 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
         )
       }
     }
-    const ClassComponent11 = injectTaggedAnyDispatcher(ClassComponentA11, 'dispatchers', 'someTaggedReducerS1')
+    const ClassComponent11 = injectTaggedAny(ClassComponentA11, 'dispatchers', 'someTaggedReducerS1')
     class ClassComponentA12 extends React.Component {
       render() {
-        const state = this.props.states.get('Tag1')
+        const state = this.props.states.get('Tag1').state
         return (
           <div>
             Child1{state}
@@ -136,27 +128,27 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
         )
       }
     }
-    const ClassComponent12 = injectTaggedAnyState(ClassComponentA12, 'states', 'someTaggedReducerS1')
+    const ClassComponent12 = injectTaggedAny(ClassComponentA12, 'states', 'someTaggedReducerS1')
     class ClassComponentAN1 extends React.Component {
       render() {
         return (
-          <button id= 'FN' onClick={() => this.props.dispatchers.get('TagN')('ACTION1')}>
+          <button id= 'FN' onClick={() => this.props.dispatchers.get('TagN').dispatch('ACTION1')}>
             ClickN
           </button>
         )
       }
     }
-    const ClassComponentN1 = injectTaggedAnyDispatcher(ClassComponentAN1, 'dispatchers', 'someTaggedReducerS1')
+    const ClassComponentN1 = injectTaggedAny(ClassComponentAN1, 'dispatchers', 'someTaggedReducerS1')
     class ClassComponentAN2 extends React.Component {
       render() {
         return (
           <div>
-            ChildN{this.props.states.get('TagN')}
+            ChildN{this.props.states.get('TagN').state}
           </div>
         )
       }
     }
-    const ClassComponentN2 = injectTaggedAnyState(ClassComponentAN2, 'states', 'someTaggedReducerS1')
+    const ClassComponentN2 = injectTaggedAny(ClassComponentAN2, 'states', 'someTaggedReducerS1')
     const provider = mount(
       <SyncTaggedReducerProvider
         id='someTaggedReducerS1'
@@ -426,7 +418,7 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
     let newStateN = null
     class ClassComponentA11 extends React.Component {
       render() {
-        const dispatch = this.props.dispatchers.get('Tag1')
+        const dispatch = this.props.dispatchers.get('Tag1').dispatch
         return (
           <button id='F1' onClick={() => newState1 = dispatch('ACTION1')}>
             Click1
@@ -434,10 +426,10 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
         )
       }
     }
-    const ClassComponent11 = injectTaggedAnyDispatcher(ClassComponentA11, 'dispatchers', 'someTaggedReducerS6')
+    const ClassComponent11 = injectTaggedAny(ClassComponentA11, 'dispatchers', 'someTaggedReducerS6')
     class ClassComponentA12 extends React.Component {
       render() {
-        const state = this.props.states.get('Tag1')
+        const state = this.props.states.get('Tag1').states
         return (
           <div>
             Child1{state}
@@ -445,7 +437,7 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
         )
       }
     }
-    const ClassComponent12 = injectTaggedAnyState(ClassComponentA12, 'states', 'someTaggedReducerS6')
+    const ClassComponent12 = injectTaggedAny(ClassComponentA12, 'states', 'someTaggedReducerS6')
     class ClassComponentAN1 extends React.Component {
       render() {
         return (
@@ -505,7 +497,7 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
     }
     class ClassComponentA11 extends React.Component {
       render() {
-        const dispatch = this.props.dispatchers.get('Tag1')
+        const dispatch = this.props.dispatchers.get('Tag1').dispatch
         return (
           <button id='F1' onClick={() => dispatch('ACTION1', 'A')}>
             Click1
@@ -513,10 +505,10 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
         )
       }
     }
-    const ClassComponent11 = injectTaggedAnyDispatcher(ClassComponentA11, 'dispatchers', 'someTaggedReducerS7')
+    const ClassComponent11 = injectTaggedAny(ClassComponentA11, 'dispatchers', 'someTaggedReducerS7')
     class ClassComponentA12 extends React.Component {
       render() {
-        const state = this.props.states.get('Tag1')
+        const state = this.props.states.get('Tag1').state
         return (
           <div>
             Child1{state}
@@ -524,7 +516,7 @@ describe('SyncTaggedReducerProvider for Class components tests', () => {
         )
       }
     }
-    const ClassComponent12 = injectTaggedAnyState(ClassComponentA12, 'states', 'someTaggedReducerS7')
+    const ClassComponent12 = injectTaggedAny(ClassComponentA12, 'states', 'someTaggedReducerS7')
     class ClassComponentAN1 extends React.Component {
       render() {
         return (

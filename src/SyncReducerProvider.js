@@ -1,11 +1,16 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 // Licensed under the MIT License (MIT), see LICENSE.txt
-import { createReducerProvider } from './ReducerProvider'
+import * as React from 'react'
 
-export function SyncReducerProvider(props) {
-  return createReducerProvider(props, (stateRef, reRenderTrigger) => (action, ...args) => {
-    stateRef.current = props.reducer(stateRef.current, action, ...args)
-    reRenderTrigger(stateRef.current)
-    return stateRef.current
-  })
+import { imbueStateProvider, nextState, setContextValue } from './imbueStateProvider'
+
+export class SyncReducerProvider extends React.Component {
+  constructor(props) {
+    super(props)
+    imbueStateProvider(this, props)
+  }
+
+  wd(action, ...args) {
+    return setContextValue(this, nextState(this, this.props.reducer, this.state.value.state, action, ...args))
+  }
 }

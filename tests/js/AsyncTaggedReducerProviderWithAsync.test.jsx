@@ -7,8 +7,6 @@ import { mount } from 'enzyme'
 import {
   AsyncTaggedReducerProvider,
   useTaggedAny,
-  useTaggedAnyState,
-  useTaggedAnyDispatcher,
   useTaggedReducer,
   useTaggedReducerState,
   useTaggedReducerDispatcher
@@ -17,7 +15,7 @@ import {
 async function testReduce1(prevState, action) {
   switch (action) {
     case 'ACTION1':
-      return await delay(5, { value: 'A' })
+      return await delay(1, { value: 'A' })
     default:
       return prevState
   }
@@ -26,7 +24,7 @@ async function testReduce1(prevState, action) {
 async function testReduceN(prevState, action) {
   switch (action) {
     case 'ACTION1':
-      return await delay(5, { value: 1 })
+      return await delay(1, { value: 1 })
     default:
       return prevState
   }
@@ -61,8 +59,8 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
     const FunComponent11 = () => {
-      const [ , dispatchers ] = useTaggedAny('someTaggedReducerS0')
-      const dispatch = dispatchers.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS0')
+      const dispatch = reducers.get('Tag1').dispatch
       return (
         <button id='F1' onClick={() => dispatch('ACTION1')}>
           Click1
@@ -70,8 +68,8 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent12 = () => {
-      const [ states ] = useTaggedAny('someTaggedReducerS0')
-      const state = states.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS0')
+      const state = reducers.get('Tag1').state
       return (
         <div>
           Child1{state}
@@ -79,18 +77,18 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponentN1 = () => {
-      const [ , dispatchers ] = useTaggedAny('someTaggedReducerS0')
+      const reducers = useTaggedAny('someTaggedReducerS0')
       return (
-        <button id= 'FN' onClick={() => dispatchers.get('TagN')('ACTION1')}>
+        <button id= 'FN' onClick={() => reducers.get('TagN').dispatch('ACTION1')}>
           ClickN
         </button>
       )
     }
     const FunComponentN2 = () => {
-      const [ states ] = useTaggedAny('someTaggedReducerS0')
+      const reducers = useTaggedAny('someTaggedReducerS0')
       return (
         <div>
-          ChildN{states.get('TagN')}
+          ChildN{reducers.get('TagN').state}
         </div>
       )
     }
@@ -127,8 +125,8 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
     const FunComponent11 = () => {
-      const [ , dispatchers ] = useTaggedAny('someTaggedReducerS0f')
-      const dispatch = dispatchers.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS0f')
+      const dispatch = reducers.get('Tag1').dispatch
       return (
         <button id='F1' onClick={() => dispatch('ACTION1')}>
           Click1
@@ -136,8 +134,8 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent12 = () => {
-      const [ states ] = useTaggedAny('someTaggedReducerS0f')
-      const state = states.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS0f')
+      const state = reducers.get('Tag1').state
       return (
         <div>
           Child1{state}
@@ -145,18 +143,18 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponentN1 = () => {
-      const [ , dispatchers ] = useTaggedAny('someTaggedReducerS0f')
+      const reducers = useTaggedAny('someTaggedReducerS0f')
       return (
-        <button id= 'FN' onClick={() => dispatchers.get('TagN')('ACTION1')}>
+        <button id= 'FN' onClick={() => reducers.get('TagN').dispatch('ACTION1')}>
           ClickN
         </button>
       )
     }
     const FunComponentN2 = () => {
-      const [ states ] = useTaggedAny('someTaggedReducerS0f')
+      const reducers = useTaggedAny('someTaggedReducerS0f')
       return (
         <div>
-          ChildN{states.get('TagN')}
+          ChildN{reducers.get('TagN').state}
         </div>
       )
     }
@@ -189,12 +187,12 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
     expect(provider).toHaveText('Click1Child1AClickNChildN1')
   })
 
-  it('should reduce with useTaggedAnyDispatcher and get state with useTaggedAnyState', async () => {
+  it('should reduce with useTaggedAny and get state with useTaggedAny', async () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0
     const FunComponent11 = () => {
-      const dispatchers = useTaggedAnyDispatcher('someTaggedReducerS1')
-      const dispatch = dispatchers.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS1')
+      const dispatch = reducers.get('Tag1').dispatch
       return (
         <button id='F1' onClick={() => dispatch('ACTION1')}>
           Click1
@@ -202,8 +200,8 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent12 = () => {
-      const states = useTaggedAnyState('someTaggedReducerS1')
-      const state = states.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS1')
+      const state = reducers.get('Tag1').state
       return (
         <div>
           Child1{state}
@@ -211,18 +209,18 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponentN1 = () => {
-      const dispatchers = useTaggedAnyDispatcher('someTaggedReducerS1')
+      const reducers = useTaggedAny('someTaggedReducerS1')
       return (
-        <button id= 'FN' onClick={() => dispatchers.get('TagN')('ACTION1')}>
+        <button id= 'FN' onClick={() => reducers.get('TagN').dispatch('ACTION1')}>
           ClickN
         </button>
       )
     }
     const FunComponentN2 = () => {
-      const states = useTaggedAnyState('someTaggedReducerS1')
+      const reducers = useTaggedAny('someTaggedReducerS1')
       return (
         <div>
-          ChildN{states.get('TagN')}
+          ChildN{reducers.get('TagN').state}
         </div>
       )
     }
@@ -467,8 +465,8 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
     let newState1 = null
     let newStateN = null
     const FunComponent11 = () => {
-      const dispatchers = useTaggedAnyDispatcher('someTaggedReducerS6')
-      const dispatch = dispatchers.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS6')
+      const dispatch = reducers.get('Tag1').dispatch
       return (
         <button id='F1' onClick={() => newState1 = dispatch('ACTION1')}>
           Click1
@@ -476,8 +474,8 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent12 = () => {
-      const states = useTaggedAnyState('someTaggedReducerS6')
-      const state = states.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS6')
+      const state = reducers.get('Tag1').state
       return (
         <div>
           Child1{state}
@@ -540,8 +538,8 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
       }
     }
     const FunComponent11 = () => {
-      const dispatchers = useTaggedAnyDispatcher('someTaggedReducerS7')
-      const dispatch = dispatchers.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS7')
+      const dispatch = reducers.get('Tag1').dispatch
       return (
         <button id='F1' onClick={() => dispatch('ACTION1', 'A')}>
           Click1
@@ -549,8 +547,8 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent12 = () => {
-      const states = useTaggedAnyState('someTaggedReducerS7')
-      const state = states.get('Tag1')
+      const reducers = useTaggedAny('someTaggedReducerS7')
+      const state = reducers.get('Tag1').state
       return (
         <div>
           Child1{state}
@@ -660,8 +658,8 @@ describe('AsyncTaggedReducerProvider with Async reducer tests', () => {
       )
     }
     const FunComponent1 = () => {
-      const dispatchers = useTaggedAnyDispatcher('someTaggedReducerS8')
-      const dispatch = dispatchers.get('TagN')
+      const reducers = useTaggedAny('someTaggedReducerS8')
+      const dispatch = reducers.get('TagN').dispatch
       redrawsDispatcher++
       useReducerDispatcherSet.add(dispatch)
       return React.useMemo(() => (

@@ -1,91 +1,104 @@
 // Copyright (c) 2020 Gonzalo Müller Bravo.
-
-import type {
-  Element,
-  Node,
-  AbstractComponent
-} from 'react'
+import React from 'react'
+import type { Node, AbstractComponent } from 'react'
 
 // Provider Component
 /////////////////////
 
-type Id = string | number | Symbol
+export type Id = string | number | symbol | null
 
-interface ProviderProps<STATE> {
+export interface ProviderProps<STATE> {
   id?: Id;
-  initialState: (() => STATE) | STATE;
+  initialState?: (() => STATE) | STATE;
   children: Node;
 }
 
 // Reducer Component Definition
 ///////////////////////////////
 
-interface ReducerProps<STATE, REDUCER> extends ProviderProps<STATE> {
-  reducer: REDUCER;
+export interface ReducerProps<STATE, REDUCER> extends ProviderProps<STATE> {
+  /**
+   * Must always be assigned, although can be 'null' or 'undefined'.
+   */
+  reducer: REDUCER | null | typeof(undefined)
 }
 
 export interface SyncReducer<STATE, ACTION> {
-  (prevState: STATE, action: ACTION, ...args: $ReadOnlyArray<any>): STATE;
+  (prevState: STATE, action: ACTION, ...args: $ReadOnlyArray<any>): STATE
 }
 
 export interface SyncReducerProps<STATE, ACTION> extends ReducerProps<STATE, SyncReducer<STATE, ACTION>> {}
 
-declare export function SyncReducerProvider<STATE, ACTION>(
-  props: $ReadOnly<SyncReducerProps<STATE, ACTION>>
-): Element<typeof SyncReducerProvider>
+declare export class SyncReducerProvider<STATE, ACTION> extends React.Component<SyncReducerProps<STATE, ACTION>> {}
 
 export interface AsyncReducer<STATE, ACTION> {
-  (prevState: STATE, action: ACTION, ...args: $ReadOnlyArray<any>): Promise<STATE>;
+  (prevState: STATE, action: ACTION, ...args: $ReadOnlyArray<any>): Promise<STATE>
 }
 
 export interface AsyncReducerProps<STATE, ACTION> extends ReducerProps<STATE, AsyncReducer<STATE, ACTION>> {}
 
-declare export function AsyncReducerProvider<STATE, ACTION>(
-  props: $ReadOnly<AsyncReducerProps<STATE, ACTION>>
-): Element<typeof AsyncReducerProvider>
+declare export class AsyncReducerProvider<STATE, ACTION> extends React.Component<AsyncReducerProps<STATE, ACTION>> {}
 
 // Mapper Component Definition
 //////////////////////////////
 
-interface MapperProps<STATE, MAPPER> extends ProviderProps<STATE> {
-  mapper: MAPPER;
+export interface MapperProps<STATE, MAPPER> extends ProviderProps<STATE> {
+  /**
+   * Must always be assigned, although can be 'null' or 'undefined'.
+   */
+  mapper: MAPPER | null | typeof(undefined)
 }
 
 export interface SyncMapper<STATE, ACTION> {
-  (action: ACTION, ...args: $ReadOnlyArray<any>): STATE;
+  (action: ACTION, ...args: $ReadOnlyArray<any>): STATE
 }
 
 export interface SyncMapperProps<STATE, ACTION> extends MapperProps<STATE, SyncMapper<STATE, ACTION>> {}
 
-declare export function SyncMapperProvider<STATE, ACTION>(
-  props: $ReadOnly<SyncMapperProps<STATE, ACTION>>
-): Element<typeof SyncMapperProvider>
+declare export class SyncMapperProvider<STATE, ACTION> extends React.Component<SyncMapperProps<STATE, ACTION>> {}
 
 export interface AsyncMapper<STATE, ACTION> {
-  (action: ACTION, ...args: $ReadOnlyArray<any>): Promise<STATE>;
+  (action: ACTION, ...args: $ReadOnlyArray<any>): Promise<STATE>
 }
 
 export interface AsyncMapperProps<STATE, ACTION> extends MapperProps<STATE, AsyncMapper<STATE, ACTION>> {}
 
-declare export function AsyncMapperProvider<STATE, ACTION>(
-  props: $ReadOnly<AsyncMapperProps<STATE, ACTION>>
-): Element<typeof AsyncMapperProvider>
+declare export class AsyncMapperProvider<STATE, ACTION> extends React.Component<AsyncMapperProps<STATE, ACTION>> {}
 
 // Providers Consumption
 ////////////////////////
 
-export type Sync<T = any> = T
-export type Async<T = any> = Promise<T>
+export type Sync<RESULT = any> = RESULT
+export type Async<RESULT = any> = Promise<RESULT>
+export type DispatcherResult<RESULT = any> = Async<void | RESULT> | Sync<void | RESULT>
 
 export interface Dispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>> {
   (value: ACTION, ...args: $ReadOnlyArray<any>): DISPATCH
 }
 
+export interface ProviderValueObject<
+  STATE,
+  ACTION,
+  DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
+> {
+  +state: STATE;
+  +dispatch: Dispatcher<ACTION, DISPATCH>;
+  /**
+   * provider id
+   */
+  +provider: Id;
+}
+export type ProviderValueTuple<
+  STATE,
+  ACTION,
+  DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
+> = [STATE, Dispatcher<ACTION, DISPATCH>, Id]
+
 export type ProviderValue<
   STATE,
   ACTION,
   DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
-> = [STATE, Dispatcher<ACTION, DISPATCH>]
+> = ProviderValueObject<STATE, ACTION, DISPATCH> & ProviderValueTuple<STATE, ACTION, DISPATCH>
 
 declare export function useReducer<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
   id?: Id
@@ -139,76 +152,96 @@ export interface TaggedProviderProps {
   children: Node;
 }
 
-export type TaggedProcessor<PROCESSOR> = [ Id, PROCESSOR, any ]
+export type TaggedProcessor<PROCESSOR> = [ Id, PROCESSOR, any ] | [ Id, PROCESSOR ]
 
 // Tagged Reducer Component Definition
 //////////////////////////////////////
 
 export interface TaggedReducerProps<REDUCER> extends TaggedProviderProps {
-  reducers: REDUCER[];
+  /**
+   * Must always be assigned, although can be 'null' or 'undefined'.
+   */
+  reducers: REDUCER[] | null | typeof(undefined)
 }
 
 export type SyncTaggedReducer = TaggedProcessor<SyncReducer<any, any>>
 
 export interface SyncTaggedReducerProps extends TaggedReducerProps<SyncTaggedReducer> {}
 
-declare export function SyncTaggedReducerProvider(props: $ReadOnly<SyncTaggedReducerProps>): Element<typeof SyncTaggedReducerProvider>
+declare export class SyncTaggedReducerProvider extends React.Component<SyncTaggedReducerProps> {}
 
 export type AsyncTaggedReducer = TaggedProcessor<AsyncReducer<any, any>>
 
 export interface AsyncTaggedReducerProps extends TaggedReducerProps<AsyncTaggedReducer> {}
 
-declare export function AsyncTaggedReducerProvider(props: $ReadOnly<AsyncTaggedReducerProps>): Element<typeof AsyncTaggedReducerProvider>
+declare export class AsyncTaggedReducerProvider extends React.Component<AsyncTaggedReducerProps> {}
 
 // Tagged Mapper Component Definition
 //////////////////////////////////////
 
 export interface TaggedMapperProps<MAPPER> extends TaggedProviderProps {
-  mappers: MAPPER[];
+  /**
+   * Must always be assigned, although can be 'null' or 'undefined'.
+   */
+  mappers: MAPPER[] | null | typeof(undefined)
 }
 
 export type SyncTaggedMapper = TaggedProcessor<SyncMapper<any, any>>
 
 export interface SyncTaggedMapperProps extends TaggedMapperProps<SyncTaggedMapper> {}
 
-declare export function SyncTaggedMapperProvider(props: $ReadOnly<SyncTaggedMapperProps>): Element<typeof SyncTaggedMapperProvider>
+declare export class SyncTaggedMapperProvider extends React.Component<SyncTaggedMapperProps> {}
 
 export type AsyncTaggedMapper = TaggedProcessor<AsyncMapper<any, any>>
 
 export interface AsyncTaggedMapperProps extends TaggedMapperProps<AsyncTaggedMapper> {}
 
-declare export function AsyncTaggedMapperProvider(props: $ReadOnly<AsyncTaggedMapperProps>): Element<typeof AsyncTaggedMapperProvider>
+declare export class AsyncTaggedMapperProvider extends React.Component<AsyncTaggedMapperProps> {}
 
 // Tagged Consumption
 /////////////////////
 
-export interface TaggedStates<ANY_ID: Id, ANY_STATE> extends Map<ANY_ID, ANY_STATE> {}
 
-export interface TaggedDispatchers<
-    ANY_ID: Id,
-    ANY_DISPATCHER: Dispatcher<any, any> = Dispatcher<any, any>
-> extends Map<ANY_ID, ANY_DISPATCHER> {}
+export interface TaggedProviderValueObject<
+  STATE,
+  ACTION,
+  DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
+> extends ProviderValueObject<STATE, ACTION, DISPATCH> {
+  +tag: Id;
+}
+
+export type TaggedProviderValueTuple<
+  STATE,
+  ACTION,
+  DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
+> = [STATE, Dispatcher<ACTION, DISPATCH>, Id, Id]
 
 export type TaggedProviderValue<
-  ANY_ID: Id,
-  ANY_STATE,
-  ANY_DISPATCHER: Dispatcher<any, any> = Dispatcher<any, any>
-> = [ TaggedStates<ANY_ID, ANY_STATE>, TaggedDispatchers<ANY_ID, ANY_DISPATCHER>]
+  STATE,
+  ACTION,
+  DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
+> = TaggedProviderValueObject<STATE, ACTION, DISPATCH> & TaggedProviderValueTuple<STATE, ACTION, DISPATCH>
 
-declare export function useTaggedAny<ANY_ID: Id, ANY_STATE, ANY_DISPATCHER: Dispatcher<any, any> = Dispatcher<any, any>>(
+export interface TaggedProviderGetter<
+  ANY_ID: Id = Id,
+  ANY_STATE = any,
+  ANY_ACTION = any,
+  ANY_DISPATCH: DispatcherResult<ANY_STATE> = Sync<void>
+> {
+  +get: (tag: ANY_ID) => TaggedProviderValue<ANY_STATE, ANY_ACTION, ANY_DISPATCH>
+}
+
+declare export function useTaggedAny<
+  ANY_ID: Id = Id,
+  ANY_STATE = any,
+  ANY_ACTION = any,
+  ANY_DISPATCH: DispatcherResult<ANY_STATE> = Sync<void>>(
   id?: Id
-): TaggedProviderValue<ANY_ID, ANY_STATE, ANY_DISPATCHER>
-
-declare export function useTaggedAnyState<ANY_ID: Id, ANY_STATE>(id?: Id): TaggedStates<ANY_ID, ANY_STATE>
-
-declare export function useTaggedAnyDispatcher<
-    ANY_ID: Id,
-    ANY_DISPATCHER: Dispatcher<any, any> = Dispatcher<any, any>
->(id?: Id): TaggedDispatchers<ANY_ID, ANY_DISPATCHER>
+): TaggedProviderGetter<ANY_ID, ANY_STATE, ANY_ACTION, ANY_DISPATCH>
 
 declare export function useTaggedReducer<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
   tag: Id, id?: Id
-): ProviderValue<STATE, ACTION, DISPATCH>
+): TaggedProviderValue<STATE, ACTION, DISPATCH>
 
 declare export function useTaggedReducerState<STATE>(tag: Id, id?: Id): STATE
 
@@ -218,7 +251,7 @@ declare export function useTaggedReducerDispatcher<ACTION, DISPATCH: Async<> | S
 
 declare export function useTaggedMapper<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
   tag: Id, id?: Id
-): ProviderValue<STATE, ACTION, DISPATCH>
+): TaggedProviderValue<STATE, ACTION, DISPATCH>
 
 declare export function useTaggedMapperState<STATE>(tag: Id, id?: Id): STATE
 
@@ -227,14 +260,6 @@ declare export function useTaggedMapperDispatcher<ACTION, DISPATCH: Async<> | Sy
 ): Dispatcher<ACTION, DISPATCH>
 
 declare export function injectTaggedAny<INJECTED_PROP: {}, PROPS: {}>(
-  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
-): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
-
-declare export function injectTaggedAnyState<INJECTED_PROP: {}, PROPS: {}>(
-  ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
-): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
-
-declare export function injectTaggedAnyDispatcher<INJECTED_PROP: {}, PROPS: {}>(
   ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
 ): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
 

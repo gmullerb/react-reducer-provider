@@ -3,8 +3,6 @@
 // Some test may seen "over-typed", this is intentionally only for testing.
 import {
   injectTaggedAny,
-  injectTaggedAnyState,
-  injectTaggedAnyDispatcher,
   injectTaggedMapper,
   injectTaggedMapperState,
   injectTaggedMapperDispatcher,
@@ -23,9 +21,8 @@ import type {
   SyncTaggedMapper,
   SyncTaggedMapperProps,
   AsyncTaggedMapperProps,
-  TaggedStates,
-  TaggedDispatchers,
-  TaggedProviderValue
+  TaggedProviderValue,
+  TaggedProviderGetter
 
 } from '../../../src/react-reducer-provider'
 
@@ -45,15 +42,16 @@ const testInitialStateN: TestStateN = {
   lastAction: 0
 }
 
-interface TestSyncReducerMainHocProps { tagged: TaggedProviderValue<'Tag1' | 'TagN', TestState1 | TestStateN>, someProp: string }
+interface SyncTaggedProviderGetter extends TaggedProviderGetter<'Tag1' | 'TagN', TestState1 | TestStateN> {}
+
+interface TestSyncReducerMainHocProps { tagged: SyncTaggedProviderGetter, someProp: string }
 interface TestSyncReducerMainHocState { someState: number }
 
 class TestSyncReducerMainHoc extends React.Component<TestSyncReducerMainHocProps, TestSyncReducerMainHocState> {
   render() {
-    const [ states, dispatchers ]: TaggedProviderValue<'Tag1' | 'TagN', TestState1 | TestStateN> = this.props.tagged
     return (
-      <button onClick={(): void => ((dispatchers.get('Tag1'): any): Dispatcher<any, any>)('ACTION1')}>
-        Child{((states.get('Tag1'): any): TestState1).lastAction}
+      <button onClick={(): void => ((this.props.tagged.get('Tag1').dispatch: any): Dispatcher<any, any>)('ACTION1')}>
+        Child{((this.props.tagged.get('Tag1').state: any): TestState1).lastAction}
       </button>
     )
   }
@@ -68,20 +66,20 @@ class TestUseSyncReducerMainHoc extends React.Component<{}> {
   }
 }
 
-interface TestSyncReducerStatesHocProps { states: TaggedStates<'Tag1' | 'TagN', TestState1 | TestStateN>, someProp: string }
+interface TestSyncReducerStatesHocProps { states: SyncTaggedProviderGetter, someProp: string }
 interface TestSyncReducerStatesHocState { someState: number }
 
 class TestSyncReducerStatesHoc extends React.Component<TestSyncReducerStatesHocProps, TestSyncReducerStatesHocState> {
   render() {
-    const theStates: TaggedStates<'Tag1' | 'TagN', TestState1 | TestStateN> = this.props.states
+    const theStates: SyncTaggedProviderGetter = this.props.states
     return (
       <button>
-      Child{((theStates.get('Tag1'): any): TestState1).lastAction}
+      Child{((theStates.get('Tag1').state: any): TestState1).lastAction}
       </button>
     )
   }
 }
-const TestSyncReducerStatesHoc0 = injectTaggedAnyState<{ states: * }, TestSyncReducerStatesHocProps>(TestSyncReducerStatesHoc, 'states', 'someNamedReducer')
+const TestSyncReducerStatesHoc0 = injectTaggedAny<{ states: * }, TestSyncReducerStatesHocProps>(TestSyncReducerStatesHoc, 'states', 'someNamedReducer')
 
 class TestUseSyncReducerStatesHoc extends React.Component<{}> {
   render() {
@@ -91,20 +89,20 @@ class TestUseSyncReducerStatesHoc extends React.Component<{}> {
   }
 }
 
-interface TestSyncReducerDispatchersHocProps { dispatchers: TaggedDispatchers<'Tag1' | 'TagN'>, someProp: string }
+interface TestSyncReducerDispatchersHocProps { dispatchers: SyncTaggedProviderGetter, someProp: string }
 interface TestSyncReducerDispatchersHocDispatcher { someDispatcher: number }
 
 class TestSyncReducerDispatchersHoc extends React.Component<TestSyncReducerDispatchersHocProps, TestSyncReducerDispatchersHocDispatcher> {
   render() {
-    const theDispatchers: TaggedDispatchers<'Tag1' | 'TagN'> = this.props.dispatchers
+    const theDispatchers: SyncTaggedProviderGetter = this.props.dispatchers
     return (
-      <button onClick={(): void => ((theDispatchers.get('Tag1'): any): Dispatcher<any, any>)('ACTION1')}>
+      <button onClick={(): void => ((theDispatchers.get('Tag1').dispatch: any): Dispatcher<any, any>)('ACTION1')}>
         Children
       </button>
     )
   }
 }
-const TestSyncReducerDispatchersHoc0 = injectTaggedAnyDispatcher<{ dispatchers: * }, TestSyncReducerDispatchersHocProps>(TestSyncReducerDispatchersHoc, 'dispatchers', 'someNamedReducer')
+const TestSyncReducerDispatchersHoc0 = injectTaggedAny<{ dispatchers: * }, TestSyncReducerDispatchersHocProps>(TestSyncReducerDispatchersHoc, 'dispatchers', 'someNamedReducer')
 
 class TestUseSyncReducerDispatchersHoc extends React.Component<{}> {
   render() {
@@ -185,15 +183,14 @@ class TestUseAsyncTaggedReducerMainHoc extends React.Component<{}> {
   }
 }
 
-interface TestSyncMapperMainHocProps { tagged: TaggedProviderValue<'Tag1' | 'TagN', TestState1 | TestStateN>, someProp: string }
+interface TestSyncMapperMainHocProps { tagged: SyncTaggedProviderGetter, someProp: string }
 interface TestSyncMapperMainHocState { someState: number }
 
 class TestSyncMapperMainHoc extends React.Component<TestSyncMapperMainHocProps, TestSyncMapperMainHocState> {
   render() {
-    const [ states, dispatchers ]: TaggedProviderValue<'Tag1' | 'TagN', TestState1 | TestStateN> = this.props.tagged
     return (
-      <button onClick={(): void => ((dispatchers.get('Tag1'): any): Dispatcher<any, any>)('ACTION1')}>
-        Child{((states.get('Tag1'): any): TestState1).lastAction}
+      <button onClick={(): void => ((this.props.tagged.get('Tag1').dispatch: any): Dispatcher<any, any>)('ACTION1')}>
+        Child{((this.props.tagged.get('Tag1').state: any): TestState1).lastAction}
       </button>
     )
   }
@@ -208,20 +205,20 @@ class TestUseSyncMapperMainHoc extends React.Component<{}> {
   }
 }
 
-interface TestSyncMapperStatesHocProps { states: TaggedStates<'Tag1' | 'TagN', TestState1 | TestStateN>, someProp: string }
+interface TestSyncMapperStatesHocProps { states: SyncTaggedProviderGetter, someProp: string }
 interface TestSyncMapperStatesHocState { someState: number }
 
 class TestSyncMapperStatesHoc extends React.Component<TestSyncMapperStatesHocProps, TestSyncMapperStatesHocState> {
   render() {
-    const theStates: TaggedStates<'Tag1' | 'TagN', TestState1 | TestStateN> = this.props.states
+    const theStates: SyncTaggedProviderGetter = this.props.states
     return (
       <button>
-      Child{((theStates.get('Tag1'): any): TestState1).lastAction}
+      Child{((theStates.get('Tag1').state: any): TestState1).lastAction}
       </button>
     )
   }
 }
-const TestSyncMapperStatesHoc0 = injectTaggedAnyState<{ states: * }, TestSyncMapperStatesHocProps>(TestSyncMapperStatesHoc, 'states', 'someNamedMapper')
+const TestSyncMapperStatesHoc0 = injectTaggedAny<{ states: * }, TestSyncMapperStatesHocProps>(TestSyncMapperStatesHoc, 'states', 'someNamedMapper')
 
 class TestUseSyncMapperStatesHoc extends React.Component<{}> {
   render() {
@@ -231,20 +228,20 @@ class TestUseSyncMapperStatesHoc extends React.Component<{}> {
   }
 }
 
-interface TestSyncMapperDispatchersHocProps { dispatchers: TaggedDispatchers<'Tag1' | 'TagN'>, someProp: string }
+interface TestSyncMapperDispatchersHocProps { dispatchers: SyncTaggedProviderGetter, someProp: string }
 interface TestSyncMapperDispatchersHocDispatcher { someDispatcher: number }
 
 class TestSyncMapperDispatchersHoc extends React.Component<TestSyncMapperDispatchersHocProps, TestSyncMapperDispatchersHocDispatcher> {
   render() {
-    const theDispatchers: TaggedDispatchers<'Tag1' | 'TagN'> = this.props.dispatchers
+    const theDispatchers: SyncTaggedProviderGetter = this.props.dispatchers
     return (
-      <button onClick={(): void => ((theDispatchers.get('Tag1'): any): Dispatcher<any, any>)('ACTION1')}>
+      <button onClick={(): void => ((theDispatchers.get('Tag1').dispatch: any): Dispatcher<any, any>)('ACTION1')}>
         Children
       </button>
     )
   }
 }
-const TestSyncMapperDispatchersHoc0 = injectTaggedAnyDispatcher<{ dispatchers: * }, TestSyncMapperDispatchersHocProps>(TestSyncMapperDispatchersHoc, 'dispatchers', 'someNamedMapper')
+const TestSyncMapperDispatchersHoc0 = injectTaggedAny<{ dispatchers: * }, TestSyncMapperDispatchersHocProps>(TestSyncMapperDispatchersHoc, 'dispatchers', 'someNamedMapper')
 
 class TestUseSyncMapperDispatchersHoc extends React.Component<{}> {
   render() {

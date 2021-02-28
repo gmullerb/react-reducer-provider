@@ -86,6 +86,14 @@ tests:
     untracked: true
     paths:
       - node_modules/
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - build/reports/tests/tests_report.xml
+    paths:
+    - build/reports/coverage/lcov-report/
+    - build/reports/tests/
 
 pack:
   stage: assemble
@@ -99,7 +107,20 @@ pack:
     untracked: true
     paths:
       - node_modules/
+
+pages:
+  stage: assemble
+  dependencies:
+    - tests
+  script:
+    - mkdir -p to_public
+    - touch to_public/index.html
+    - mv build/reports/coverage/lcov-report/ to_public
+    - mv build/reports/tests/ to_public
+    - mv to_public/lcov-report to_public/coverage
+    - mv to_public public
   artifacts:
-    name: $CI_PROJECT_NAME-$(date +%Y%m%d-%H%M)-$CI_COMMIT_SHORT_SHA
     paths:
-      - ./build/*.tgz
+      - public
+  only:
+    - master

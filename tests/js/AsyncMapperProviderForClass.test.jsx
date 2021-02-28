@@ -14,9 +14,9 @@ import {
 async function testMap(action) {
   switch (action) {
     case 'ACTION1':
-      return await delay(5, { value: '1' })
+      return await delay(1, { value: '1' })
     default:
-      return await delay(5, { value: '0' })
+      return await delay(1, { value: '0' })
   }
 }
 
@@ -109,9 +109,9 @@ describe('AsyncMapperProvider for Class components tests', () => {
     async function testMapArgs(action, extra) {
       switch (action) {
         case 'ACTION1':
-          return await delay(5, { value: extra })
+          return await delay(1, { value: extra })
         default:
-          return await delay(5, { value: '0' })
+          return await delay(1, { value: '0' })
       }
     }
     class ClassComponentA1 extends React.Component {
@@ -152,5 +152,46 @@ describe('AsyncMapperProvider for Class components tests', () => {
 
     await delay(10)
     expect(provider).toHaveText('ClickSuperbChildSuperb')
+  })
+
+  it('should update WrappedComponent properties', async () => {
+    const testInitialState = 'A'
+    class ClassComponentA1 extends React.Component {
+      render() {
+        return (
+          <button onClick={() => this.props.dispatch('ACTION1')}>
+            Click{this.props.text}
+          </button>
+        )
+      }
+    }
+    const ClassComponent1 = injectMapperDispatcher(ClassComponentA1, 'dispatch', 557)
+    class ClassComponentA2 extends React.Component {
+      render() {
+        return (
+          <div>
+            Child{this.props.state}
+            <ClassComponent1 text={this.props.state}/>
+          </div>
+        )
+      }
+    }
+    const ClassComponent2 = injectMapperState(ClassComponentA2, 'state', 557)
+    const provider = mount(
+      <AsyncMapperProvider
+        id={557}
+        mapper={testMap}
+        initialState={testInitialState}
+      >
+        <ClassComponent2 />
+      </AsyncMapperProvider>
+    )
+    expect(provider).toHaveText('ChildAClickA')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    await delay(10)
+    expect(provider).toHaveText('Child1Click1')
   })
 })

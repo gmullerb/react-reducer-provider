@@ -8,12 +8,12 @@ import { SyncTaggedReducerProvider } from './SyncTaggedReducerProvider'
 import { AsyncTaggedReducerProvider } from './AsyncTaggedReducerProvider'
 import { SyncTaggedMapperProvider } from './SyncTaggedMapperProvider'
 import { AsyncTaggedMapperProvider } from './AsyncTaggedMapperProvider'
-import { useReducer } from './useReducer'
-import { useReducerDispatcher } from './useReducerDispatcher'
-import { useReducerState } from './useReducerState'
-import { useTaggedReducer } from './useTaggedReducer'
-import { useTaggedReducerState } from './useTaggedReducerState'
-import { useTaggedReducerDispatcher } from './useTaggedReducerDispatcher'
+import { useAny } from './useAny'
+import { useAnyDispatcher } from './useAnyDispatcher'
+import { useAnyState } from './useAnyState'
+import { useTaggedAny } from './useTaggedAny'
+import { useTaggedAnyState } from './useTaggedAnyState'
+import { useTaggedAnyDispatcher } from './useTaggedAnyDispatcher'
 import { injectAny } from './injectAny'
 import { injectAnyState } from './injectAnyState'
 import { injectAnyDispatcher } from './injectAnyDispatcher'
@@ -30,27 +30,23 @@ export {
   AsyncTaggedReducerProvider,
   SyncTaggedMapperProvider,
   AsyncTaggedMapperProvider,
-  useReducer,
-  useReducerDispatcher,
-  useReducerState,
-  useReducer as useMapper,
-  useReducerDispatcher as useMapperDispatcher,
-  useReducerState as useMapperState,
-  useReducer as useTaggedAny,
-  useReducerState as useTaggedAnyState,
-  useReducerDispatcher as useTaggedAnyDispatcher,
-  useTaggedReducer,
-  useTaggedReducerState,
-  useTaggedReducerDispatcher,
-  useTaggedReducer as useTaggedMapper,
-  useTaggedReducerState as useTaggedMapperState,
-  useTaggedReducerDispatcher as useTaggedMapperDispatcher,
-  injectAny as injectTaggedAny,
-  injectAnyState as injectTaggedAnyState,
-  injectAnyDispatcher as injectTaggedAnyDispatcher,
+  useAny as useReducer,
+  useAnyDispatcher as useReducerDispatcher,
+  useAnyState as useReducerState,
+  useAny as useMapper,
+  useAnyDispatcher as useMapperDispatcher,
+  useAnyState as useMapperState,
+  useAny as useTaggedAny,
+  useTaggedAny as useTaggedReducer,
+  useTaggedAnyState as useTaggedReducerState,
+  useTaggedAnyDispatcher as useTaggedReducerDispatcher,
+  useTaggedAny as useTaggedMapper,
+  useTaggedAnyState as useTaggedMapperState,
+  useTaggedAnyDispatcher as useTaggedMapperDispatcher,
   injectAny as injectReducer,
   injectAnyState as injectReducerState,
   injectAnyDispatcher as injectReducerDispatcher,
+  injectAny as injectTaggedAny,
   injectTagged as injectTaggedReducer,
   injectTaggedState as injectTaggedReducerState,
   injectTaggedDispatcher as injectTaggedReducerDispatcher,

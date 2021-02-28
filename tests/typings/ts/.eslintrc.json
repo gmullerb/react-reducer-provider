@@ -7,6 +7,10 @@
     "project": "./config/main/tsconfig.json"
   },
   "rules": {
+    "@typescript-eslint/no-extraneous-class": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "max-classes-per-file": "off",
+    "max-lines": "off",
     "unused-imports/no-unused-imports": "off"
   }
 }
