@@ -712,8 +712,8 @@ Flow:
     const SomeReducerDispatcherHoc0 = injectReducerDispatcher<{ dispatcher: * }, SomeReducerDispatcherHocProps>(SomeReducerDispatcherHoc, 'dispatcher', 'someNamedReducer')
 ```
 
-* An example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-forked-sdz65?module=%2Fsrc%2FSomeReducerProvider.tsx):  
-[![Edit gmullerb-react-reducer-provider-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-forked-sdz65?module=%2Fsrc%2FSomeReducerProvider.tsx)  
+* An example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-forked-cqfft?file=/src/SomeReducerProvider.tsx):  
+[![Edit gmullerb-react-reducer-provider-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-forked-cqfft?file=/src/SomeReducerProvider.tsx)  
 
 ## Helper types
 
@@ -752,12 +752,12 @@ function reduce(prevState: AppState, action: AppAction): AppState {
 * A more "complete" example with Typescript can be seen at [`typing ts test folder`](../tests/typings/ts).
 * A more "complete" example with Flow can be seen at [`typing flow test folder`](../tests/typings/flow).
 
-> An example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-4zi7k?module=%2Fsrc%2FSomeReducerProvider.tsx):  
-[![Edit gmullerb-react-reducer-provider-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-4zi7k?module=%2Fsrc%2FSomeReducerProvider.tsx)  
-> An example with Flow typings can be checked on line at [gmullerb-react-reducer-provider-flow codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-flow-l6txu?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider-flow](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-flow-l6txu?module=%2Fsrc%2FSomeReducerProvider.jsx)  
-> An asynchronous example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-async-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-v4syt?module=%2Fsrc%2FSomeReducerProvider.tsx):  
-[![Edit gmullerb-react-reducer-provider-async-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-v4syt?module=%2Fsrc%2FSomeReducerProvider.tsx)  
+> An example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-forked-0dmie?file=/src/SomeReducerProvider.tsx):  
+[![Edit gmullerb-react-reducer-provider-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-forked-0dmie?file=/src/SomeReducerProvider.tsx)  
+> An example with Flow typings can be checked on line at [gmullerb-react-reducer-provider-flow codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-flow-forked-0ons5?file=/src/SomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-flow](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-flow-forked-0ons5?file=/src/SomeReducerProvider.jsx)  
+> An asynchronous example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-async-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-forked-8uggk?file=/src/SomeReducerProvider.tsx):  
+[![Edit gmullerb-react-reducer-provider-async-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-ts-forked-8uggk?file=/src/SomeReducerProvider.tsx)  
 > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
 ## Main documentation

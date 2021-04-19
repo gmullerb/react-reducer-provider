@@ -148,8 +148,8 @@ class ClassComponentA2 extends React.Component {
 const ClassComponent2 = injectMapperState(ClassComponentA2, 'state', 557)
 ```
 
-> Online example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-2ht78?file=/src/SomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-2ht78?file=/src/SomeReducerProvider.jsx)  
+> Online example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-lj4si?file=/src/SomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-lj4si?file=/src/SomeReducerProvider.jsx)  
 
 ### Error
 

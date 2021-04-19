@@ -134,8 +134,8 @@ export default function SomeContainer() {
 }
 ```
 
-> This example can be checked on line at [gmullerb-react-reducer-provider-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-2co8d?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider-with-injection](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-2co8d?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> This example can be checked on line at [gmullerb-react-reducer-provider-with-injection codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-forked-6kxu7?file=/src/SomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-with-injection](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-injection-forked-6kxu7?file=/src/SomeReducerProvider.jsx)  
 > [with Flow typings](with-injection-and-flow-typings.md).  
 > [with Typescript typings](with-injection-and-ts-typings.md).  
 

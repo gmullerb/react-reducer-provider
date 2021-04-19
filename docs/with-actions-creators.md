@@ -170,8 +170,8 @@ export default function SomeContainer() {
 }
 ```
 
-> This example can be checked on line at [gmullerb-react-reducer-provider-with-actions-creators codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-actions-creators-dc8li?module=%2Fsrc%2FSomeReducerProvider.jsx):  
-[![Edit gmullerb-react-reducer-provider-with-actions-creators](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-actions-creators-dc8li?module=%2Fsrc%2FSomeReducerProvider.jsx)  
+> This example can be checked on line at [gmullerb-react-reducer-provider-with-actions-creators codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-actions-creators-forked-fc0zo?file=/src/SomeReducerProvider.jsx):  
+[![Edit gmullerb-react-reducer-provider-with-actions-creators](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-with-actions-creators-forked-fc0zo?file=/src/SomeReducerProvider.jsx)  
 > [with Flow typings](with-actions-creators-and-flow-typings.md).  
 > [with Typescript typings](with-actions-creators-and-ts-typings.md).  
 
