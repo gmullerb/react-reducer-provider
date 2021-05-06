@@ -21,20 +21,20 @@ Similarly, `SyncTaggedMapperProvider` and `AsyncTaggedMapperProvider` have the f
 
 ![`SyncTaggedMapperProvider` & `AsyncTaggedMapperProvider`](tagged-mapper-provider.svg "SyncTaggedMapperProvider & AsyncTaggedMapperProvider")
 
-[`AsyncTaggedReducerProvider`](../src/AsyncTaggedReducerProvider.js), [`SyncTaggedReducerProvider`](../src/SyncTaggedReducerProvider.js), [`AsyncTaggedMapperProvider`](../src/AsyncTaggedMapperProvider.js) & [`SyncMapperProvider`](../src/SyncTaggedMapperProvider.js) are React "Special" Elements defined by 2 properties:
+`AsyncTaggedReducerProvider`, `SyncTaggedReducerProvider`, `AsyncTaggedMapperProvider` & `SyncMapperProvider` are React "Special" Elements defined by 2 properties:
 
 *properties*:
 
-1 . `id ?: string | number | symbol`: constitutes the identifier of the `SyncTaggedReducerProvider`, `AsyncTaggedReducerProvider`, `SyncTaggedMapperProvider` or `AsyncTaggedMapperProvider`, which is useful when using more than 1 provider.
+1 . `id ?: string | number | symbol`: constitutes the identifier of the `SyncTaggedReducerProvider`, `AsyncTaggedReducerProvider`, `SyncTaggedMapperProvider` or `AsyncTaggedMapperProvider`, which is useful when using more than 1 `react-reducer-provider` provider.
 
 * [**Use `id` the "right" way**](keep-track-id.md).
 
-[`AsyncTaggedReducerProvider`](../src/AsyncTaggedReducerProvider.js) & [`SyncTaggedReducerProvider`](../src/SyncTaggedReducerProvider.js) have the following property:
+`AsyncTaggedReducerProvider` & `SyncTaggedReducerProvider` have the following property:
 
 2 . `reducers`: an array of tuples, each tuple puts together an actions/reducer/state combination: `[tag, reducer, initialState]`.
 
 * `tag`: an `string | number | symbol` that identifies an actions/reducer/state combination.
-* `reducer` a asynchronous/synchronous function that will receive the current state and an action to produce a new state [1].
+* `reducer` an asynchronous or synchronous function that will receive the current state and an action to produce a new state [1].
 
 ![Reducer](reducer.svg "Reducer")
 
@@ -80,12 +80,12 @@ Provider definition:
 </AsyncTaggedReducerProvider>
 ```
 
-[`AsyncTaggedMapperProvider`](../src/AsyncTaggedMapperProvider.js) & [`SyncTaggedMapperProvider`](../src/SyncTaggedMapperProvider.js) have the following property:
+`AsyncTaggedMapperProvider` & `SyncTaggedMapperProvider` have the following property:
 
 2 . `mappers`: an array of tuples, each tuple puts together an actions/mapper/state combination: `[tag, mapper, initialState]`.
 
 * `tag`: an `string | number | symbol` that identifies an actions/reducer/state combination.
-* `mapper`: a asynchronous/synchronous function that will receive an action to produce a new state [1].
+* `mapper`: an asynchronous or synchronous function that will receive an action to produce a new state [1].
 
 ![Mapper](mapper.svg "Mapper")
 
@@ -148,7 +148,7 @@ Any change to the **initial Properties** for **mounted** State Providers will be
 
 ### Tagged Dispatcher
 
-[`Dispatcher`](../src/react-reducer-provider.d.ts) returns the new State or a Promise of the new State:
+[`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts) is the proxy between the Remote component and the Tagged Provider, and returns the new State or a Promise of the new State:
 
 ![Dispatcher](dispatcher.svg "Dispatcher")
 
@@ -226,10 +226,10 @@ __________________
   * [with Flow typings](with-actions-creators-and-flow-typings.md).
   * [with Typescript typings](with-actions-creators-and-ts-typings.md).
 * [Testing](testing.md).
-* [Examples from tests](../tests/js).
-* [Typings' examples from tests](../tests/typings).
+* [Examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/js).
+* [Typings' examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/typings).
 * [Extending/Developing](developing.md).
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

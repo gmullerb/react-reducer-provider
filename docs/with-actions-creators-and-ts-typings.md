@@ -102,7 +102,7 @@ export {
 }
 ```
 
-> It may require the use of `useMemo` and `useCallback` to "improve" performance, check [`MockingReducerProvider.test.jsx`](../tests/js/MockingReducerProvider.test.jsx).
+> It may require the use of `useMemo` and `useCallback` to "improve" performance, check [`MockingReducerProvider.test.jsx`](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/js/MockingReducerProvider.test.jsx).
 
 5 . Define some Components:
 
@@ -189,4 +189,4 @@ export default function SomeContainer(): ReactElement {
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

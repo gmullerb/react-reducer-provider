@@ -497,7 +497,7 @@ describe('SyncMapperProvider tests', () => {
     describe('seal mapper', () => {
       it('should not allow to change dispatcher', () => {
         const testInitialState = 'A'
-        let newState
+        let newState = null
         const FunComponent1 = () => {
           const mapper = useMapper(664)
           return (
@@ -546,7 +546,7 @@ describe('SyncMapperProvider tests', () => {
 
       it('should not allow to change dispatcher by tuple', () => {
         const testInitialState = 'A'
-        let newState
+        let newState = null
         const FunComponent1 = () => {
           const mapper = useMapper(663)
           return (

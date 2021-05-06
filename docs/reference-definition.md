@@ -21,18 +21,18 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 
 ![`SyncMapperProvider` & `AsyncMapperProvider`](react-mapper-provider.svg "SyncMapperProvider & AsyncMapperProvider")
 
-[`AsyncReducerProvider`](../src/AsyncReducerProvider.js), [`SyncReducerProvider`](../src/SyncReducerProvider.js), [`AsyncMapperProvider`](../src/AsyncMapperProvider.js) & [`SyncMapperProvider`](../src/SyncMapperProvider.js) are React "Special" Elements defined by 3 properties:
+`AsyncReducerProvider`, `SyncReducerProvider`, `AsyncMapperProvider` & `SyncMapperProvider` are React "Special" Elements defined by 3 properties:
 
 *properties*:
 
 1 . `initialState`: inception state for the component or a function to create initial state.  
-2 . `id ?: string | number | symbol`: constitutes the identifier of the `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` or `AsyncMapperProvider`, which is useful when using more than 1 provider.
+2 . `id ?: string | number | symbol`: constitutes the identifier of the `SyncReducerProvider`, `AsyncReducerProvider`, `SyncMapperProvider` or `AsyncMapperProvider`, which is useful when using more than 1 `react-reducer-provider` provider.
 
 * [**Use `id` the "right" way**](keep-track-id.md).
 
-[`AsyncReducerProvider`](../src/AsyncReducerProvider.js) & [`SyncReducerProvider`](../src/SyncReducerProvider.js) have the following property:
+`AsyncReducerProvider` & `SyncReducerProvider` have the following property:
 
-3 . `reducer`: a asynchronous/synchronous function that will receive the current state and an action to produce a new state [1].
+3 . `reducer`: an asynchronous or synchronous function that will receive the current state and an action to produce a new state [1].
 
 ![Reducer](reducerNoArgs.svg "Reducer")
 
@@ -64,9 +64,9 @@ Similarly, `SyncMapperProvider` and `AsyncMapperProvider` have the following str
 
 [`AsyncMapperProvider`](../src/AsyncMapperProvider.js) & [`SyncMapperProvider`](../src/SyncMapperProvider.js) have the following property:
 
-3 . `mapper`: a asynchronous/synchronous function that will receive an action to produce a new state [1].
+3 . `mapper`: an asynchronous or synchronous function that will receive an action to produce a new state [1].
 
-![Mapper](mapperNoArgs.svg "Mapper")
+![Mapper](mapperSingleArg.svg "Mapper")
 
 `function asyncMap<STATE, ACTION>(action: ACTION): Promise<STATE>`
 
@@ -287,7 +287,7 @@ when accessing the Mapper/Reducer Provider, the `dispatcher` will be also a sync
 
 ## Dispatcher
 
-[`Dispatcher`](../src/react-reducer-provider.d.ts) returns the new State or a Promise of the new State:
+[`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts) is the proxy between the Remote component and the and returns the new State or a Promise of the new State:
 
 ![Dispatcher](dispatcherNoArgs.svg "Dispatcher")
 
@@ -311,7 +311,7 @@ dispatch(action)
 
 > Returned value is useful when using `useReducerDispatcher`, `useMapperDispatcher`, `injectReducerDispatcher`, `injectMapperDispatcher`.
 > By default, when using typings return value is ignored, i.e is `void` or `Promise<void>`.
-> Examples can be seen at: [`SyncReducerProvider.test.jsx`](../tests/js/SyncReducerProvider.test.jsx) and [`AsyncReducerProviderWithAsync.test.jsx`](../tests/js/AsyncReducerProviderWithAsync.test.jsx).
+> Examples can be seen at: [`SyncReducerProvider.test.jsx`](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/js/SyncReducerProvider.test.jsx) and [`AsyncReducerProviderWithAsync.test.jsx`](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/js/AsyncReducerProviderWithAsync.test.jsx).
 > Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [basecode-cordova-react-ts](https://github.com/gmullerb/basecode-cordova-react-ts).  
 
 ### Exceptions
@@ -427,11 +427,11 @@ __________________
   * [with Flow typings](with-actions-creators-and-flow-typings.md).
   * [with Typescript typings](with-actions-creators-and-ts-typings.md).
 * [Testing](testing.md).
-* [Examples from tests](../tests/js).
+* [Examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/js).
 * **[Online examples](online.md)**.
-* [Typings' examples from tests](../tests/typings).
+* [Typings' examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/typings).
 * [Extending/Developing](developing.md).
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

@@ -10,8 +10,7 @@ export class SyncTaggedReducerProvider extends React.Component {
     imbueTaggedStateProvider(this, props.id, props.reducers)
   }
 
-  wd(tag, index, action, ...args) {
-    const processor = this._ps.get(tag) // This is never null
-    return setTaggedContextValue(this, processor, nextStateForTagged(processor, this.props.reducers, index, processor.state, action, ...args))
+  wd(processor, index, ...args) {
+    return setTaggedContextValue(this, processor, nextStateForTagged(processor, this.props.reducers, index, processor.state, ...args))
   }
 }

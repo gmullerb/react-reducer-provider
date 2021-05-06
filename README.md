@@ -5,8 +5,8 @@
 <h1 align="center">Asynchronous/Synchronous React Centralized State</h1>
 <h2 align="center">with Hooks and HOC</h2>
 
-<p align="center">through Centralized Reducers/Mappers</p>
-<p align="center">Flux/Redux made easy, simple and beyond</p>
+<p align="center">through Centralized <b><a hef="https://react-reducer-provider.github.io/docs/using-reducer.html">Reducers</a>/<a hef="https://react-reducer-provider.github.io/docs/using-mapper.html">Mappers</a>/<a hef="https://react-reducer-provider.github.io/docs/using-actuator.html">Actuators</a></b></p>
+<p align="center">Flux/Redux made <b>Easy, Simple</b> and Beyond</p>
 
 [![react-reducer-provider](https://badgen.net/badge/homepage/react-reducer-provider/blue)](https://react-reducer-provider.github.io/)
 [![react-reducer-provider](https://badgen.net/badge/npmjs/react-reducer-provider/blue)](https://www.npmjs.com/package/react-reducer-provider)
@@ -23,7 +23,7 @@
 
 __________________
 
-**`react-reducer-provider` provides a centralized state, managed asynchronously or synchronously through a reducer or mapper.**
+**`react-reducer-provider` provides a centralized state, managed asynchronously or synchronously through a reducer, mapper or actuator.**
 
 __________________
 
@@ -39,7 +39,7 @@ when using hooks:
   ..
   "dependencies": {
     "react": ">=16.8.0"
-    "react-reducer-provider": "5.0.0",
+    "react-reducer-provider": "5.1.0",
     ..
 ```
 
@@ -49,15 +49,19 @@ when using HOC:
   ..
   "dependencies": {
     "react": ">=16.0.0"
-    "react-reducer-provider": "5.0.0",
+    "react-reducer-provider": "5.1.0",
     ..
 ```
 
-2 . Create the **`AsyncReducerProvider`**, **`SyncReducerProvider`**, **`AsyncMapperProvider`** or **`SyncMapperProvider`** component to manage state:
+### [Reducers](https://react-reducer-provider.github.io/docs/using-reducer.html)
+
+2 . Create the **[`AsyncReducerProvider`](https://react-reducer-provider.github.io/docs/using-reducer.html#asyncreducerprovider)** or **[`SyncReducerProvider`](https://react-reducer-provider.github.io/docs/using-reducer.html#syncreducerprovider)** component to manage the centralized state:
+
+![Reducers](docs/reducer.svg "Reducers")
 
 a . Define the initial state.  
-b . Define the reducer or mapper function.  
-c . Define the Reducer or Mapper Provider.
+b . Define the reducer function.  
+c . Define the Reducer Provider.
 
 **`SomeReducerProvider.jsx`**:
 
@@ -67,12 +71,12 @@ import { SyncReducerProvider } from 'react-reducer-provider'
 
 const initialState = 0
 
-function reduce(prevState, action, param1) {
+function reduce(prevState, action, delta) {
   switch (action) {
     case 'ACTION1':
-      return prevState + param1
+      return prevState + delta
     case 'ACTION2':
-      return prevState - param1
+      return prevState - delta
     default:
       return prevState
   }
@@ -92,11 +96,13 @@ function SomeReducerProvider({ children }) {
 export default SomeReducerProvider
 ```
 
-3 . Access the Provider component using `'react-reducer-provider'` hooks:
+3 . Access the state and the dispatcher of the Provider component using the hooks or HOC provided by `'react-reducer-provider'`:
 
-* **`useReducer`/`useMapper`**.
-* **`useReducerDispatcher`/`useMapperDispatcher`**.
-* **`useReducerState`/`useMapperState`**.
+* **[`useReducer`](https://react-reducer-provider.github.io/docs/using-reducer.html#usereducer)/[`injectReducer`](https://react-reducer-provider.github.io/docs/using-reducer.html#injectreducer)**.
+* **[`useReducerDispatcher`](https://react-reducer-provider.github.io/docs/using-reducer.html#usereducerdispatcher)/[`injectReducerDispatcher`](https://react-reducer-provider.github.io/docs/using-reducer.html#injectreducerdispatcher)**.
+* **[`useReducerState`](https://react-reducer-provider.github.io/docs/using-reducer.html#usereducerstate)/[`injectReducerState`](https://react-reducer-provider.github.io/docs/using-reducer.html#injectreducerstate)**.
+
+![Dispatcher](docs/dispatcher.svg "Dispatcher")
 
 `SomeComponent1.jsx` => using `useReducer`:
 
@@ -114,23 +120,26 @@ export default function SomeComponent1() {
 }
 ```
 
-`SomeComponent2.jsx` => using `useReducerDispatcher`:
+`SomeComponent2.jsx` => using `injectReducerDispatcher`:
 
 ```jsx
-import { useReducerDispatcher } from 'react-reducer-provider'
-import React from 'react'
+import { injectReducerDispatcher } from "react-reducer-provider";
+import React from "react";
 
-export default function SomeComponent2() {
-  const dispatch = useReducerDispatcher()
-  return (
-    <button onClick={() => {
-      const newState = dispatch('ACTION2', 1)
-      console.info(newState)
-    }}>
-      Go down!
-    </button>
-  )
+class SomeComponent2 extends React.Component {
+  render() {
+    return (
+      <button onClick={() => {
+        const newState = dispatch('ACTION2', 1)
+        console.info(newState)
+      }}>
+        Go down!
+      </button>
+    )
+  }
 }
+
+export default injectReducerDispatcher(SomeComponent2, 'dispatch')
 ```
 
 `SomeComponentN.jsx` => using `useReducerState`:
@@ -171,17 +180,227 @@ export default function SomeContainer() {
 }
 ```
 
+![SomeContainer](docs/use-provider-eg1.gif "SomeContainer")
+
 > This `SyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-pjkve?file=/src/SomeReducerProvider.jsx):
 [![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-pjkve?file=/src/SomeReducerProvider.jsx)  
 > This `SyncReducerProvider`with HOC example can be checked on line at [gmullerb-react-reducer-provider codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-lj4si?file=/src/SomeReducerProvider.jsx):  
 [![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-forked-lj4si?file=/src/SomeReducerProvider.jsx)  
 > An `AsyncReducerProvider` example can be checked on line at [gmullerb-react-reducer-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-forked-cyl3g?file=/src/SomeReducerProvider.jsx):  
 [![Edit gmullerb-react-reducer-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-async-forked-cyl3g?file=/src/SomeReducerProvider.jsx)  
-> An `SyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-forked-kwqfo?file=/src/SomeMapperProvider.jsx):  
-[![Edit gmullerb-react-mapper-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-mapper-provider-forked-kwqfo?file=/src/SomeMapperProvider.jsx)  
+> Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [test files](https://github.com/gmullerb/react-reducer-provider/blob/HEAD/tests/js).  
+
+### [Mappers](https://react-reducer-provider.github.io/docs/using-mapper.html)
+
+2 . Create the **[`AsyncMapperProvider`](https://react-reducer-provider.github.io/docs/using-mapper.html#asyncmapperprovider)** or **[`SyncMapperProvider`](https://react-reducer-provider.github.io/docs/using-mapper.html#syncmapperprovider)** component to manage the centralized state:
+
+![Mappers](docs/mapper.svg "Mappers")
+
+a . Define the initial state.  
+b . Define the mapper function.  
+c . Define the Mapper Provider.
+
+**`SomeMapperProvider.jsx`**:
+
+```jsx
+import React from "react";
+import { SyncMapperProvider } from "react-reducer-provider";
+
+const initialState = 0;
+
+function map(action) {
+  switch (action) {
+    case "ACTION1":
+      return 1;
+    case "ACTION2":
+      return -1;
+    default:
+      return 0;
+  }
+}
+
+function SomeMapperProvider({ children }) {
+  return (
+    <SyncMapperProvider
+      id="someNamedMapper"
+      mapper={map}
+      initialState={initialState}
+    >
+      {children}
+    </SyncMapperProvider>
+  );
+}
+
+export { SomeMapperProvider };
+```
+
+3 . Access the state and the dispatcher of the Provider component using the hooks or HOC provided by `'react-reducer-provider'`:
+
+* **[`useMapper`](https://react-reducer-provider.github.io/docs/using-mapper.html#usemapper)/[`injectMapper`](https://react-reducer-provider.github.io/docs/using-mapper.html#injectmapper)**.
+* **[`useMapperDispatcher`](https://react-reducer-provider.github.io/docs/using-mapper.html#usemapperdispatcher)/[`injectMapperDispatcher`](https://react-reducer-provider.github.io/docs/using-mapper.html#injectmapperdispatcher)**.
+* **[`useMapperState`](https://react-reducer-provider.github.io/docs/using-mapper.html#usemapperstate)/[`injectMapperState`](https://react-reducer-provider.github.io/docs/using-mapper.html#injectmapperstate)**.
+
+![Dispatcher](docs/dispatcher.svg "Dispatcher")
+
+`SomeComponent1.jsx` => using `useMapper`:
+
+```jsx
+import { useMapper } from "react-reducer-provider";
+import React from "react";
+
+export default function SomeComponent1() {
+  const [state, dispatch] = useMapper("someNamedMapper");
+  return (
+    <button onClick={() => dispatch("ACTION1")}>
+      Set to 1 (from {state})!
+    </button>
+  );
+}
+```
+
+`SomeComponent2.jsx` => using `useMapperDispatcher`:
+
+```jsx
+import { useMapperDispatcher } from "react-reducer-provider";
+import React from "react";
+
+export default function SomeComponent2() {
+  const dispatch = useMapperDispatcher("someNamedMapper");
+  return <button onClick={() => dispatch("ACTION2")}>Set to -1!</button>;
+}
+```
+
+`SomeComponentN.jsx` => using `injectMapperState`:
+
+```jsx
+import { injectMapperState } from "react-reducer-provider";
+import React from "react";
+
+class SomeComponentN extends React.Component {
+  render() {
+    return <div>Current:{this.props.currentState}</div>;
+  }
+}
+
+export default injectMapperState(SomeComponentN, 'currentState')
+```
+
+4 . Wrap components which will consume the `SomeMapperProvider` component:
+
+`SomeContainer.jsx`:
+
+```jsx
+import SomeComponent1 from "./SomeComponent1";
+import SomeComponent2 from "./SomeComponent2";
+import SomeComponentN from "./SomeComponentN";
+import { SomeMapperProvider } from "./SomeMapperProvider";
+import React from "react";
+
+export default function SomeContainer() {
+  return (
+    <SomeMapperProvider>
+      <SomeComponent1 />
+      <SomeComponent2 />
+      <SomeComponentN />
+    </SomeMapperProvider>
+  );
+}
+```
+
+![SomeContainer](docs/use-provider-eg2.gif "SomeContainer")
+
+> An `SyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-yvwx7?file=/src/SomeMapperProvider.jsx):  
+[![Edit gmullerb-react-mapper-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-mapper-provider-yvwx7?file=/src/SomeMapperProvider.jsx)  
 > An `AsyncMapperProvider` example can be checked on line at [gmullerb-react-mapper-provider-async codesandbox](https://codesandbox.io/s/gmullerb-react-mapper-provider-async-forked-d2foz?file=/src/SomeMapperProvider.jsx):  
 [![Edit gmullerb-react-mapper-provider-async](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-mapper-provider-async-forked-d2foz?file=/src/SomeMapperProvider.jsx)  
-> Examples of use can be looked at [basecode-react-ts](https://github.com/gmullerb/basecode-react-ts) and [test files](https://github.com/gmullerb/react-reducer-provider/blob/HEAD/tests/js).  
+> Examples of use can be looked at [test files](https://github.com/gmullerb/react-reducer-provider/blob/HEAD/tests/js).  
+
+### [Actuators](https://react-reducer-provider.github.io/docs/using-actuator.html)
+
+2 . Create the **[`ActuatorProvider`](https://react-reducer-provider.github.io/docs/using-actuator.html#actuatorprovider)** component to manage a state (or whatever you need, not only state):
+
+![Actuators](docs/actuator.svg "Actuators")
+
+a . Define actuator function.  
+b . Define Actuator Provider.  
+c. Wrap components which will consume the `ActuatorProvider`:
+
+`SomeContainer.jsx`:
+
+```jsx
+import SomeComponent1 from './path/to/SomeComponent1'
+import SomeComponent2 from './path/to/SomeComponent2'
+import { ActuatorProvider } from 'react-reducer-provider'
+import React from 'react'
+
+export function SomeContainer() {
+  const [state, setState] = React.useState(0)
+  const actuate = delta => setState(state + delta)
+  return (
+    <div>
+      <ActuatorProvider actuator={actuate}>
+        <SomeComponent1/>
+        <SomeComponent2/>
+      </ActuatorProvider>
+      <div>
+        Current:{state}
+      </div>
+    </div>
+  )
+}
+```
+
+3 . Access dispatcher of the Provider component using the hooks or HOC provided by `'react-reducer-provider'`:
+
+* **[`useActuator`](https://react-reducer-provider.github.io/docs/using-actuator.html#useactuator)/[`injectActuator`](https://react-reducer-provider.github.io/docs/using-actuator.html#injectactuator)**.
+
+![Dispatcher](docs/dispatcher.svg "Dispatcher")
+
+`SomeComponent1.jsx` => using `useActuator`:
+
+```jsx
+import { useActuator } from 'react-reducer-provider'
+import React from 'react'
+
+export function SomeComponent1() {
+  const dispatch = useActuator()
+  return (
+    <button onClick={() => dispatch(+1)}>
+      Go up!
+    </button>
+  )
+}
+```
+
+`SomeComponent2.jsx` => using `injectActuator`:
+
+```jsx
+import { injectActuator } from "react-reducer-provider";
+import React from "react";
+
+class SomeComponent2 extends React.Component {
+  render() {
+    return (
+      <button
+        onClick={() => {
+          const newState = this.props.dispatch(-1);
+          console.info(newState);
+        }}
+      >
+        Go down!
+      </button>
+    );
+  }
+}
+
+export default injectActuator(SomeComponent2, "dispatch");
+```
+
+![SomeContainer](docs/use-provider-eg3.gif "SomeContainer")
+
+> This `ActuatorProvider` example can be checked on line at [gmullerb-react-actuator-provider codesandbox](https://codesandbox.io/s/gmullerb-react-actuator-provider-5sl0o?file=/src/SomeContainer.jsx):  
+[![Edit gmullerb-react-reducer-provider](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-actuator-provider-5sl0o?file=/src/SomeContainer.jsx)  
+> Examples of use can be looked at [test files](https://github.com/gmullerb/react-reducer-provider/blob/HEAD/tests/js).  
 
 __________________
 
@@ -189,16 +408,17 @@ __________________
 
 With the introduction of React Hooks, in some way using Flux **library**[1] was deprecated, `react-reducer-provider` looks to **give a quick and easy alternative using hooks to implement Flux with reducers**.
 
-* Provides Reducers, but also **Mappers**.
+* Provides Reducers, but also **Mappers** and **Actuators**.
 * It allows to use [**Asynchronous** Reducer/Mapper/Dispatcher](https://react-reducer-provider.github.io/docs/reference-definition.html#asyncreducerprovider).
 * [Reducer/Mapper/Dispatcher can have **more parameters/arguments** than traditional reducer which have only (state, action)](https://react-reducer-provider.github.io/docs/reference-definition.html#extraparameters).
 * [Dispatcher **returns the new State or a Promise of the new State**](https://react-reducer-provider.github.io/docs/reference-definition.html#dispatcher).
-* [Each Reducer/Mapper Provider can have a **different names, numbers or symbols which allows for easy identification and nesting**](https://react-reducer-provider.github.io/docs/nesting.html).
-* Provides and Easy way of combining reducers. through Tags. [2].
-* Smaller than other packages with same functionality, and no dependencies [3].
-* It is ready for Tree Shaking optimization, so you get only what you need from the `react-reducer-provider` in the final app bundle [3].
+* **Actuator** allows you to easily introduced centralized state without moving your existing state, i.e. allows you to avoid using a new state container if you already have one.
+* [Each Reducer/Mapper/Actuators Provider can have a **different names, numbers or symbols which allows for easy identification and nesting**](https://react-reducer-provider.github.io/docs/nesting.html).
+* Provides and Easy way of combining reducer/mapper/actuator functions. through Tags. [2].
+* **Smaller** than other packages with "same" functionality, and no dependencies [3].
+* It is ready for **Tree Shaking optimization**, so you get only what you need from the `react-reducer-provider` in the final app bundle [3].
 * It provides [its own **type definitions for Typescript and Flow**](https://react-reducer-provider.github.io/docs/typings.html).
-* Full Tested (not only focus in coverage, but also in cases: [tests](https://github.com/gmullerb/react-reducer-provider/blob/HEAD/tests/js), [results](https://gmullerb.gitlab.io/react-reducer-provider/tests/tests_report.html) and [coverage](https://gmullerb.gitlab.io/react-reducer-provider/coverage/index.html)).
+* **Full Tested**, not only focus in coverage, but also in cases and typings: [tests](https://github.com/gmullerb/react-reducer-provider/blob/HEAD/tests/js), [results](https://gmullerb.gitlab.io/react-reducer-provider/tests/tests_report.html), [coverage](https://gmullerb.gitlab.io/react-reducer-provider/coverage/index.html) and [typings tests](https://github.com/gmullerb/react-reducer-provider/blob/HEAD/tests/typings).
 
 > [1] Not the Flux architecture.  
 > [2] react-redux makes it too complicated.  
@@ -213,8 +433,11 @@ __________________
 
 **or**
 
-
 ![Mappers](docs/mapper.svg "Mappers")
+
+**or**
+
+![Actuators](docs/actuator.svg "Actuators")
 
 __________________
 
@@ -236,15 +459,41 @@ __________________
 
 ## Documentation
 
-* [`AsyncReducerProvider` · `SyncReducerProvider` · `AsyncMapperProvider` · `SyncMapperProvider`](https://react-reducer-provider.github.io/docs/reference-definition.html).
-* [`useReducer` · `useReducerState` · `useReducerDispatcher` · `useMapper` · `useMapperState` · `useMapperDispatcher`](https://react-reducer-provider.github.io/docs/reference-consumption-hooks.html).
-* [`injectReducer` · `injectReducerState` · `injectReducerDispatcher` · `injectMapper` · `injectMapperState` · `injectMapperDispatcher`](https://react-reducer-provider.github.io/docs/reference-consumption-hoc.html).
+* [Reducers](https://react-reducer-provider.github.io/docs/using-reducer.html)
+  * [`AsyncReducerProvider`](https://react-reducer-provider.github.io/docs/using-reducer.html#asyncreducerprovider).
+  * [`SyncReducerProvider`](https://react-reducer-provider.github.io/docs/using-reducer.html#syncreducerprovider).
+  * Hooks:
+    * [`useReducer`](https://react-reducer-provider.github.io/docs/using-reducer.html#usereducer).
+    * [`useReducerDispatcher`](https://react-reducer-provider.github.io/docs/using-reducer.html#usereducerdispatcher).
+    * [`useReducerState`](https://react-reducer-provider.github.io/docs/using-reducer.html#usereducerstate).
+  * HOC:
+    * [`injectReducer`](https://react-reducer-provider.github.io/docs/using-reducer.html#injectreducer).
+    * [`injectReducerDispatcher`](https://react-reducer-provider.github.io/docs/using-reducer.html#injectreducerdispatcher).
+    * [`injectReducerState`](https://react-reducer-provider.github.io/docs/using-reducer.html#injectreducerstate).
+
+* [Mappers](https://react-reducer-provider.github.io/docs/using-mapper.html).
+  * [`AsyncMapperProvider`](https://react-reducer-provider.github.io/docs/using-mapper.html#asyncmapperprovider).
+  * [`SyncMapperProvider`](https://react-reducer-provider.github.io/docs/using-mapper.html#syncmapperprovider).
+  * Hooks:
+    * [`useMapper`](https://react-reducer-provider.github.io/docs/using-mapper.html#usemapper).
+    * [`useMapperDispatcher`](https://react-reducer-provider.github.io/docs/using-mapper.html#usemapperdispatcher).
+    * [`useMapperState`](https://react-reducer-provider.github.io/docs/using-mapper.html#usemapperstate).
+  * HOC:
+    * [`injectMapper`](https://react-reducer-provider.github.io/docs/using-mapper.html#injectmapper).
+    * [`injectMapperDispatcher`](https://react-reducer-provider.github.io/docs/using-mapper.html#injectmapperdispatcher).
+    * [`injectMapperState`](https://react-reducer-provider.github.io/docs/using-mapper.html#injectmapperstate).
+* [Actuators](https://react-reducer-provider.github.io/docs/using-actuator.html).
+  * [`ActuatorProvider`](https://react-reducer-provider.github.io/docs/using-actuator.html#actuatorprovider).
+  * Hooks:
+    * [`useActuator`](https://react-reducer-provider.github.io/docs/using-actuator.html#useactuator).
+  * HOC:
+    * [`injectActuator`](https://react-reducer-provider.github.io/docs/using-actuator.html#injectactuator).
 * [Singleton](https://react-reducer-provider.github.io/docs/singleton.html).
 * [Nesting Providers](https://react-reducer-provider.github.io/docs/nesting.html).
-* Combining/Blending - Tagged Reducers/Mappers.
-  * [`AsyncTaggedReducerProvider` · `SyncTaggedReducerProvider` · `AsyncTaggedMapperProvider` · `SyncTaggedMapperProvider`](https://react-reducer-provider.github.io/docs/tagged-definition.html).
-  * [`useTaggedAny` · `useTaggedReducer` · `useTaggedReducerState` · `useTaggedReducerDispatcher` · `useTaggedMapper` · `useTaggedMapperState` · `useTaggedMapperDispatcher`](https://react-reducer-provider.github.io/docs/tagged-consumption-hooks.html).
-  * [`injectTaggedAny` · `injectTaggedReducer` · `injectTaggedReducerState` · `injectTaggedReducerDispatcher` · `injectTaggedMapper` · `injectTaggedMapperState` · `injectTaggedMapperDispatcher`](https://react-reducer-provider.github.io/docs/tagged-consumption-hoc.html).
+* Combining/Blending - Tagged Reducers/Mappers/Actuator.
+  * [`AsyncTaggedReducerProvider` · `SyncTaggedReducerProvider` · `AsyncTaggedMapperProvider` · `SyncTaggedMapperProvider` · `TaggedActuatorProvider`](https://react-reducer-provider.github.io/docs/tagged-definition.html).
+  * [`useTaggedAny` · `useTaggedReducer` · `useTaggedReducerState` · `useTaggedReducerDispatcher` · `useTaggedMapper` · `useTaggedMapperState` · `useTaggedMapperDispatcher` · `useTaggedActuator`](https://react-reducer-provider.github.io/docs/tagged-consumption-hooks.html).
+  * [`injectTaggedAny` · `injectTaggedReducer` · `injectTaggedReducerState` · `injectTaggedReducerDispatcher` · `injectTaggedMapper` · `injectTaggedMapperState` · `injectTaggedMapperDispatcher` · `injectTaggedActuator`](https://react-reducer-provider.github.io/docs/tagged-consumption-hoc.html).
 * [Typings](https://react-reducer-provider.github.io/docs/typings.html).
 * Extras:
   * [With Injection](https://react-reducer-provider.github.io/docs/with-injection.html).

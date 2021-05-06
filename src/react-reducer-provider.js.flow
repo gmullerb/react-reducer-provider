@@ -1,3 +1,4 @@
+
 // Copyright (c) 2020 Gonzalo Müller Bravo.
 import React from 'react'
 import type { Node, AbstractComponent } from 'react'
@@ -7,16 +8,19 @@ import type { Node, AbstractComponent } from 'react'
 
 export type Id = string | number | symbol | null
 
-export interface ProviderProps<STATE> {
+export interface ProviderProps {
   id?: Id;
-  initialState?: (() => STATE) | STATE;
   children: Node;
+}
+
+export interface StateProviderProps<STATE> extends ProviderProps {
+  initialState?: (() => STATE) | STATE;
 }
 
 // Reducer Component Definition
 ///////////////////////////////
 
-export interface ReducerProps<STATE, REDUCER> extends ProviderProps<STATE> {
+export interface ReducerProps<STATE, REDUCER> extends StateProviderProps<STATE> {
   /**
    * Must always be assigned, although can be 'null' or 'undefined'.
    */
@@ -42,7 +46,7 @@ declare export class AsyncReducerProvider<STATE, ACTION> extends React.Component
 // Mapper Component Definition
 //////////////////////////////
 
-export interface MapperProps<STATE, MAPPER> extends ProviderProps<STATE> {
+export interface MapperProps<STATE, MAPPER> extends StateProviderProps<STATE> {
   /**
    * Must always be assigned, although can be 'null' or 'undefined'.
    */
@@ -65,6 +69,18 @@ export interface AsyncMapperProps<STATE, ACTION> extends MapperProps<STATE, Asyn
 
 declare export class AsyncMapperProvider<STATE, ACTION> extends React.Component<AsyncMapperProps<STATE, ACTION>> {}
 
+// Actuator Component Definition
+////////////////////////////////
+
+export interface ActuatorProps<ACTUATOR: Function = Function> extends ProviderProps {
+  /**
+   * Must always be assigned, although can be 'null' or 'undefined'.
+   */
+  actuator: ACTUATOR | null | typeof(undefined)
+}
+
+declare class ActuatorProvider<ACTUATOR: Function = Function> extends React.Component<ActuatorProps<ACTUATOR>> {}
+
 // Providers Consumption
 ////////////////////////
 
@@ -76,17 +92,20 @@ export interface Dispatcher<ACTION, DISPATCH: Async<> | Sync<> = Sync<void>> {
   (value: ACTION, ...args: $ReadOnlyArray<any>): DISPATCH
 }
 
-export interface ProviderValueObject<
-  STATE,
-  ACTION,
-  DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
-> {
-  +state: STATE;
-  +dispatch: Dispatcher<ACTION, DISPATCH>;
+export interface ProviderValueObject {
   /**
    * provider id
    */
-  +provider: Id;
+  +provider: Id
+}
+
+export interface StateProviderValueObject<
+  STATE,
+  ACTION,
+  DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
+> extends ProviderValueObject {
+  +state: STATE;
+  +dispatch: Dispatcher<ACTION, DISPATCH>;
 }
 export type ProviderValueTuple<
   STATE,
@@ -98,7 +117,7 @@ export type ProviderValue<
   STATE,
   ACTION,
   DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
-> = ProviderValueObject<STATE, ACTION, DISPATCH> & ProviderValueTuple<STATE, ACTION, DISPATCH>
+> = StateProviderValueObject<STATE, ACTION, DISPATCH> & ProviderValueTuple<STATE, ACTION, DISPATCH>
 
 declare export function useReducer<STATE, ACTION, DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>>(
   id?: Id
@@ -143,6 +162,15 @@ declare export function injectMapperState<INJECTED_PROP: {}, PROPS: {}>(
 declare export function injectMapperDispatcher<INJECTED_PROP: {}, PROPS: {}>(
   ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, id?: Id
 ): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+// Actuator Consumption
+///////////////////////
+
+export type ActuatorProviderValue<ACTUATOR: Function = Function> = ACTUATOR & ProviderValueObject
+
+declare export function useActuator<ACTUATOR: Function = Function> (
+  id?: Id
+): ActuatorProviderValue<ACTUATOR>
 
 // Tagged Provider Component
 ////////////////////////////
@@ -198,15 +226,27 @@ export interface AsyncTaggedMapperProps extends TaggedMapperProps<AsyncTaggedMap
 
 declare export class AsyncTaggedMapperProvider extends React.Component<AsyncTaggedMapperProps> {}
 
+// Tagged Actuator Component Definition
+///////////////////////////////////////
+
+export interface TaggedActuatorProps<ACTUATORS: TaggedProcessor<Function>[] = TaggedProcessor<Function>[]> extends ProviderProps {
+  /**
+   * Must always be assigned, although can be 'null' or 'undefined'.
+   */
+  actuators: ACTUATORS | null | typeof(undefined)
+}
+
+declare export class TaggedActuatorProvider<ACTUATORS: TaggedProcessor<Function>[] = TaggedProcessor<Function>[]>
+  extends React.Component<TaggedActuatorProps<ACTUATORS>> {}
+
 // Tagged Consumption
 /////////////////////
-
 
 export interface TaggedProviderValueObject<
   STATE,
   ACTION,
   DISPATCH: Async<void | STATE> | Sync<void | STATE> = Sync<void>
-> extends ProviderValueObject<STATE, ACTION, DISPATCH> {
+> extends StateProviderValueObject<STATE, ACTION, DISPATCH> {
   +tag: Id;
 }
 
@@ -286,6 +326,13 @@ declare export function injectTaggedMapperState<INJECTED_PROP: {}, PROPS: {}>(
 declare export function injectTaggedMapperDispatcher<INJECTED_PROP: {}, PROPS: {}>(
   ComponentClass: AbstractComponent<PROPS>, injectedPropName: $Keys<INJECTED_PROP>, tag: Id, id?: Id
 ): AbstractComponent<$Diff<PROPS, INJECTED_PROP>>
+
+// Tagged Actuator Consumption
+///////////////////////
+
+declare export function useTaggedActuator<ACTUATOR: Function = Function> (
+  tag: Id, id?: Id
+): ActuatorProviderValue<ACTUATOR>
 
 // Helpers
 //////////

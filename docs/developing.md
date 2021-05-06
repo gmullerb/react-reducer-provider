@@ -48,7 +48,7 @@ This command will install `node` (`npm install`) and run `npm run check`.
 
 Npm scripts, [`package.json`](../package.json):
 
-* `lint.common`: checks common style of "all" files.
+* `lint.any`: checks common style of "all" files.
 * `lint.config`: checks eslint style of config files.
 * `lint.main`: checks eslint style of main source files.
 * `lint.flow`: checks eslint style of `js.flow` files.
@@ -62,14 +62,14 @@ Npm scripts, [`package.json`](../package.json):
 
 Additionally:
 
-* `npm run check`: will execute all tasks (`lint.common`, ..., `test.ts`, etc.).
+* `npm run check`: will execute all tasks (`lint.any`, ..., `test.ts`, etc.).
 * `npm run`: will list all available script/task for the project.
 
 #### From Gradle
 
 Run any scripts using `./gradlew npm_run_.name.`, where `.name.` is the name of the npm script, e.g.:
 
-`lint.common` => `./gradlew npm_run_lint.common`
+`lint.any` => `./gradlew npm_run_lint.any`
 
 ## Folders structure
 
@@ -107,4 +107,4 @@ Basically due to more than one copy of React in the same app.
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

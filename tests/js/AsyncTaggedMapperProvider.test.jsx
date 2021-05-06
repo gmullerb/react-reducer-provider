@@ -55,6 +55,73 @@ describe('AsyncTaggedMapperProvider tests', () => {
     expect(mappers[1]).toEqual(jasmine.arrayContaining([ 'TagN', testMapN, testInitialStateN ]))
   })
 
+  it('should have enumerable "state", "dispatch", "provider" & "tag" and not enumerable "0", "1", "2" & "3", all not writable and prevent extension', () => {
+    let accessors = null
+    const testInitialState1 = 'X'
+    const testInitialStateN = 0
+    const FunComponent11 = () => {
+      const [ , dispatch ] = useTaggedMapper('Tag1', 497)
+      return (
+        <button id='F1' onClick={() => dispatch('ACTION1')}>
+          Click1
+        </button>
+      )
+    }
+    const FunComponent12 = () => {
+      accessors = useTaggedMapper('Tag1', 497)
+      const [ state ] = accessors
+      return (
+        <div>
+          Child1{state}
+        </div>
+      )
+    }
+    const FunComponentN1 = () => {
+      const [ , dispatch ] = useTaggedMapper('TagN', 497)
+      return (
+        <button id= 'FN' onClick={() => dispatch('ACTION1')}>
+          ClickN
+        </button>
+      )
+    }
+    const FunComponentN2 = () => {
+      const [ state ] = useTaggedMapper('TagN', 497)
+      return (
+        <div>
+          ChildN{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <AsyncTaggedMapperProvider
+        id={497}
+        mappers={[
+          [ 'Tag1', testMap1, testInitialState1 ],
+          [ 'TagN', testMapN, testInitialStateN ]
+        ]}
+      >
+        <FunComponent11 />
+        <FunComponent12 />
+        <FunComponentN1 />
+        <FunComponentN2 />
+      </AsyncTaggedMapperProvider>
+    )
+    expect(provider).toHaveText('Click1Child1XClickNChildN0')
+
+    expect(Object.keys(accessors)).toEqual([ 'state', 'dispatch', 'provider', 'tag' ])
+    expect(accessors.map(e => e)).toEqual([ accessors.state, accessors.dispatch, accessors.provider, accessors.tag ])
+    expect(() => accessors.state = 1).toThrow()
+    expect(() => accessors.dispatch = 1).toThrow()
+    expect(() => accessors.provider = 1).toThrow()
+    expect(() => accessors.tag = 1).toThrow()
+    expect(() => accessors[0] = 1).toThrow()
+    expect(() => accessors[1] = 1).toThrow()
+    expect(() => accessors[2] = 1).toThrow()
+    expect(() => accessors[3] = 1).toThrow()
+    expect(() => accessors.extra = 'extra').toThrow()
+    expect(() => accessors[4] = 'extra').toThrow()
+  })
+
   it('should map with useTaggedMapperDispatcher and get state with useTaggedMapperState', async () => {
     const testInitialState1 = 'X'
     const testInitialStateN = 0

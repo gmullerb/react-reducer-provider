@@ -150,4 +150,4 @@ export default function SomeContainer(): Node {
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

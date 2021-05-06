@@ -8,19 +8,19 @@ Reducer or Mapper will never be accessible directly from `children` elements, th
 
 There are different ways of doing this:
 
-* **`useTaggedReducer`**, which give access both State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* **`useTaggedReducerDispatcher`**, which give access only the [`Dispatcher`](../src/react-reducer-provider.d.ts).
+* **`useTaggedReducer`**, which give access both State and [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
+* **`useTaggedReducerDispatcher`**, which give access only the [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
 * **`useTaggedReducerState`**, which give access only the State.
 
 or
 
-* **`useTaggedMapper`**, which give access both State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* **`useTaggedMapperDispatcher`**, which give access only the [`Dispatcher`](../src/react-reducer-provider.d.ts).
+* **`useTaggedMapper`**, which give access both State and [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
+* **`useTaggedMapperDispatcher`**, which give access only the [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
 * **`useTaggedMapperState`**, which give access only the State.
 
 or
 
-* useTaggedAny, which give access any tagged State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
+* useTaggedAny, which give access any tagged State and [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
 
 ![Consumption](use-provider.svg "Consumption")
 
@@ -292,10 +292,10 @@ __________________
   * [with Flow typings](with-actions-creators-and-flow-typings.md).
   * [with Typescript typings](with-actions-creators-and-ts-typings.md).
 * [Testing](testing.md).
-* [Examples from tests](../tests/js).
-* [Typings' examples from tests](../tests/typings).
+* [Examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/js).
+* [Typings' examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/typings).
 * [Extending/Developing](developing.md).
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

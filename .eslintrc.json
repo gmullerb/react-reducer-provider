@@ -26,7 +26,6 @@
         "avoidEscape": true
       }
     ],
-    "max-len": ["error", { "code": 160, "ignoreComments": true } ],
     "react/no-multi-comp": "off",
     "react/display-name": "off",
     "semi": [

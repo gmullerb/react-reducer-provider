@@ -6,19 +6,19 @@ Reducer or Mapper will never be accessible directly from `children` elements, th
 
 There are different ways of doing this:
 
-* **`injectTaggedReducer`**, which give access both State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* **`injectTaggedReducerDispatcher`**, which give access only the [`Dispatcher`](../src/react-reducer-provider.d.ts).
+* **`injectTaggedReducer`**, which give access both State and [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
+* **`injectTaggedReducerDispatcher`**, which give access only the [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
 * **`injectTaggedReducerState`**, which give access only the State.
 
 or
 
-* **`injectTaggedMapper`**, which give access both State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* **`injectTaggedMapperDispatcher`**, which give access only the [`Dispatcher`](../src/react-reducer-provider.d.ts).
+* **`injectTaggedMapper`**, which give access both State and [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
+* **`injectTaggedMapperDispatcher`**, which give access only the [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
 * **`injectTaggedMapperState`**, which give access only the State.
 
 or
 
-* injectTaggedAny, which give access any tagged State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
+* injectTaggedAny, which give access any tagged State and [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
 
 ![Consumption](inject-provider.svg "Consumption")
 
@@ -309,10 +309,10 @@ __________________
   * [with Flow typings](with-actions-creators-and-flow-typings.md).
   * [with Typescript typings](with-actions-creators-and-ts-typings.md).
 * [Testing](testing.md).
-* [Examples from tests](../tests/js).
-* [Typings' examples from tests](../tests/typings).
+* [Examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/js).
+* [Typings' examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/typings).
 * [Extending/Developing](developing.md).
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

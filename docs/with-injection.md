@@ -141,4 +141,4 @@ export default function SomeContainer() {
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

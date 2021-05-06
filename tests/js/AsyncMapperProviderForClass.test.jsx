@@ -194,4 +194,67 @@ describe('AsyncMapperProvider for Class components tests', () => {
     await delay(10)
     expect(provider).toHaveText('Child1Click1')
   })
+
+  it('should default to last state when mapper is set to null', async () => {
+    const testInitialState = 'A'
+    class ClassComponentA1 extends React.Component {
+      render() {
+        const [ state, dispatch ] = this.props.mapper
+        return (
+          <button id='inner' onClick={() => dispatch('ACTION1')}>
+            Click{state}
+          </button>
+        )
+      }
+    }
+    const ClassComponent1 = injectMapper(ClassComponentA1, 'mapper', 957)
+    class ClassComponentA2 extends React.Component {
+      render() {
+        return (
+          <div>
+            Child{this.props.state}
+          </div>
+        )
+      }
+    }
+    const ClassComponent2 = injectMapperState(ClassComponentA2, 'state', 957)
+    const MainComponent = () => {
+      const [ mapper, setMapper ] = React.useState(() => testMap)
+      return (
+        <>
+          <button id='outer' onClick={() => setMapper(null)}>
+            Change Reducer
+          </button>
+          <AsyncMapperProvider
+            id={957}
+            mapper={mapper}
+            initialState={testInitialState}
+          >
+            <ClassComponent1 />
+            <ClassComponent2 />
+          </AsyncMapperProvider>
+        </>
+      )
+    }
+    const provider = mount(<MainComponent />)
+
+    expect(provider).toHaveText('Change ReducerClickAChildA')
+    provider.find('#inner').simulate('click')
+    provider.update()
+    await delay(10)
+
+    expect(provider).toHaveText('Change ReducerClick1Child1')
+
+    provider.find('#outer').simulate('click')
+    provider.update()
+    await delay(10)
+    provider.find('#inner').simulate('click')
+    provider.update()
+    await delay(10)
+    provider.find('#inner').simulate('click')
+    provider.update()
+    await delay(10)
+
+    expect(provider).toHaveText('Change ReducerClick1Child1')
+  })
 })

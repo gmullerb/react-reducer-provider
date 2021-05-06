@@ -11,7 +11,7 @@ import {
   AsyncTaggedMapperProps,
   SyncTaggedMapperProvider,
   AsyncTaggedMapperProvider,
-  TaggedProviderValue,
+  StateTaggedProviderValue,
   TaggedProviderGetter,
   useTaggedAny,
   useTaggedMapper,
@@ -39,9 +39,9 @@ const testInitialStateN: TestStateN = {
   lastAction: 0
 }
 
-interface TestSyncTaggedProviderGetter extends TaggedProviderGetter<'Tag1' | 'TagN', TestState1 | TestStateN> {}
+interface TestSyncTaggedProviderGetter extends TaggedProviderGetter<StateTaggedProviderValue<TestState1 | TestStateN>> {}
 
-interface TestAsyncTaggedProviderGetter extends TaggedProviderGetter<'Tag1' | 'TagN', TestState1 | TestStateN, string, Async<TestState1 | TestStateN>> {}
+interface TestAsyncTaggedProviderGetter extends TaggedProviderGetter<StateTaggedProviderValue<TestState1 | TestStateN, Async<TestState1 | TestStateN>>> {}
 
 function TestSyncTaggedMapperProvider({ children }: {children: ReactNode}): ReactElement {
   function testMapper1(action: string, moreData1: string, moreDataN: {}) {
@@ -288,25 +288,25 @@ function TestSingletonAsyncTaggedMapperProvider({ children }: {children: ReactNo
 }
 
 function TestUseTaggedAny(): ReactElement {
-  const providers: TestSyncTaggedProviderGetter = useTaggedAny<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedMapper')
+  const providers: TestSyncTaggedProviderGetter = useTaggedAny<StateTaggedProviderValue<TestState1 | TestStateN>>('testNamedMapper')
   return (
-    <button onClick={(): void => providers.get('Tag1').dispatch('ACTION1', 'somevalue1', {})}>
+    <button onClick={(): any => providers.get('Tag1').dispatch('ACTION1', 'somevalue1', {})}>
       Child{providers.get('TagN').state.lastAction}
     </button>
   )
 }
 
 function TestUseTaggedAnyStateDispatcher(): ReactElement {
-  const providers: TestSyncTaggedProviderGetter = useTaggedAny<'Tag1' | 'TagN', TestState1 | TestStateN>('testNamedMapper')
+  const providers: TestSyncTaggedProviderGetter = useTaggedAny<StateTaggedProviderValue<TestState1 | TestStateN>>('testNamedMapper')
   return (
-    <button onClick={(): void => providers.get('TagN')[1]('ACTION1', 'somevalue1', {})}>
+    <button onClick={(): any => providers.get('TagN')[1]('ACTION1', 'somevalue1', {})}>
       Child{providers.get('Tag1')[0].lastAction}
     </button>
   )
 }
 
 function TestUseTaggedAnyStateDispatcherForAsync(): ReactElement {
-  const providers: TestAsyncTaggedProviderGetter = useTaggedAny<'Tag1' | 'TagN', TestState1 | TestStateN, string, Async<TestState1 | TestStateN>>('testNamedMapper')
+  const providers: TestAsyncTaggedProviderGetter = useTaggedAny<StateTaggedProviderValue<TestState1 | TestStateN, Async<TestState1 | TestStateN>>>('testNamedMapper')
   return (
     <button onClick={async (): Promise<void> => providers.get('Tag1').dispatch('ACTION1', 'somevalue1', {}).then(() => {})}>
       Child{providers.get('TagN')[0].lastAction}
@@ -316,7 +316,7 @@ function TestUseTaggedAnyStateDispatcherForAsync(): ReactElement {
 
 function TestUseTaggedMapperStateDispatcher(): ReactElement {
   const state: TestState1 = useTaggedMapperState<TestState1>('Tag1','testNamedMapper')
-  const dispatch: Dispatcher<'ACTION', TestState1> = useTaggedMapperDispatcher<'ACTION', TestState1>('Tag1','testNamedMapper')
+  const dispatch: Dispatcher<TestState1> = useTaggedMapperDispatcher<TestState1>('Tag1','testNamedMapper')
   let result: string
   return (
     <button onClick={(): string => result = dispatch('ACTION', 'somevalue1', {}).lastAction}>
@@ -327,7 +327,7 @@ function TestUseTaggedMapperStateDispatcher(): ReactElement {
 
 function TestUseTaggedMapperStateDispatcherForAsync(): ReactElement {
   const state: TestState1 = useTaggedMapperState<TestState1>('Tag1','testNamedMapper')
-  const dispatch: Dispatcher<'ACTION', Async<TestState1>> = useTaggedMapperDispatcher<'ACTION', Async<TestState1>>('Tag1','testNamedMapper')
+  const dispatch: Dispatcher<Async<TestState1>> = useTaggedMapperDispatcher<Async<TestState1>>('Tag1','testNamedMapper')
   let result: string
   return (
     <button onClick={async (): Promise<string> => result = await dispatch('ACTION', 'somevalue1', {}).then(state => state.lastAction)}>
@@ -337,7 +337,7 @@ function TestUseTaggedMapperStateDispatcherForAsync(): ReactElement {
 }
 
 function TestUseTaggedMapper(): ReactElement {
-  const [ state, dispatch ]: TaggedProviderValue<TestState1, 'ACTION', TestState1> = useTaggedMapper<TestState1, 'ACTION', TestState1>('Tag1','testNamedMapper')
+  const [ state, dispatch ]: StateTaggedProviderValue<TestState1> = useTaggedMapper<TestState1>('Tag1','testNamedMapper')
   let result: string
   return (
     <button onClick={(): string => result = dispatch('ACTION', 'somevalue1', {}).lastAction}>
@@ -347,7 +347,7 @@ function TestUseTaggedMapper(): ReactElement {
 }
 
 function TestUseTaggedMapperForAsync(): ReactElement {
-  const [ state, dispatch ]: TaggedProviderValue<TestState1, 'ACTION', Async<TestState1>> = useTaggedMapper<TestState1, 'ACTION', Async<TestState1>>('Tag1','testNamedMapper')
+  const [ state, dispatch ]: StateTaggedProviderValue<TestState1, Async<TestState1>> = useTaggedMapper<TestState1, Async<TestState1>>('Tag1','testNamedMapper')
   let result: string
   return (
     <button onClick={async (): Promise<string> => result = await dispatch('ACTION', 'somevalue1', {}).then(state => state.lastAction)}>

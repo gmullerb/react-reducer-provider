@@ -10,7 +10,7 @@ export class SyncMapperProvider extends React.Component {
     imbueStateProvider(this, props)
   }
 
-  wd(action, ...args) {
-    return setContextValue(this, nextState(this, this.props.mapper, action, ...args))
+  wd(...args) {
+    return setContextValue(this, nextState(this, this.props.mapper, ...args))
   }
 }

@@ -137,4 +137,4 @@ export default function SomeContainer(): ReactElement {
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

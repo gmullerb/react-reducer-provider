@@ -150,6 +150,49 @@ describe('AsyncMapperProvider tests', () => {
     expect(provider).toHaveText('Click1Child1')
   })
 
+  it('should have enumerable "state", "dispatch" & "provider" and not enumerable "0", "1" & "2", all not writable and prevent extension', () => {
+    const testInitialState = 'A'
+    let accessors = null
+    async function testMapArgs(action, extra) {
+      switch (action) {
+        case 'ACTION1':
+          return await delay(1, { value: extra })
+        default:
+          return await delay(1, { value: '0' })
+      }
+    }
+    const FunComponent1 = () => {
+      accessors = useMapper(5950)
+      const [ state, dispatch ] = accessors
+      return (
+        <button onClick={() => dispatch('ACTION1', 'Superb')}>
+          Click{state}
+        </button>
+      )
+    }
+    const provider = mount(
+      <AsyncMapperProvider
+        id={5950}
+        mapper={testMapArgs}
+        initialState={testInitialState}
+      >
+        <FunComponent1 />
+      </AsyncMapperProvider>
+    )
+    expect(provider).toHaveText('ClickA')
+
+    expect(Object.keys(accessors)).toEqual([ 'state', 'dispatch', 'provider' ])
+    expect(accessors.map(e => e)).toEqual([ accessors.state, accessors.dispatch, accessors.provider ])
+    expect(() => accessors.state = 1).toThrow()
+    expect(() => accessors.dispatch = 1).toThrow()
+    expect(() => accessors.provider = 1).toThrow()
+    expect(() => accessors[0] = 1).toThrow()
+    expect(() => accessors[1] = 1).toThrow()
+    expect(() => accessors[2] = 1).toThrow()
+    expect(() => accessors.extra = 'extra').toThrow()
+    expect(() => accessors[3] = 'extra').toThrow()
+  })
+
   it('should map with useMapper and get state with extra args', async () => {
     const testInitialState = 'A'
     async function testMapArgs(action, extra) {
@@ -193,6 +236,51 @@ describe('AsyncMapperProvider tests', () => {
 
     await delay(10)
     expect(provider).toHaveText('ClickSuperbChildSuperb')
+  })
+
+  it('should map with useMapper and get state with no args', async () => {
+    const testInitialState = 'A'
+    async function testMapArgs(action, extra) {
+      switch (action) {
+        case 'ACTION1':
+          return await delay(1, { value: extra })
+        default:
+          return await delay(1, { value: '0' })
+      }
+    }
+    const FunComponent1 = () => {
+      const [ state, dispatch ] = useMapper(595)
+      return (
+        <button onClick={() => dispatch()}>
+          Click{state}
+        </button>
+      )
+    }
+    const FunComponent2 = () => {
+      const state = useMapperState(595)
+      return (
+        <div>
+          Child{state}
+        </div>
+      )
+    }
+    const provider = mount(
+      <AsyncMapperProvider
+        id={595}
+        mapper={testMapArgs}
+        initialState={testInitialState}
+      >
+        <FunComponent1 />
+        <FunComponent2 />
+      </AsyncMapperProvider>
+    )
+    expect(provider).toHaveText('ClickAChildA')
+
+    provider.find('button').simulate('click')
+    provider.update()
+
+    await delay(10)
+    expect(provider).toHaveText('Click0Child0')
   })
 
   it('should not re-render when same state', async () => {

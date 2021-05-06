@@ -10,7 +10,7 @@ export class AsyncMapperProvider extends React.Component {
     imbueStateProvider(this, props)
   }
 
-  async wd(action, ...args) {
-    return setContextValue(this, await nextState(this, this.props.mapper, action, ...args))
+  async wd(...args) {
+    return setContextValue(this, await nextState(this, this.props.mapper, ...args))
   }
 }

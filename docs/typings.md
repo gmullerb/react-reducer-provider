@@ -5,7 +5,7 @@
 * Any can be used without an "special" [1] configuration.
   * Typings definitions are located together with source files:
     * Flow: [`react-reducer-provider.js.flow`](../src/react-reducer-provider.js.flow) [2].
-    * Typescript: [`react-reducer-provider.d.ts`](../src/react-reducer-provider.d.ts).
+    * Typescript: [`react-reducer-provider.d.ts`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
 
 Both provide the following types:
 
@@ -45,7 +45,7 @@ Defines how the action is dispatch, thereby, the type of the reducer.
 * `Sync<T>`, which is the default (`Sync<void>`), and there is no need to be specified.
 
 > [1] Only the usual Flow or Typescript configuration (e.g. no need for @types package).  
-> [2] I prefer Typescript over Flow, i.e. Flow is only tested here (in this project), so feel free to create an issue if something wrong is found.
+> [2] I prefer Typescript over Flow, i.e. Flow is only tested here (in this project), so feel free to create an issue if something wrong is found. And Flow typings can be a little obsolete compare to Typescript.
 
 ## Synchronous Reducer/Mapper
 
@@ -749,8 +749,8 @@ function reduce(prevState: AppState, action: AppAction): AppState {
 
 ## Additional Examples
 
-* A more "complete" example with Typescript can be seen at [`typing ts test folder`](../tests/typings/ts).
-* A more "complete" example with Flow can be seen at [`typing flow test folder`](../tests/typings/flow).
+* A more "complete" example with Typescript can be seen at [`typing ts test folder`](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/typings/ts).
+* A more "complete" example with Flow can be seen at [`typing flow test folder`](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/typings/flow).
 
 > An example with Typescript typings can be checked on line at [gmullerb-react-reducer-provider-ts codesandbox](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-forked-0dmie?file=/src/SomeReducerProvider.tsx):  
 [![Edit gmullerb-react-reducer-provider-ts](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gmullerb-react-reducer-provider-ts-forked-0dmie?file=/src/SomeReducerProvider.tsx)  
@@ -762,4 +762,4 @@ function reduce(prevState: AppState, action: AppAction): AppState {
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

@@ -6,14 +6,14 @@ Reducer or Mapper will never be accessible directly from `children` elements, th
 
 There are different ways of doing this:
 
-* **`injectReducer`**, which give access both State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* **`injectReducerDispatcher`**, which give access only the [`Dispatcher`](../src/react-reducer-provider.d.ts).
+* **`injectReducer`**, which give access both State and [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
+* **`injectReducerDispatcher`**, which give access only the [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
 * **`injectReducerState`**, which give access only the State.
 
 or
 
-* **`injectMapper`**, which give access both State and [`Dispatcher`](../src/react-reducer-provider.d.ts).
-* **`injectMapperDispatcher`**, which give access only the [`Dispatcher`](../src/react-reducer-provider.d.ts).
+* **`injectMapper`**, which give access both State and [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
+* **`injectMapperDispatcher`**, which give access only the [`Dispatcher`](https://github.com/gmullerb/react-reducer-provider/blob/master/src/react-reducer-provider.d.ts).
 * **`injectMapperState`**, which give access only the State.
 
 ![Consumption](inject-provider.svg "Consumption")
@@ -229,11 +229,11 @@ __________________
   * [with Flow typings](with-actions-creators-and-flow-typings.md).
   * [with Typescript typings](with-actions-creators-and-ts-typings.md).
 * [Testing](testing.md).
-* [Examples from tests](../tests/js).
+* [Examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/js).
 * **[Online examples](online.md)**.
-* [Typings' examples from tests](../tests/typings).
+* [Typings' examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/typings).
 * [Extending/Developing](developing.md).
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

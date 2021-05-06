@@ -10,8 +10,7 @@ export class SyncTaggedMapperProvider extends React.Component {
     imbueTaggedStateProvider(this, props.id, props.mappers)
   }
 
-  wd(tag, index, action, ...args) {
-    const processor = this._ps.get(tag) // This is never null
-    return setTaggedContextValue(this, processor, nextStateForTagged(processor, this.props.mappers, index, action, ...args))
+  wd(processor, index, ...args) {
+    return setTaggedContextValue(this, processor, nextStateForTagged(processor, this.props.mappers, index, ...args))
   }
 }

@@ -427,4 +427,4 @@ With Jest:
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

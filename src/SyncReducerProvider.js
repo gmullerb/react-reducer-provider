@@ -10,7 +10,7 @@ export class SyncReducerProvider extends React.Component {
     imbueStateProvider(this, props)
   }
 
-  wd(action, ...args) {
-    return setContextValue(this, nextState(this, this.props.reducer, this.state.value.state, action, ...args))
+  wd(...args) {
+    return setContextValue(this, nextState(this, this.props.reducer, this.state.value.state, ...args))
   }
 }

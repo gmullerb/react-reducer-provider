@@ -28,7 +28,7 @@ create-cache:
 assess-common:
   stage: assess
   script:
-    - npm run lint.common
+    - npm run lint.any
     - npm run lint.config
   cache:
     key: "${CI_COMMIT_SHA}"

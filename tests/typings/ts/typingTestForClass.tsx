@@ -4,7 +4,7 @@
 import {
   Async,
   Dispatcher,
-  ProviderValue,
+  StateProviderValue,
   Sync,
   injectMapper,
   injectMapperDispatcher,
@@ -27,12 +27,12 @@ const initialState: TestState = {
 }
 
 interface TestSyncReducerMainHoc0Props { someProp: string }
-interface TestSyncReducerMainHocProps extends TestSyncReducerMainHoc0Props { reducer: ProviderValue<TestState, string> }
+interface TestSyncReducerMainHocProps extends TestSyncReducerMainHoc0Props { reducer: StateProviderValue<TestState> }
 interface TestSyncReducerMainHocState { someState: number }
 
 class TestSyncReducerMainHoc extends React.Component<TestSyncReducerMainHocProps, TestSyncReducerMainHocState> {
   render() {
-    const [ state, dispatch ]: ProviderValue<TestState, string> = this.props.reducer
+    const [ state, dispatch ]: StateProviderValue<TestState> = this.props.reducer
     return (
       <button onClick={() => dispatch('ACTION1')}>
         Child{state.lastAction}
@@ -40,7 +40,7 @@ class TestSyncReducerMainHoc extends React.Component<TestSyncReducerMainHocProps
     )
   }
 }
-const TestSyncReducerMainHoc0 = injectReducer<{ reducer: any }, TestSyncReducerMainHoc0Props>(TestSyncReducerMainHoc, 'reducer', 'someNamedReducer')
+const TestSyncReducerMainHoc0 = injectReducer<TestSyncReducerMainHocProps, 'reducer'>(TestSyncReducerMainHoc, 'reducer', 'someNamedReducer')
 
 class TestUseSyncReducerMainHoc extends React.Component {
   render() {
@@ -51,12 +51,12 @@ class TestUseSyncReducerMainHoc extends React.Component {
 }
 
 interface TestAsyncReducerMainHoc0Props { someProp: string }
-interface TestAsyncReducerMainHocProps extends TestAsyncReducerMainHoc0Props { reducer: ProviderValue<TestState, string, Async<TestState>> }
+interface TestAsyncReducerMainHocProps extends TestAsyncReducerMainHoc0Props { reducer: StateProviderValue<TestState, Async<TestState>> }
 interface TestAsyncReducerMainHocState { someState: number }
 
 class TestAsyncReducerMainHoc extends React.Component<TestAsyncReducerMainHocProps, TestAsyncReducerMainHocState> {
   render() {
-    const [ state, dispatch ]: ProviderValue<TestState, string, Async<TestState>> = this.props.reducer
+    const [ state, dispatch ]: StateProviderValue<TestState, Async<TestState>> = this.props.reducer
     return (
       <button onClick={async (): Promise<void> => await dispatch('ACTION1').then(() => {})
       }>
@@ -65,7 +65,7 @@ class TestAsyncReducerMainHoc extends React.Component<TestAsyncReducerMainHocPro
     )
   }
 }
-const TestAsyncReducerMainHoc0 = injectReducer<{ reducer: any }, TestAsyncReducerMainHoc0Props>(TestAsyncReducerMainHoc, 'reducer', 'someNamedReducer')
+const TestAsyncReducerMainHoc0 = injectReducer<TestAsyncReducerMainHocProps, 'reducer'>(TestAsyncReducerMainHoc, 'reducer', 'someNamedReducer')
 
 class TestUseAsyncReducerMainHoc extends React.Component {
   render() {
@@ -89,7 +89,7 @@ class TestSyncReducerStateHoc extends React.Component<TestSyncReducerStateHocPro
     )
   }
 }
-const TestSyncReducerStateHoc0 = injectReducerState<{ state: any }, TestSyncReducerStateHoc0Props>(TestSyncReducerStateHoc, 'state', 'someNamedReducer')
+const TestSyncReducerStateHoc0 = injectReducerState<TestSyncReducerStateHocProps, 'state'>(TestSyncReducerStateHoc, 'state', 'someNamedReducer')
 
 class TestUseSyncReducerStateHoc extends React.Component<{}> {
   render() {
@@ -100,20 +100,20 @@ class TestUseSyncReducerStateHoc extends React.Component<{}> {
 }
 
 interface TestSyncReducerDispatcherHoc0Props { someProp: string }
-interface TestSyncReducerDispatcherHocProps extends TestSyncReducerDispatcherHoc0Props { dispatcher: Dispatcher<string> }
+interface TestSyncReducerDispatcherHocProps extends TestSyncReducerDispatcherHoc0Props { dispatcher: Dispatcher }
 interface TestSyncReducerDispatcherHocDispatcher { someDispatcher: number }
 
 class TestSyncReducerDispatcherHoc extends React.Component<TestSyncReducerDispatcherHocProps, TestSyncReducerDispatcherHocDispatcher> {
   render() {
-    const theDispatcher: Dispatcher<string> = this.props.dispatcher
+    const theDispatcher: Dispatcher = this.props.dispatcher
     return (
-      <button onClick={(): void => theDispatcher('ACTION1')}>
+      <button onClick={(): any => theDispatcher('ACTION1')}>
         Children
       </button>
     )
   }
 }
-const TestSyncReducerDispatcherHoc0 = injectReducerDispatcher<{ dispatcher: any }, TestSyncReducerDispatcherHoc0Props>(TestSyncReducerDispatcherHoc, 'dispatcher', 'someNamedReducer')
+const TestSyncReducerDispatcherHoc0 = injectReducerDispatcher<TestSyncReducerDispatcherHocProps, 'dispatcher'>(TestSyncReducerDispatcherHoc, 'dispatcher', 'someNamedReducer')
 
 class TestUseSyncReducerDispatcherHoc extends React.Component<{}> {
   render() {
@@ -124,12 +124,12 @@ class TestUseSyncReducerDispatcherHoc extends React.Component<{}> {
 }
 
 interface TestAsyncReducerDispatcherHoc0Props { someProp: string }
-interface TestAsyncReducerDispatcherHocProps extends TestAsyncReducerDispatcherHoc0Props { dispatcher: Dispatcher<string, Async<TestState>> }
+interface TestAsyncReducerDispatcherHocProps extends TestAsyncReducerDispatcherHoc0Props { dispatcher: Dispatcher<Async<TestState>> }
 interface TestAsyncReducerDispatcherHocDispatcher { someDispatcher: number }
 
 class TestAsyncReducerDispatcherHoc extends React.Component<TestAsyncReducerDispatcherHocProps, TestAsyncReducerDispatcherHocDispatcher> {
   render() {
-    const theDispatcher: Dispatcher<string, Async<TestState>> = this.props.dispatcher
+    const theDispatcher: Dispatcher<Async<TestState>> = this.props.dispatcher
     const someFunc = () => {}
     return (
       <button onClick={(): Promise<void> => theDispatcher('ACTION1', 'somevalue1', {})
@@ -139,7 +139,7 @@ class TestAsyncReducerDispatcherHoc extends React.Component<TestAsyncReducerDisp
     )
   }
 }
-const TestAsyncReducerDispatcherHoc0 = injectReducerDispatcher<{ dispatcher: any }, TestAsyncReducerDispatcherHoc0Props>(TestAsyncReducerDispatcherHoc, 'dispatcher', 0)
+const TestAsyncReducerDispatcherHoc0 = injectReducerDispatcher<TestAsyncReducerDispatcherHocProps, 'dispatcher'>(TestAsyncReducerDispatcherHoc, 'dispatcher', 0)
 
 class TestUseAsyncReducerDispatcherHoc extends React.Component<{}> {
   render() {
@@ -150,12 +150,12 @@ class TestUseAsyncReducerDispatcherHoc extends React.Component<{}> {
 }
 
 interface TestSyncMapperMainHoc0Props { someProp: string }
-interface TestSyncMapperMainHocProps extends TestSyncMapperMainHoc0Props { mapper: ProviderValue<TestState, string>, someProp: string }
+interface TestSyncMapperMainHocProps extends TestSyncMapperMainHoc0Props { mapper: StateProviderValue<TestState>, someProp: string }
 interface TestSyncMapperMainHocState { someState: number }
 
 class TestSyncMapperMainHoc extends React.Component<TestSyncMapperMainHocProps, TestSyncMapperMainHocState> {
   render() {
-    const [ state, dispatch ]: ProviderValue<TestState, string> = this.props.mapper
+    const [ state, dispatch ]: StateProviderValue<TestState> = this.props.mapper
     return (
       <button onClick={() => dispatch('ACTION1')}>
         Child{state.lastAction}
@@ -163,7 +163,7 @@ class TestSyncMapperMainHoc extends React.Component<TestSyncMapperMainHocProps, 
     )
   }
 }
-const TestSyncMapperMainHoc0 = injectMapper<{ mapper: any }, TestSyncMapperMainHoc0Props>(TestSyncMapperMainHoc, 'mapper', 0)
+const TestSyncMapperMainHoc0 = injectMapper<TestSyncMapperMainHocProps, 'mapper'>(TestSyncMapperMainHoc, 'mapper', 0)
 
 class TestUseSyncMapperMainHoc extends React.Component<{}> {
   render() {
@@ -174,12 +174,12 @@ class TestUseSyncMapperMainHoc extends React.Component<{}> {
 }
 
 interface TestAsyncMapperMainHoc0Props { someProp: string }
-interface TestAsyncMapperMainHocProps extends TestAsyncMapperMainHoc0Props { mapper: ProviderValue<TestState, string, Async<TestState>> }
+interface TestAsyncMapperMainHocProps extends TestAsyncMapperMainHoc0Props { mapper: StateProviderValue<TestState, Async<TestState>> }
 interface TestAsyncMapperMainHocState { someState: number }
 
 class TestAsyncMapperMainHoc extends React.Component<TestAsyncMapperMainHocProps, TestAsyncMapperMainHocState> {
   render() {
-    const [ state, dispatch ]: ProviderValue<TestState, string, Async<TestState>> = this.props.mapper
+    const [ state, dispatch ]: StateProviderValue<TestState, Async<TestState>> = this.props.mapper
     return (
       <button onClick={async () => await dispatch('ACTION1').then(() => {})}>
         Child{state.lastAction}
@@ -187,7 +187,7 @@ class TestAsyncMapperMainHoc extends React.Component<TestAsyncMapperMainHocProps
     )
   }
 }
-const TestAsyncMapperMainHoc0 = injectMapper<{ mapper: any }, TestAsyncMapperMainHoc0Props>(TestAsyncMapperMainHoc, 'mapper', 'someNamedMapper')
+const TestAsyncMapperMainHoc0 = injectMapper<TestAsyncMapperMainHocProps, 'mapper'>(TestAsyncMapperMainHoc, 'mapper', 'someNamedMapper')
 
 class TestUseAsyncMapperMainHoc extends React.Component<{}> {
   render() {
@@ -211,7 +211,7 @@ class TestSyncMapperStateHoc extends React.Component<TestSyncMapperStateHocProps
     )
   }
 }
-const TestSyncMapperStateHoc0 = injectMapperState<{ state: any }, TestSyncMapperStateHoc0Props>(TestSyncMapperStateHoc, 'state', 'someNamedMapper')
+const TestSyncMapperStateHoc0 = injectMapperState<TestSyncMapperStateHocProps, 'state'>(TestSyncMapperStateHoc, 'state', 'someNamedMapper')
 
 class TestUseSyncMapperStateHoc extends React.Component<{}> {
   render() {
@@ -222,20 +222,20 @@ class TestUseSyncMapperStateHoc extends React.Component<{}> {
 }
 
 interface TestSyncMapperDispatcherHoc0Props { someProp: string }
-interface TestSyncMapperDispatcherHocProps extends TestSyncMapperDispatcherHoc0Props { dispatcher: Dispatcher<string> }
+interface TestSyncMapperDispatcherHocProps extends TestSyncMapperDispatcherHoc0Props { dispatcher: Dispatcher }
 interface TestSyncMapperDispatcherHocDispatcher { someDispatcher: number }
 
 class TestSyncMapperDispatcherHoc extends React.Component<TestSyncMapperDispatcherHocProps, TestSyncMapperDispatcherHocDispatcher> {
   render() {
-    const theDispatcher: Dispatcher<string> = this.props.dispatcher
+    const theDispatcher: Dispatcher = this.props.dispatcher
     return (
-      <button onClick={(): void => theDispatcher('ACTION1')}>
+      <button onClick={(): any => theDispatcher('ACTION1')}>
         Children
       </button>
     )
   }
 }
-const TestSyncMapperDispatcherHoc0 = injectMapperDispatcher<{ dispatcher: any }, TestSyncMapperDispatcherHoc0Props>(TestSyncMapperDispatcherHoc, 'dispatcher', 'someNamedMapper')
+const TestSyncMapperDispatcherHoc0 = injectMapperDispatcher<TestSyncMapperDispatcherHocProps, 'dispatcher'>(TestSyncMapperDispatcherHoc, 'dispatcher', 'someNamedMapper')
 
 class TestUseSyncMapperDispatcherHoc extends React.Component<{}> {
   render() {
@@ -246,12 +246,12 @@ class TestUseSyncMapperDispatcherHoc extends React.Component<{}> {
 }
 
 interface TestAsyncMapperDispatcherHoc0Props { someProp: string }
-interface TestAsyncMapperDispatcherHocProps extends TestAsyncMapperDispatcherHoc0Props { dispatcher: Dispatcher<string, Async<TestState>> }
+interface TestAsyncMapperDispatcherHocProps extends TestAsyncMapperDispatcherHoc0Props { dispatcher: Dispatcher<Async<TestState>> }
 interface TestAsyncMapperDispatcherHocDispatcher { someDispatcher: number }
 
 class TestAsyncMapperDispatcherHoc extends React.Component<TestAsyncMapperDispatcherHocProps, TestAsyncMapperDispatcherHocDispatcher> {
   render() {
-    const theDispatcher: Dispatcher<string, Async<TestState>> = this.props.dispatcher
+    const theDispatcher: Dispatcher<Async<TestState>> = this.props.dispatcher
     const someFunc = () => {}
     return (
       <button onClick={(): Promise<void> => theDispatcher('ACTION1', 'somevalue1', {})
@@ -261,7 +261,7 @@ class TestAsyncMapperDispatcherHoc extends React.Component<TestAsyncMapperDispat
     )
   }
 }
-const TestAsyncMapperDispatcherHoc0 = injectMapperDispatcher<{ dispatcher: any }, TestAsyncMapperDispatcherHoc0Props>(TestAsyncMapperDispatcherHoc, 'dispatcher', 0)
+const TestAsyncMapperDispatcherHoc0 = injectMapperDispatcher<TestAsyncMapperDispatcherHocProps, 'dispatcher'>(TestAsyncMapperDispatcherHoc, 'dispatcher', 0)
 
 class TestUseAsyncMapperDispatcherHoc extends React.Component<{}> {
   render() {

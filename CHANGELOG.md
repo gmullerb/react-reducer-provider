@@ -1,5 +1,14 @@
 # React Reducer Provider Change Log
 
+## 5.1.0 - May 2021
+
+* Adds new Component, which I called **Actuator**, to allow to handle external states, or whatever you need, not only state.
+* Renames `StateProvider` file to `imbueProvider` file.
+* Improves some Typescript typings.
+  * Makes Action parameter optional, it's just another argument.
+  * Some typings may break, but functionality won't, i.e. only need to fix typings, and only in some cases.
+* Updates Documentation files.
+
 ## 5.0.0 - April 2021
 
 * Breaking changes (Thinking more in JS way, and less in C++ or Java way): In order to remove recurrent call of `createDispatcher(stateRef, reRenderTrigger)` in `const wrappedDispatcher = React.useRef(createDispatcher(stateRef, reRenderTrigger))` for Providers components, and since `useRef` does not allow for a creation function ("yet"), the internal implementation for component is changed to class component, avoiding that recurrent call (big fan of hooks but using them wisely).

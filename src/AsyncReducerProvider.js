@@ -10,7 +10,7 @@ export class AsyncReducerProvider extends React.Component {
     imbueStateProvider(this, props)
   }
 
-  async wd(action, ...args) {
-    return setContextValue(this, await nextState(this, this.props.reducer, this.state.value.state, action, ...args))
+  async wd(...args) {
+    return setContextValue(this, await nextState(this, this.props.reducer, this.state.value.state, ...args))
   }
 }

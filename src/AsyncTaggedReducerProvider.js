@@ -10,8 +10,7 @@ export class AsyncTaggedReducerProvider extends React.Component {
     imbueTaggedStateProvider(this, props.id, props.reducers)
   }
 
-  async wd(tag, index, action, ...args) {
-    const processor = this._ps.get(tag) // This is never null
-    return setTaggedContextValue(this, processor, await nextStateForTagged(processor, this.props.reducers, index, processor.state, action, ...args))
+  async wd(processor, index, ...args) {
+    return setTaggedContextValue(this, processor, await nextStateForTagged(processor, this.props.reducers, index, processor.state, ...args))
   }
 }

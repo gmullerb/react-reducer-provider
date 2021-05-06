@@ -10,8 +10,7 @@ export class AsyncTaggedMapperProvider extends React.Component {
     imbueTaggedStateProvider(this, props.id, props.mappers)
   }
 
-  async wd(tag, index, action, ...args) {
-    const processor = this._ps.get(tag) // This is never null
-    return setTaggedContextValue(this, processor, await nextStateForTagged(processor, this.props.mappers, index, action, ...args))
+  async wd(processor, index, ...args) {
+    return setTaggedContextValue(this, processor, await nextStateForTagged(processor, this.props.mappers, index, ...args))
   }
 }

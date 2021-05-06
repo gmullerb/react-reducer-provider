@@ -8,6 +8,8 @@ import { SyncTaggedReducerProvider } from './SyncTaggedReducerProvider'
 import { AsyncTaggedReducerProvider } from './AsyncTaggedReducerProvider'
 import { SyncTaggedMapperProvider } from './SyncTaggedMapperProvider'
 import { AsyncTaggedMapperProvider } from './AsyncTaggedMapperProvider'
+import { TaggedActuatorProvider } from './TaggedActuatorProvider'
+import { ActuatorProvider } from './ActuatorProvider'
 import { useAny } from './useAny'
 import { useAnyDispatcher } from './useAnyDispatcher'
 import { useAnyState } from './useAnyState'
@@ -30,6 +32,8 @@ export {
   AsyncTaggedReducerProvider,
   SyncTaggedMapperProvider,
   AsyncTaggedMapperProvider,
+  ActuatorProvider,
+  TaggedActuatorProvider,
   useAny as useReducer,
   useAnyDispatcher as useReducerDispatcher,
   useAnyState as useReducerState,
@@ -43,6 +47,8 @@ export {
   useTaggedAny as useTaggedMapper,
   useTaggedAnyState as useTaggedMapperState,
   useTaggedAnyDispatcher as useTaggedMapperDispatcher,
+  useAny as useActuator,
+  useTaggedAny as useTaggedActuator,
   injectAny as injectReducer,
   injectAnyState as injectReducerState,
   injectAnyDispatcher as injectReducerDispatcher,
@@ -55,5 +61,7 @@ export {
   injectAnyDispatcher as injectMapperDispatcher,
   injectTagged as injectTaggedMapper,
   injectTaggedState as injectTaggedMapperState,
-  injectTaggedDispatcher as injectTaggedMapperDispatcher
+  injectTaggedDispatcher as injectTaggedMapperDispatcher,
+  injectAny as injectActuator,
+  injectTagged as injectTaggedActuator
 }

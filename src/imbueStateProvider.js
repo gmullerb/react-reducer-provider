@@ -1,6 +1,6 @@
 // Copyright (c) 2021 Gonzalo Müller Bravo.
 // Licensed under the MIT License (MIT), see LICENSE.txt
-import { imbueProvider } from './StateProvider'
+import { imbueProvider, shouldStateProviderUpdate, renderStateProvider } from './imbueProvider'
 import { computeProcessorValue } from './computeProcessorValue'
 
 function computeContextValue(providerId, state, dispatcher) {
@@ -8,7 +8,7 @@ function computeContextValue(providerId, state, dispatcher) {
 }
 
 export function imbueStateProvider(component, props) {
-  imbueProvider(component, props.id)
+  imbueProvider(component, props.id, shouldStateProviderUpdate, renderStateProvider)
   component.state = computeContextValue(props.id, typeof props.initialState !== 'function' ? props.initialState : props.initialState(), component.wd)
 }
 

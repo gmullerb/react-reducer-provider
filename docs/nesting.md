@@ -99,11 +99,11 @@ __________________
   * [with Flow typings](with-actions-creators-and-flow-typings.md).
   * [with Typescript typings](with-actions-creators-and-ts-typings.md).
 * [Testing](testing.md).
-* [Examples from tests](../tests/js).
+* [Examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/js).
 * **[Online examples](online.md)**.
-* [Typings' examples from tests](../tests/typings).
+* [Typings' examples from tests](https://github.com/gmullerb/react-reducer-provider/blob/master/tests/typings).
 * [Extending/Developing](developing.md).
 
 ## Main documentation
 
-[Back](../README.md)
+[Back to homepage](../README.md)

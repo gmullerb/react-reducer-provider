@@ -885,7 +885,7 @@ describe('SyncTaggedMapperProvider tests', () => {
       it('should not allow to change dispatcher', () => {
         const testInitialState1 = 'X'
         const testInitialStateN = 0
-        let newState
+        let newState = null
         const FunComponent11 = () => {
           const mapper = useTaggedMapper('Tag1', 3664)
           return (
@@ -961,7 +961,7 @@ describe('SyncTaggedMapperProvider tests', () => {
       it('should not allow to change dispatcher by tuple', () => {
         const testInitialState1 = 'X'
         const testInitialStateN = 0
-        let newState
+        let newState = null
         const FunComponent11 = () => {
           const mapper = useTaggedMapper('Tag1', 3663)
           return (
